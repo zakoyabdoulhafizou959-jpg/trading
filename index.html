@@ -29,34 +29,30 @@
             flex-wrap: wrap;
             gap: 8px;
             border: 1px solid rgba(255, 200, 50, 0.5);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .logo h1 { font-size: 1.2em; background: linear-gradient(135deg, #FFD966, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo p { font-size: 0.6em; opacity: 0.8; letter-spacing: 0.5px; }
+        .logo p { font-size: 0.6em; opacity: 0.8; }
 
         .user-info { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .balance, .username, .country-badge {
+        .balance, .username {
             padding: 5px 12px;
             border-radius: 40px;
             font-weight: bold;
             font-size: 0.75em;
             background: rgba(0,0,0,0.5);
         }
-        .balance { background: linear-gradient(135deg, #2ecc71, #1e8e4a); box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+        .balance { background: linear-gradient(135deg, #2ecc71, #1e8e4a); }
         .username { background: #2c3e8f; }
-        .country-badge { background: #9b59b6; }
 
-        .quiz-btn, .deposit-btn, .withdraw-btn, .logout-btn {
+        .deposit-btn, .withdraw-btn, .logout-btn {
             border: none;
             padding: 5px 12px;
             border-radius: 40px;
             font-weight: bold;
             font-size: 0.7em;
             cursor: pointer;
-            transition: 0.2s;
         }
-        .quiz-btn { background: linear-gradient(135deg, #f39c12, #e67e22); color: white; }
         .deposit-btn { background: #1abc9c; color: white; }
         .withdraw-btn { background: #e67e22; color: white; }
         .logout-btn { background: #c0392b; color: white; }
@@ -77,9 +73,8 @@
             cursor: pointer;
             font-weight: 600;
             font-size: 0.8em;
-            transition: 0.2s;
         }
-        .tab-btn.active { background: #f39c12; color: #0a0f24; box-shadow: 0 2px 8px rgba(243,156,18,0.3); }
+        .tab-btn.active { background: #f39c12; color: #0a0f24; }
 
         .products-grid {
             display: grid;
@@ -95,7 +90,6 @@
             padding: 12px 8px;
             text-align: center;
             border: 1px solid rgba(255,200,80,0.3);
-            transition: transform 0.1s;
         }
         .product-emoji { font-size: 38px; margin-bottom: 6px; }
         .product-name { font-size: 0.9em; font-weight: bold; }
@@ -111,41 +105,40 @@
             font-weight: bold;
             width: 90%;
             font-size: 0.75em;
-            transition: 0.1s;
         }
-        .disabled-product { opacity: 0.6; }
-        .disabled-product .buy-btn { background: #7f8c8d; cursor: not-allowed; }
 
         .inventory-item {
             background: rgba(25, 40, 55, 0.85);
             border-radius: 20px;
-            padding: 12px;
+            padding: 15px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 12px;
             border-left: 5px solid #f39c12;
         }
         .timer-active {
-            background: rgba(46,204,113,0.2);
+            background: rgba(46,204,113,0.25);
             border-radius: 20px;
-            padding: 4px 10px;
+            padding: 4px 12px;
             font-size: 0.7em;
             font-weight: bold;
+            display: inline-block;
+            margin-top: 6px;
         }
         .play-game-btn {
             background: #e67e22;
             border: none;
-            padding: 6px 14px;
+            padding: 10px 20px;
             border-radius: 30px;
             color: white;
             font-weight: bold;
             cursor: pointer;
-            font-size: 0.7em;
+            font-size: 0.8em;
         }
-        .win-badge { color: #f1c40f; font-size: 0.7em; margin-top: 6px; }
+        .product-detail { font-size: 0.8em; margin: 4px 0; color: #ccc; }
         
         .search-bar { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
         .search-bar input { flex: 1; padding: 10px 14px; border-radius: 50px; border: none; background: rgba(255,255,255,0.1); color: white; font-size: 0.8em; }
@@ -165,12 +158,10 @@
             text-align: center;
             z-index: 2000;
             font-weight: bold;
-            background: #2c3e50;
-            color: white;
         }
-        .message-success { background: #27ae60; }
-        .message-error { background: #e74c3c; }
-        .message-info { background: #2980b9; }
+        .message-success { background: #27ae60; color: white; }
+        .message-error { background: #e74c3c; color: white; }
+        .message-info { background: #2980b9; color: white; }
 
         .modal {
             display: none;
@@ -201,7 +192,7 @@
         .close-modal { background: #e74c3c; color: white; }
 
         .flag-container { display: flex; justify-content: center; gap: 10px; margin: 12px 0; }
-        .flag-img { width: 90px; height: 60px; object-fit: cover; border-radius: 16px; border: 2px solid gold; }
+        .flag-img { width: 80px; height: 55px; object-fit: cover; border-radius: 16px; border: 2px solid gold; }
         .quiz-option {
             background: rgba(255,255,255,0.1);
             border-radius: 40px;
@@ -210,6 +201,8 @@
             cursor: pointer;
         }
         .quiz-option.selected { background: #f39c12; color: #1e2a3a; font-weight: bold; }
+        .game-stats { font-size: 0.75rem; margin-bottom: 8px; color: #ffd966; }
+        .loading { text-align: center; padding: 40px; font-size: 0.9em; opacity: 0.8; }
 
         @media (min-width: 640px) {
             .products-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
@@ -222,7 +215,7 @@
 <!-- MODALE AUTH -->
 <div id="authModal" class="modal active">
     <div class="modal-content">
-        <h2 id="authTitle">🔐 ACCÈS TRADING GAME</h2>
+        <h2 id="authTitle">🔐 ACCÈS STAR GAME</h2>
         <input type="text" id="authUsername" placeholder="👤 Pseudo">
         <input type="text" id="authCountry" placeholder="🌍 Pays">
         <input type="tel" id="authPhone" placeholder="📞 Téléphone">
@@ -232,11 +225,11 @@
     </div>
 </div>
 
-<!-- MODALE JEU OBLIGATOIRE (QUIZ) -->
+<!-- MODALE JEU -->
 <div id="gameModal" class="modal">
     <div class="modal-content">
         <h2>🎲 JEU OBLIGATOIRE</h2>
-        <p style="font-size:0.8rem;">💰 500 CFA pour 10 jeux → Gagne 45% du produit | Perd → 10% du produit</p>
+        <p style="font-size:0.7rem;">💰 500 CFA pour jouer → Gagnez 45% du produit | Perdez → 10% du produit</p>
         <div id="GameQuizContainer"></div>
         <div id="gameResultArea" style="display:none;"></div>
         <button class="close-modal" onclick="window.closeGameModal()">Fermer</button>
@@ -244,13 +237,45 @@
 </div>
 
 <!-- MODALES FINANCE -->
-<div id="depositModal" class="modal"><div class="modal-content"><h2>💰 DÉPÔT</h2><p>📲 Envoyez à <strong>98790361</strong> (AMANATA)</p><input type="number" id="depositAmount" placeholder="Montant ≥1000 CFA"><input type="text" id="depositCode" placeholder="Code transaction"><button class="confirm-btn" onclick="window.submitDeposit()">Valider</button><button class="close-modal" onclick="window.closeDepositModal()">Annuler</button></div></div>
-<div id="withdrawModal" class="modal"><div class="modal-content"><h2>💸 RETRAIT</h2><p>Min 3000 - Max 50000 CFA</p><input type="number" id="withdrawAmount" placeholder="Montant"><button class="confirm-btn" onclick="window.submitWithdraw()">Demander</button><button class="close-modal" onclick="window.closeWithdrawModal()">Fermer</button></div></div>
+<div id="depositModal" class="modal">
+    <div class="modal-content">
+        <h2>💰 DÉPÔT</h2>
+        <p>📲 Envoyez à <strong>9743067</strong> (AMANATA)</p>
+        <input type="number" id="depositAmount" placeholder="Montant ≥1000 CFA">
+        <input type="text" id="depositCode" placeholder="Code transaction">
+        <button class="confirm-btn" onclick="window.submitDeposit()">Valider</button>
+        <button class="close-modal" onclick="window.closeDepositModal()">Annuler</button>
+    </div>
+</div>
+
+<div id="withdrawModal" class="modal">
+    <div class="modal-content">
+        <h2>💸 RETRAIT</h2>
+        <p>Min 3000 - Max 50000 CFA</p>
+        <input type="number" id="withdrawAmount" placeholder="Montant">
+        <button class="confirm-btn" onclick="window.submitWithdraw()">Demander</button>
+        <button class="close-modal" onclick="window.closeWithdrawModal()">Fermer</button>
+    </div>
+</div>
 
 <script>
+    // Configuration Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyCxsXpj3ovdd2Wu5HNHN1Zyvf7qG00aXx4",
+        authDomain: "dubai-dbd3f.firebaseapp.com",
+        databaseURL: "https://dubai-dbd3f-default-rtdb.firebaseio.com",
+        projectId: "dubai-dbd3f",
+        storageBucket: "dubai-dbd3f.firebasestorage.app",
+        messagingSenderId: "543622740538",
+        appId: "1:543622740538:web:0e4e6abf3124a878dad303"
+    };
+
+    // Initialisation Firebase
+    let db, ref, set, get, push, onValue, update;
+    
     let currentUser = null;
     let products = [];
-    let userInventory = [];   // produits possédés avec détails + gains journaliers
+    let userInventory = [];
     let currentTab = 'market';
     let searchTerm = '';
     let selectedCategory = '';
@@ -258,17 +283,18 @@
     const itemsPerPage = 18;
     const MAX_PRODUCT_PRICE = 5000;
     
-    // Variables de jeu obligatoire
-    let activeGameProduct = null;        // produit sur lequel on joue
+    // Variables de jeu
+    let activeGameItem = null;
     let gameQuestions = [], gameAnswers = [], gameIndex = 0, gameActive = false;
-    let gameCallbacks = null;
+    let onGameComplete = null;
     
     // Pays pour quiz
     const COUNTRIES = [
-        { name: "France", emoji: "🇫🇷", code: "fr" }, { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, { name: "Maroc", emoji: "🇲🇦", code: "ma" },
-        { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" }, { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Tunisie", emoji: "🇹🇳", code: "tn" },
-        { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "RDC", emoji: "🇨🇩", code: "cd" }, { name: "Nigéria", emoji: "🇳🇬", code: "ng" },
-        { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "États-Unis", emoji: "🇺🇸", code: "us" }, { name: "Brésil", emoji: "🇧🇷", code: "br" }
+        { name: "France", emoji: "🇫🇷", code: "fr" }, { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, 
+        { name: "Maroc", emoji: "🇲🇦", code: "ma" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" }, 
+        { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Nigéria", emoji: "🇳🇬", code: "ng" },
+        { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "Brésil", emoji: "🇧🇷", code: "br" }, 
+        { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Algérie", emoji: "🇩🇿", code: "dz" }
     ];
     
     function getFlagUrl(code) { return `https://flagcdn.com/w80/${code}.png`; }
@@ -283,14 +309,13 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [options[i], options[j]] = [options[j], options[i]];
             }
-            return { name: item.name, emoji: item.emoji, code: item.code, flagUrl: getFlagUrl(item.code), correctAnswer: item.name, options };
+            return { name: item.name, emoji: item.emoji, flagUrl: getFlagUrl(item.code), correctAnswer: item.name, options };
         });
     }
     
-    // Génération des 30 produits (prix max 5000)
     function generateProductList() {
-        const categories = ["Or", "Diamant", "Montre", "Smartphone", "PC", "Console", "Casque", "Bourse", "Crypto", "Immobilier"];
-        const emojis = { "Or":"🪙","Diamant":"💎","Montre":"⌚","Smartphone":"📱","PC":"💻","Console":"🎮","Casque":"🎧","Bourse":"📈","Crypto":"₿","Immobilier":"🏠"};
+        const categories = ["Or", "Diamant", "Montre", "Smartphone", "PC", "Console", "Casque", "Crypto", "Immobilier", "Bourse"];
+        const emojis = { "Or":"🪙","Diamant":"💎","Montre":"⌚","Smartphone":"📱","PC":"💻","Console":"🎮","Casque":"🎧","Crypto":"₿","Immobilier":"🏠","Bourse":"📈"};
         let list = [];
         for (let i=0; i<30; i++) {
             let cat = categories[i % categories.length];
@@ -301,32 +326,29 @@
                 category: cat,
                 emoji: emojis[cat] || "📦",
                 currentPrice: basePrice,
-                isAvailable: true,      // sur le marché (non possédé)
+                isAvailable: true,
                 ownerId: null
             });
         }
         return list;
     }
     
-    // Initialisation Firebase (modulable)
     async function initFirebase() {
         const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js");
-        const { getDatabase, ref, set, get, push, onValue, update, remove } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js");
-        const firebaseConfig = {
-            apiKey: "AIzaSyCxsXpj3ovdd2Wu5HNHN1Zyvf7qG00aXx4",
-            authDomain: "dubai-dbd3f.firebaseapp.com",
-            databaseURL: "https://dubai-dbd3f-default-rtdb.firebaseio.com",
-            projectId: "dubai-dbd3f",
-            storageBucket: "dubai-dbd3f.firebasestorage.app",
-            messagingSenderId: "543622740538",
-            appId: "1:543622740538:web:0e4e6abf3124a878dad303"
-        };
+        const { getDatabase, ref: dbRef, set: dbSet, get: dbGet, push: dbPush, onValue: dbOnValue, update: dbUpdate } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js");
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        return { db, ref, set, get, push, onValue, update, remove };
+        const database = getDatabase(app);
+        db = database;
+        ref = dbRef;
+        set = dbSet;
+        get = dbGet;
+        push = dbPush;
+        onValue = dbOnValue;
+        update = dbUpdate;
+        return { db, ref, set, get, push, onValue, update };
     }
     
-    // Vérifier et MAJ des gains quotidiens (chaque tranche de 24h depuis achat)
+    // Vérification des gains quotidiens
     async function processDailyEarnings() {
         if (!currentUser) return;
         const now = new Date();
@@ -334,48 +356,48 @@
         for (let inv of userInventory) {
             if (!inv.dailyClaimed) inv.dailyClaimed = [];
             if (inv.gainDaysLeft === undefined) inv.gainDaysLeft = 3;
-            // Si les 3 jours sont déjà consommés, ignorer
             if (inv.gainDaysLeft <= 0) continue;
+            
             const purchaseDate = new Date(inv.purchaseDate);
             const dayIndex = Math.floor((now - purchaseDate) / (1000*60*60*24));
             if (dayIndex >= 1 && dayIndex <= 3 && !inv.dailyClaimed.includes(dayIndex)) {
-                // Jour 1,2,3 : gagner 45% du prix d'achat
                 const reward = Math.floor(inv.purchasePrice * 0.45);
                 currentUser.balance += reward;
                 inv.dailyClaimed.push(dayIndex);
                 inv.gainDaysLeft--;
                 updated = true;
                 showMessage(`✨ ${inv.productName} : +${reward.toLocaleString()} CFA (gain journalier 45%)`, "success");
-                // Sauvegarde
-                await window.update(window.ref(window.db, `inventory/${currentUser.uid}/${inv.id}`), { dailyClaimed: inv.dailyClaimed, gainDaysLeft: inv.gainDaysLeft });
-                await window.update(window.ref(window.db, `users/${currentUser.uid}`), { balance: currentUser.balance });
+                await update(ref(db, `inventory/${currentUser.uid}/${inv.id}`), { dailyClaimed: inv.dailyClaimed, gainDaysLeft: inv.gainDaysLeft });
+                await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
             }
         }
         if (updated) renderApp();
     }
     
-    // Achat produit => produit disparait du marché + va dans inventory avec 3 jours de gain potentiel + jeu obligatoire pour déclencher gains
+    // ACHAT PRODUIT
     async function buyProduct(productId) {
         if (!currentUser) return;
-        const { db, ref, get, set, update } = window;
         const productsRef = ref(db, 'products');
         let snap = await get(productsRef);
-        let allProducts = Array.isArray(snap.val()) ? snap.val() : Object.values(snap.val() || {});
+        let allProducts = [];
+        const snapVal = snap.val();
+        if (snapVal) {
+            allProducts = Array.isArray(snapVal) ? snapVal : Object.values(snapVal);
+        }
         const product = allProducts.find(p => p.id === productId);
-        if (!product || !product.isAvailable) { showMessage("Produit déjà vendu", "error"); return; }
+        if (!product || !product.isAvailable) { showMessage("Produit indisponible", "error"); return; }
         if (currentUser.balance < product.currentPrice) { showMessage("Solde insuffisant", "error"); return; }
-        if (product.currentPrice > MAX_PRODUCT_PRICE) { showMessage(`Prix max autorisé: ${MAX_PRODUCT_PRICE} CFA`, "error"); return; }
+        if (product.currentPrice > MAX_PRODUCT_PRICE) { showMessage(`Prix max ${MAX_PRODUCT_PRICE} CFA`, "error"); return; }
         
-        // Débiter l'utilisateur
         currentUser.balance -= product.currentPrice;
         await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
         
-        // Produit devient indisponible (disparait du marché)
-        const updatedProducts = allProducts.map(p => p.id === productId ? { ...p, isAvailable: false, ownerId: currentUser.uid } : p);
+        const updatedProducts = allProducts.map(p => 
+            p.id === productId ? { ...p, isAvailable: false, ownerId: currentUser.uid } : p
+        );
         await set(productsRef, updatedProducts);
         
-        // Créer inventaire : 3 jours de gain (gainDaysLeft = 3) + suivis dailyClaimed
-        const invItem = {
+        const newItem = {
             id: Date.now(),
             productId: product.id,
             productName: product.name,
@@ -385,26 +407,48 @@
             purchaseDate: new Date().toISOString(),
             gainDaysLeft: 3,
             dailyClaimed: [],
-            lastGamePlayedForDay: 0   // pas utilisé directement, le jeu est requis chaque jour
         };
-        await set(window.push(ref(db, `inventory/${currentUser.uid}`)), invItem);
-        showMessage(`✅ Achat ${product.name} (${product.currentPrice.toLocaleString()} CFA). Le produit est retiré du marché!`, "success");
+        await push(ref(db, `inventory/${currentUser.uid}`), newItem);
+        
+        showMessage(`✅ Achat réussi ! ${product.name} retiré du marché.`, "success");
         await refreshUserInventory();
         renderApp();
-        
-        // Après achat => FORCER le jeu obligatoire pour activer le premier gain du jour 1?
-        // On ouvre modale de jeu immédiatement pour le produit acheté (gain du jour 1 ou futur)
-        openMandatoryGameForProduct(invItem);
     }
     
-    async function openMandatoryGameForProduct(inventoryObj) {
-        if (!inventoryObj) return;
-        activeGameProduct = inventoryObj;
-        // Générer quiz
+    // JOUER POUR UN PRODUIT
+    async function playGameForItem(itemId) {
+        const item = userInventory.find(i => i.id === itemId);
+        if (!item) { showMessage("Produit non trouvé", "error"); return; }
+        if (item.gainDaysLeft <= 0) { showMessage("Plus de jours de gain disponibles", "error"); return; }
+        if (currentUser.balance < 500) { showMessage("500 CFA requis", "error"); return; }
+        
+        currentUser.balance -= 500;
+        await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
+        
+        activeGameItem = item;
         gameQuestions = generateGameQuestions();
         gameAnswers = [];
         gameIndex = 0;
         gameActive = true;
+        
+        onGameComplete = async (isWin) => {
+            const reward = isWin ? Math.floor(item.purchasePrice * 0.45) : Math.floor(item.purchasePrice * 0.10);
+            currentUser.balance += reward;
+            
+            const now = new Date();
+            const purchaseDate = new Date(item.purchaseDate);
+            const dayIndex = Math.floor((now - purchaseDate) / (1000*60*60*24));
+            if (!item.dailyClaimed) item.dailyClaimed = [];
+            if (dayIndex >= 1 && dayIndex <= 3 && !item.dailyClaimed.includes(dayIndex)) {
+                item.dailyClaimed.push(dayIndex);
+                item.gainDaysLeft--;
+                await update(ref(db, `inventory/${currentUser.uid}/${item.id}`), { dailyClaimed: item.dailyClaimed, gainDaysLeft: item.gainDaysLeft });
+            }
+            await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
+            showMessage(isWin ? `🏆 VICTOIRE ! +${reward.toLocaleString()} CFA` : `😞 Perdu... +${reward.toLocaleString()} CFA`, isWin ? "success" : "info");
+            renderApp();
+        };
+        
         renderGameModal();
         document.getElementById('gameModal').classList.add('active');
     }
@@ -413,98 +457,148 @@
         const container = document.getElementById('GameQuizContainer');
         const resultDiv = document.getElementById('gameResultArea');
         resultDiv.style.display = 'none';
+        
         if (!gameActive || gameIndex >= gameQuestions.length) {
-            const allGood = gameAnswers.length === 10 && gameAnswers.every((a,i) => a === gameQuestions[i].correctAnswer);
-            const productPrice = activeGameProduct?.purchasePrice || 0;
-            let reward = 0;
-            if (allGood) {
-                reward = Math.floor(productPrice * 0.45);
-                resultDiv.innerHTML = `<div style="color:#2ecc71;">🏆 VICTOIRE ! +${reward.toLocaleString()} CFA (45%)</div>`;
-                // créditer immédiatement
-                currentUser.balance += reward;
-                window.update(window.ref(window.db, `users/${currentUser.uid}`), { balance: currentUser.balance });
-                // Marquer le gain du jour (pour éviter double sur ce jour)
-                if (activeGameProduct && !activeGameProduct.dailyClaimed.includes(1)) {
-                    activeGameProduct.dailyClaimed.push(1);
-                    activeGameProduct.gainDaysLeft--;
-                    window.update(window.ref(window.db, `inventory/${currentUser.uid}/${activeGameProduct.id}`), { dailyClaimed: activeGameProduct.dailyClaimed, gainDaysLeft: activeGameProduct.gainDaysLeft });
-                }
-                showMessage(`🎉 Jeu gagné: +${reward.toLocaleString()} CFA (45%)`, "success");
-            } else {
-                const lostReward = Math.floor(productPrice * 0.10);
-                reward = lostReward;
-                resultDiv.innerHTML = `<div style="color:#e67e22;">😞 Perdu... vous recevez ${lostReward.toLocaleString()} CFA (10%)</div>`;
-                currentUser.balance += lostReward;
-                window.update(window.ref(window.db, `users/${currentUser.uid}`), { balance: currentUser.balance });
-                showMessage(`🔁 Jeu perdu: +${lostReward.toLocaleString()} CFA (10% de consolation)`, "info");
-            }
+            const allCorrect = gameAnswers.length === 10 && gameAnswers.every((a, i) => a === gameQuestions[i].correctAnswer);
+            if (onGameComplete) onGameComplete(allCorrect);
+            resultDiv.innerHTML = allCorrect ? 
+                '<div style="color:#2ecc71; margin:10px;">🏆 VICTOIRE ! 45% ajouté</div>' : 
+                '<div style="color:#e67e22; margin:10px;">🔻 Défaite... 10% ajouté</div>';
             resultDiv.style.display = "block";
             gameActive = false;
             setTimeout(() => {
                 document.getElementById('gameModal').classList.remove('active');
-                renderApp();
+                onGameComplete = null;
             }, 2000);
             return;
         }
+        
         const q = gameQuestions[gameIndex];
         const selected = gameAnswers[gameIndex] || null;
         container.innerHTML = `
-            <div class="quiz-progress" style="margin:6px 0;">🎯 Question ${gameIndex+1}/10</div>
+            <div class="game-stats">🎯 Question ${gameIndex+1}/10</div>
             <div class="flag-container"><span style="font-size:2rem;">${q.emoji}</span><img class="flag-img" src="${q.flagUrl}" onerror="this.style.display='none'"></div>
-            <div>Quel pays ?</div>
+            <div style="margin:8px 0;">De quel pays est ce drapeau ?</div>
             ${q.options.map(opt => `<div class="quiz-option ${selected === opt ? 'selected' : ''}" onclick="window.selectGameAnswer('${opt.replace(/'/g, "\\'")}')">${opt}</div>`).join('')}
-            <div style="margin:12px 0;">${gameIndex>0?`<button class="confirm-btn" onclick="window.prevGame()" style="background:#e67e22;">◀ Préc</button>`:''}<button class="confirm-btn" onclick="window.nextGame()" style="margin-left:8px;">Suivant ▶</button></div>
+            <div style="margin:15px 0 5px;">${gameIndex>0?`<button class="confirm-btn" onclick="window.prevGame()" style="background:#e67e22;">◀ Préc</button>`:''}<button class="confirm-btn" onclick="window.nextGame()" style="margin-left:8px;">Suivant ▶</button></div>
         `;
     }
     
-    function selectGameAnswer(ans) { if(gameActive && gameAnswers) { gameAnswers[gameIndex] = ans; renderGameModal(); } }
-    function nextGame() { if(gameActive && gameAnswers[gameIndex]) { gameIndex++; renderGameModal(); } }
+    function selectGameAnswer(ans) { if(gameActive) { gameAnswers[gameIndex] = ans; renderGameModal(); } }
+    function nextGame() { if(gameActive && gameAnswers[gameIndex] && gameIndex+1 <= gameQuestions.length) { gameIndex++; renderGameModal(); } }
     function prevGame() { if(gameActive && gameIndex>0) { gameIndex--; renderGameModal(); } }
-    function closeGameModal() { document.getElementById('gameModal').classList.remove('active'); gameActive=false; renderApp(); }
+    function closeGameModal() { document.getElementById('gameModal').classList.remove('active'); gameActive = false; onGameComplete = null; renderApp(); }
     
     async function refreshUserInventory() {
-        const snap = await window.get(window.ref(window.db, `inventory/${currentUser.uid}`));
+        const snap = await get(ref(db, `inventory/${currentUser.uid}`));
         userInventory = snap.exists() ? Object.values(snap.val()) : [];
     }
     
+    // ========== FONCTIONS DÉPÔT ET RETRAIT CORRIGÉES ==========
+    async function submitDeposit() {
+        if (!currentUser) { showMessage("Utilisateur non connecté", "error"); return; }
+        
+        const amount = parseInt(document.getElementById('depositAmount').value);
+        const code = document.getElementById('depositCode').value.trim();
+        
+        if (!amount || amount < 1000) { showMessage("Montant minimum 1000 CFA", "error"); return; }
+        if (!code) { showMessage("Code de transaction requis", "error"); return; }
+        
+        try {
+            const depositData = {
+                userId: currentUser.uid,
+                username: currentUser.username,
+                phone: currentUser.phone || '',
+                amount: amount,
+                transferCode: code,
+                status: 'pending',
+                date: new Date().toISOString()
+            };
+            
+            await push(ref(db, 'deposits'), depositData);
+            showMessage(`✅ Demande de dépôt de ${amount.toLocaleString()} CFA envoyée ! En attente de validation.`, "success");
+            window.closeDepositModal();
+            document.getElementById('depositAmount').value = '';
+            document.getElementById('depositCode').value = '';
+        } catch(e) {
+            console.error(e);
+            showMessage("❌ Erreur lors de l'envoi: " + e.message, "error");
+        }
+    }
+    
+    async function submitWithdraw() {
+        if (!currentUser) { showMessage("Utilisateur non connecté", "error"); return; }
+        
+        const amount = parseInt(document.getElementById('withdrawAmount').value);
+        
+        if (!amount || amount < 3000) { showMessage("Montant minimum 3000 CFA", "error"); return; }
+        if (amount > 50000) { showMessage("Montant maximum 50000 CFA", "error"); return; }
+        if (amount > currentUser.balance) { showMessage("Solde insuffisant", "error"); return; }
+        
+        try {
+            const withdrawData = {
+                userId: currentUser.uid,
+                username: currentUser.username,
+                phone: currentUser.phone || '',
+                amount: amount,
+                status: 'pending',
+                date: new Date().toISOString()
+            };
+            
+            await push(ref(db, 'withdraws'), withdrawData);
+            showMessage(`✅ Demande de retrait de ${amount.toLocaleString()} CFA envoyée ! En attente de traitement.`, "success");
+            window.closeWithdrawModal();
+            document.getElementById('withdrawAmount').value = '';
+        } catch(e) {
+            console.error(e);
+            showMessage("❌ Erreur lors de l'envoi: " + e.message, "error");
+        }
+    }
+    
     async function startApp() {
-        const { db, ref, set, get, onValue, update } = await initFirebase();
-        window.db = db; window.ref = ref; window.set = set; window.get = get; window.onValue = onValue; window.update = update;
+        await initFirebase();
+        
         const productsRef = ref(db, 'products');
         let snap = await get(productsRef);
-        if (!snap.exists()) await set(productsRef, generateProductList());
+        if (!snap.exists()) {
+            await set(productsRef, generateProductList());
+        }
+        
         onValue(productsRef, (snapshot) => {
             const data = snapshot.val();
-            const all = Array.isArray(data) ? data : Object.values(data || {});
+            const all = data ? (Array.isArray(data) ? data : Object.values(data)) : [];
             products = all.filter(p => p.isAvailable === true);
             renderApp();
         });
+        
         const invRef = ref(db, `inventory/${currentUser.uid}`);
         onValue(invRef, async (snapInv) => {
             userInventory = snapInv.exists() ? Object.values(snapInv.val()) : [];
             await processDailyEarnings();
             renderApp();
         });
-        setInterval(async () => { await processDailyEarnings(); renderApp(); }, 60000); // vérif chaque minute
+        
+        setInterval(async () => { await processDailyEarnings(); }, 60000);
         renderApp();
     }
     
     function renderApp() {
         if (!currentUser) return;
+        
         let available = products.filter(p => p.isAvailable === true && p.currentPrice <= MAX_PRODUCT_PRICE);
         if (searchTerm) available = available.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
         if (selectedCategory && selectedCategory !== 'all') available = available.filter(p => p.category === selectedCategory);
         const totalPages = Math.ceil(available.length / itemsPerPage);
         const paginated = available.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
         const allCats = [...new Set(products.map(p=>p.category))];
-        const myItems = userInventory.filter(i => i.gainDaysLeft > 0 || i.gainDaysLeft === 0);
+        
         let content = `
             <div class="container">
                 <div class="header">
-                    <div class="logo"><h1>🎲 STARGAME 45%</h1><p>📦 Achat → Jeu obligatoire → Gains quotidiens 3j (45% chaque)</p></div>
+                    <div class="logo"><h1>🎲 STAR GAME 45%</h1><p>📦 Achat → Jeu quotidien (500 CFA) → 45% ou 10%</p></div>
                     <div class="user-info">
-                        <span class="username">👤 ${currentUser.username}</span><span class="balance">💰 ${currentUser.balance.toLocaleString()} CFA</span>
-                        <button class="quiz-btn" onclick="window.showInfo()">🎮 Règle</button>
+                        <span class="username">👤 ${currentUser.username}</span>
+                        <span class="balance">💰 ${currentUser.balance.toLocaleString()} CFA</span>
                         <button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button>
                         <button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button>
                         <button class="logout-btn" onclick="window.logout()">🚪 Exit</button>
@@ -512,20 +606,34 @@
                 </div>
                 <div class="tabs">
                     <button class="tab-btn ${currentTab==='market'?'active':''}" onclick="window.switchTab('market')">🛍️ Marché (${available.length})</button>
-                    <button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="window.switchTab('inventory')">📦 Mes produits (${myItems.length})</button>
+                    <button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="window.switchTab('inventory')">📦 Mes produits (${userInventory.length})</button>
                 </div>
         `;
-        if(currentTab === 'market'){
+        
+        if (currentTab === 'market') {
             content += `<div class="search-bar"><input id="searchInput" placeholder="🔍 Rechercher" value="${searchTerm}" onkeyup="window.updateSearch(this.value)"><select id="catSelect" onchange="window.updateCategory(this.value)"><option value="all">Toutes catégories</option>${allCats.map(c=>`<option value="${c}" ${selectedCategory===c?'selected':''}>${c}</option>`).join('')}</select></div>
-            <div class="products-grid">${paginated.map(p => `<div class="product-card"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-category">${p.category}</div><div class="product-price">${p.currentPrice.toLocaleString()} CFA</div><button class="buy-btn" onclick="window.buyProduct(${p.id})">✔️ Acheter / Disparait</button></div>`).join('')}</div>
+            <div class="products-grid">${paginated.map(p => `<div class="product-card"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-category">${p.category}</div><div class="product-price">${p.currentPrice.toLocaleString()} CFA</div><button class="buy-btn" onclick="window.buyProduct(${p.id})">✔️ Acheter</button></div>`).join('')}</div>
             ${totalPages>1?`<div class="pagination">${Array.from({length:Math.min(totalPages,5)},(_,i)=>i+1).map(p=>`<button class="page-btn ${p===currentPage?'active':''}" onclick="window.goToPage(${p})">${p}</button>`).join('')}</div>`:''}`;
-        } else {
-            if(myItems.length === 0) content += `<div class="loading">🌟 Aucun produit acheté. Achetez un produit pour déclencher le jeu !</div>`;
-            else {
-                myItems.forEach(inv => {
-                    const daysWon = inv.dailyClaimed?.length || 0;
-                    const left = inv.gainDaysLeft;
-                    content += `<div class="inventory-item"><div><strong>${inv.productEmoji} ${inv.productName}</strong><br/>💰 Prix achat: ${inv.purchasePrice.toLocaleString()} CFA<br/><span class="timer-active">🎁 Gains 45% restants: ${left} jour(s) (${daysWon}/3 utilisés)</span><br/>✨ Jeu obligatoire déjà joué pour chaque période</div><div>${left>0?`<button class="play-game-btn" onclick="window.playGameForExisting(${inv.id})">🎲 Rejouer pour le gain journalier (500 CFA)</button>`:`<span style="color:#aaa;">✅ Cycle terminé, produit archivé</span>`}</div></div>`;
+        } 
+        else {
+            if (userInventory.length === 0) {
+                content += `<div class="loading" style="text-align:center;padding:40px;">🌟 Aucun produit acheté. Achetez un produit !</div>`;
+            } else {
+                userInventory.forEach(item => {
+                    const daysLeft = item.gainDaysLeft || 0;
+                    const claimedCount = (item.dailyClaimed || []).length;
+                    content += `
+                        <div class="inventory-item">
+                            <div style="flex:2">
+                                <strong>${item.productEmoji} ${item.productName}</strong>
+                                <div class="product-detail">💰 Prix: ${item.purchasePrice.toLocaleString()} CFA</div>
+                                <div class="timer-active">⏳ Gains restants: ${daysLeft} jour(s) (${claimedCount}/3)</div>
+                            </div>
+                            <div>
+                                ${daysLeft > 0 ? `<button class="play-game-btn" onclick="window.playGameForItem(${item.id})">🎮 Jouer (500 CFA)<br><span style="font-size:0.6rem;">45% ou 10%</span></button>` : `<span style="background:#2c3e50; padding:8px 15px; border-radius:30px;">✅ Terminé</span>`}
+                            </div>
+                        </div>
+                    `;
                 });
             }
         }
@@ -533,79 +641,99 @@
         document.getElementById('app').innerHTML = content;
     }
     
-    async function playGameForExisting(invId) {
-        const inv = userInventory.find(i => i.id === invId);
-        if (!inv) return;
-        if (inv.gainDaysLeft <= 0) { showMessage("Ce produit n'a plus de jours de gain restants", "error"); return; }
-        if (currentUser.balance < 500) { showMessage("Il faut 500 CFA pour jouer", "error"); return; }
-        currentUser.balance -= 500;
-        await window.update(window.ref(window.db, `users/${currentUser.uid}`), { balance: currentUser.balance });
-        activeGameProduct = inv;
-        gameQuestions = generateGameQuestions();
-        gameAnswers = [];
-        gameIndex = 0;
-        gameActive = true;
-        // callback pour attribution du gain en fin de jeu
-        const originalFinish = renderGameModal;
-        window._tempGameFinish = async (win) => {
-            if(win) {
-                const reward = Math.floor(inv.purchasePrice * 0.45);
-                currentUser.balance += reward;
-                inv.dailyClaimed.push(Date.now());
-                inv.gainDaysLeft--;
-                await window.update(window.ref(window.db, `inventory/${currentUser.uid}/${inv.id}`), { dailyClaimed: inv.dailyClaimed, gainDaysLeft: inv.gainDaysLeft });
-                await window.update(window.ref(window.db, `users/${currentUser.uid}`), { balance: currentUser.balance });
-                showMessage(`🏅 +${reward.toLocaleString()} CFA (45%)`, "success");
-            } else {
-                const loserReward = Math.floor(inv.purchasePrice * 0.10);
-                currentUser.balance += loserReward;
-                await window.update(window.ref(window.db, `users/${currentUser.uid}`), { balance: currentUser.balance });
-                showMessage(`🔻 +${loserReward.toLocaleString()} CFA (10% consolation)`, "info");
-            }
-            renderApp();
-        };
-        renderGameModal();
-        document.getElementById('gameModal').classList.add('active');
-    }
-    // surcharge pour fin de jeu (patch rapide)
-    window.selectGameAnswer = selectGameAnswer;
-    window.nextGame = () => { if(gameActive && gameAnswers[gameIndex]) { gameIndex++; renderGameModal(); } };
-    window.prevGame = prevGame;
-    window.closeGameModal = closeGameModal;
-    
-    // Auth & helpers
-    async function handleAuth(){
+    // Authentification
+    async function handleAuth() {
         let u = document.getElementById('authUsername').value.trim();
         let c = document.getElementById('authCountry').value.trim();
         let pwd = document.getElementById('authPassword').value;
         let phone = document.getElementById('authPhone').value.trim();
-        if(!u || !c || !pwd || !phone) { showMessage("Tous champs requis","error"); return; }
-        const { db, ref, get, set } = await initFirebase();
+        if (!u || !c || !pwd || !phone) { showMessage("Tous champs requis", "error"); return; }
+        
+        await initFirebase();
         const usersRef = ref(db, 'users');
         const snap = await get(usersRef);
         const users = snap.val() || {};
-        if(!isLoginMode){
-            let exists = Object.values(users).some(usr=> usr.username === u);
-            if(exists){ showMessage("Pseudo déjà pris","error"); return; }
-            const uid = `user_${Date.now()}_${Math.random().toString(36).substr(2,5)}`;
+        
+        if (!isLoginMode) {
+            let exists = Object.values(users).some(usr => usr.username === u);
+            if (exists) { showMessage("Pseudo déjà pris", "error"); return; }
+            const uid = `user_${Date.now()}_${Math.random().toString(36).substr(2,6)}`;
             await set(ref(db, `users/${uid}`), { username: u, country: c, phone, password: pwd, balance: 5000 });
             currentUser = { uid, username: u, country: c, phone, balance: 5000 };
         } else {
             let found = null;
-            for(let [id, val] of Object.entries(users)) if(val.username === u && val.password === pwd) { found = { uid:id, ...val }; break; }
-            if(!found){ showMessage("Identifiants incorrects","error"); return; }
+            for (let [id, val] of Object.entries(users)) {
+                if (val.username === u && val.password === pwd) { found = { uid: id, ...val }; break; }
+            }
+            if (!found) { showMessage("Identifiants incorrects", "error"); return; }
             currentUser = found;
         }
         localStorage.setItem('tradingUser', JSON.stringify({ uid: currentUser.uid, username: currentUser.username }));
         document.getElementById('authModal').classList.remove('active');
         await startApp();
     }
-    function toggleAuthMode(){ isLoginMode = !isLoginMode; document.getElementById('authTitle').innerText = isLoginMode ? "🔐 CONNEXION" : "📝 INSCRIPTION"; document.getElementById('authBtn').innerText = isLoginMode ? "Se connecter" : "S'inscrire"; }
-    async function logout(){ localStorage.removeItem('tradingUser'); currentUser=null; document.getElementById('authModal').classList.add('active'); document.getElementById('app').innerHTML=''; }
-    function showMessage(msg, type){ let d=document.createElement('div'); d.className=`message message-${type}`; d.innerText=msg; document.body.appendChild(d); setTimeout(()=>d.remove(),3200); }
-    window.handleAuth=handleAuth; window.toggleAuthMode=toggleAuthMode; window.buyProduct=buyProduct; window.switchTab=(t)=>{currentTab=t; currentPage=1; renderApp();}; window.updateSearch=(v)=>{searchTerm=v; currentPage=1; renderApp();}; window.updateCategory=(c)=>{selectedCategory=c; currentPage=1; renderApp();}; window.goToPage=(p)=>{currentPage=p; renderApp();}; window.openDepositModal=()=>document.getElementById('depositModal').classList.add('active'); window.closeDepositModal=()=>document.getElementById('depositModal').classList.remove('active'); window.openWithdrawModal=()=>document.getElementById('withdrawModal').classList.add('active'); window.closeWithdrawModal=()=>document.getElementById('withdrawModal').classList.remove('active'); window.submitDeposit=async()=>{showMessage("Dépôt enregistré (demo)","success"); window.closeDepositModal();}; window.submitWithdraw=async()=>{showMessage("Retrait demandé","success"); window.closeWithdrawModal();}; window.logout=logout; window.playGameForExisting=playGameForExisting; window.showInfo=()=>showMessage("📢 Achat obligatoire d'un produit => jeu 10 questions (500 CFA). Gagnez: 45% du produit chaque jour pendant 3j. Perdu: 10% de consolation par tentative. Pas de revente, le produit disparait du marché jusqu'à la fin des gains.", "info");
+    
+    function toggleAuthMode() { 
+        isLoginMode = !isLoginMode; 
+        document.getElementById('authTitle').innerText = isLoginMode ? "🔐 CONNEXION" : "📝 INSCRIPTION"; 
+        document.getElementById('authBtn').innerText = isLoginMode ? "Se connecter" : "S'inscrire"; 
+    }
+    
+    async function logout() { 
+        localStorage.removeItem('tradingUser'); 
+        currentUser = null; 
+        document.getElementById('authModal').classList.add('active'); 
+        document.getElementById('app').innerHTML = ''; 
+    }
+    
+    function showMessage(msg, type) {
+        let div = document.createElement('div');
+        div.className = `message message-${type}`;
+        div.innerText = msg;
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 3000);
+    }
+    
+    // Exports
+    window.handleAuth = handleAuth;
+    window.toggleAuthMode = toggleAuthMode;
+    window.buyProduct = buyProduct;
+    window.playGameForItem = playGameForItem;
+    window.selectGameAnswer = selectGameAnswer;
+    window.nextGame = nextGame;
+    window.prevGame = prevGame;
+    window.closeGameModal = closeGameModal;
+    window.switchTab = (t) => { currentTab = t; currentPage = 1; renderApp(); };
+    window.updateSearch = (v) => { searchTerm = v; currentPage = 1; renderApp(); };
+    window.updateCategory = (c) => { selectedCategory = c; currentPage = 1; renderApp(); };
+    window.goToPage = (p) => { currentPage = p; renderApp(); };
+    window.openDepositModal = () => document.getElementById('depositModal').classList.add('active');
+    window.closeDepositModal = () => document.getElementById('depositModal').classList.remove('active');
+    window.openWithdrawModal = () => document.getElementById('withdrawModal').classList.add('active');
+    window.closeWithdrawModal = () => document.getElementById('withdrawModal').classList.remove('active');
+    window.submitDeposit = submitDeposit;
+    window.submitWithdraw = submitWithdraw;
+    window.logout = logout;
+    
     let isLoginMode = true;
-    (async ()=>{ let saved = localStorage.getItem('tradingUser'); if(saved){ try{ let {uid, username}=JSON.parse(saved); const {db, ref, get}=await initFirebase(); let userSnap = await get(ref(db, `users/${uid}`)); if(userSnap.exists()){ currentUser = { uid, ...userSnap.val() }; document.getElementById('authModal').classList.remove('active'); startApp(); return; } }catch(e){} } document.getElementById('authModal').classList.add('active'); })();
+    
+    (async () => {
+        let saved = localStorage.getItem('tradingUser');
+        if (saved) {
+            try {
+                let { uid, username } = JSON.parse(saved);
+                await initFirebase();
+                let userSnap = await get(ref(db, `users/${uid}`));
+                if (userSnap.exists()) {
+                    currentUser = { uid, ...userSnap.val() };
+                    document.getElementById('authModal').classList.remove('active');
+                    await startApp();
+                    return;
+                }
+            } catch(e) { console.error(e); }
+        }
+        document.getElementById('authModal').classList.add('active');
+    })();
 </script>
 </body>
 </html>

@@ -149,6 +149,7 @@
         }
         .message-success { background: #27ae60; }
         .message-error { background: #e74c3c; }
+        .message-info { background: #f39c12; color: #1e2a3a; }
         .modal {
             display: none;
             position: fixed;
@@ -299,6 +300,7 @@
     const itemsPerPage = 24;
     const MAX_PRODUCT_PRICE = 5000;
     const SUPPORT_PHONE = "97413067";
+    const INITIAL_BALANCE = 500; // ✅ Modifié de 5000 à 500
     
     let activeGameItem = null;
     let gameQuestions = [], gameAnswers = [], gameIndex = 0, gameActive = false;
@@ -596,19 +598,19 @@
             const result = await auth.createUserWithEmailAndPassword(email, password);
             currentUser = result.user;
             
-            // Créer l'utilisateur dans la base de données
+            // Créer l'utilisateur dans la base de données - Balance 500 CFA au lieu de 5000
             await database.ref(`users/${currentUser.uid}`).set({
                 username: name,
                 phone: phone,
                 country: country,
-                balance: 500,
+                balance: INITIAL_BALANCE,
                 createdAt: new Date().toISOString()
             });
             
-            currentUserData = { username: name, phone: phone, country: country, balance: 5000 };
+            currentUserData = { username: name, phone: phone, country: country, balance: INITIAL_BALANCE };
             document.getElementById('authModal').classList.remove('active');
             startApp();
-            showMessage(`✅ Inscription réussie ! 5000 CFA offerts`, "success");
+            showMessage(`✅ Inscription réussie ! ${INITIAL_BALANCE.toLocaleString()} CFA offerts`, "success");
         } catch(error) {
             if (error.code === 'auth/email-already-in-use') {
                 showMessage("Ce numéro est déjà utilisé", "error");

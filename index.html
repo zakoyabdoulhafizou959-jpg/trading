@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Trading Game Pro - Marché + Quiz Drapeaux</title>
+    <title>Trading Game Pro - Marché Multi-utilisateurs</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -19,10 +15,7 @@
             padding-bottom: 20px;
         }
 
-        .container {
-            max-width: 100%;
-            padding: 12px;
-        }
+        .container { max-width: 100%; padding: 12px; }
 
         .header {
             display: flex;
@@ -38,27 +31,11 @@
             border: 1px solid rgba(255,215,0,0.3);
         }
 
-        .logo h1 {
-            font-size: 1.2em;
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        .logo h1 { font-size: 1.2em; background: linear-gradient(135deg, #ffd700, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo p { font-size: 0.65em; opacity: 0.8; }
 
-        .logo p {
-            font-size: 0.65em;
-            opacity: 0.8;
-        }
-
-        .user-info {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .balance, .username {
+        .user-info { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+        .balance, .username, .country-badge {
             padding: 4px 10px;
             border-radius: 30px;
             font-weight: bold;
@@ -66,6 +43,17 @@
         }
         .balance { background: linear-gradient(135deg, #2ecc71, #27ae60); }
         .username { background: #3498db; }
+        .country-badge { background: #9b59b6; }
+
+        .logout-btn {
+            background: #e74c3c;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.7em;
+        }
 
         .deposit-btn, .withdraw-btn, .whatsapp-btn, .quiz-btn {
             border: none;
@@ -97,10 +85,7 @@
             font-size: 0.75em;
             font-weight: 600;
         }
-        .tab-btn.active {
-            background: #ffd700;
-            color: #1e3c72;
-        }
+        .tab-btn.active { background: #ffd700; color: #1e3c72; }
 
         .products-grid {
             display: grid;
@@ -118,7 +103,7 @@
             border: 1px solid rgba(255,215,0,0.2);
         }
         .product-emoji { font-size: 32px; margin-bottom: 4px; }
-        .product-name { font-size: 0.8em; font-weight: bold; white-space: nowrap; overflow-x: hidden; text-overflow: ellipsis; }
+        .product-name { font-size: 0.8em; font-weight: bold; }
         .product-category { font-size: 0.6em; opacity: 0.7; background: rgba(0,0,0,0.3); display: inline-block; padding: 2px 8px; border-radius: 20px; margin: 4px 0; }
         .product-price { font-size: 1em; font-weight: bold; color: #ffd700; margin: 5px 0; }
         .price-variation { font-size: 0.65em; margin: 3px 0; }
@@ -136,6 +121,14 @@
             width: 90%;
             margin-top: 5px;
         }
+        .disabled-product {
+            opacity: 0.5;
+            position: relative;
+        }
+        .disabled-product .buy-btn {
+            background: #7f8c8d;
+            cursor: not-allowed;
+        }
 
         .inventory-item, .listing-card {
             background: rgba(30,30,55,0.8);
@@ -149,8 +142,7 @@
             gap: 8px;
             border-left: 4px solid #ffd700;
         }
-        .inventory-item h4, .listing-card h4 { font-size: 0.85em; }
-        .inventory-item p, .listing-card p { font-size: 0.7em; }
+        .timer-warning { color: #ffaa33; font-size: 0.65em; margin-top: 4px; }
         .set-price-input {
             padding: 6px 8px;
             border-radius: 30px;
@@ -170,50 +162,13 @@
             font-size: 0.7em;
         }
 
-        .search-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        .search-bar input {
-            flex: 1;
-            padding: 8px 12px;
-            border-radius: 30px;
-            border: none;
-            background: rgba(255,255,255,0.1);
-            color: white;
-            font-size: 0.8em;
-        }
-        .search-bar select {
-            padding: 8px 12px;
-            border-radius: 30px;
-            border: none;
-            background: rgba(255,255,255,0.15);
-            color: white;
-            font-size: 0.75em;
-        }
+        .search-bar { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+        .search-bar input { flex: 1; padding: 8px 12px; border-radius: 30px; border: none; background: rgba(255,255,255,0.1); color: white; font-size: 0.8em; }
+        .search-bar select { padding: 8px 12px; border-radius: 30px; border: none; background: rgba(255,255,255,0.15); color: white; font-size: 0.75em; }
 
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        .page-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            padding: 4px 10px;
-            border-radius: 30px;
-            color: white;
-            font-size: 0.7em;
-            cursor: pointer;
-        }
-        .page-btn.active {
-            background: #ffd700;
-            color: #1e3c72;
-        }
+        .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 15px; flex-wrap: wrap; }
+        .page-btn { background: rgba(255,255,255,0.2); border: none; padding: 4px 10px; border-radius: 30px; color: white; font-size: 0.7em; cursor: pointer; }
+        .page-btn.active { background: #ffd700; color: #1e3c72; }
 
         .message {
             position: fixed;
@@ -238,7 +193,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             z-index: 3000;
             justify-content: center;
             align-items: center;
@@ -246,17 +201,17 @@
         .modal.active { display: flex; }
         .modal-content {
             background: linear-gradient(145deg, #1e1e32, #12121f);
-            padding: 20px;
+            padding: 25px;
             border-radius: 24px;
             max-width: 90%;
             width: 350px;
             text-align: center;
             border: 1px solid #ffd700;
         }
-        .modal-content h2 { font-size: 1.2em; margin-bottom: 15px; color: #ffd700; }
+        .modal-content h2 { font-size: 1.3em; margin-bottom: 15px; color: #ffd700; }
         .modal-content input, .modal-content select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin: 8px 0;
             border-radius: 30px;
             border: none;
@@ -264,8 +219,9 @@
             color: white;
             font-size: 0.85em;
         }
+        .modal-content input::placeholder { color: rgba(255,255,255,0.5); }
         .confirm-btn, .close-modal {
-            padding: 8px 20px;
+            padding: 10px 20px;
             border-radius: 30px;
             border: none;
             margin: 8px 4px;
@@ -274,30 +230,11 @@
         }
         .confirm-btn { background: #2ecc71; color: white; }
         .close-modal { background: #e74c3c; color: white; }
+        .switch-auth { margin-top: 15px; font-size: 0.75em; color: #ffd700; cursor: pointer; }
 
-        /* Styles du Quiz avec drapeaux en image */
-        .quiz-question { margin: 10px 0; }
-        .flag-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 10px 0;
-        }
-        .flag-emoji {
-            font-size: 5rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 10px;
-            display: inline-block;
-        }
-        .flag-img {
-            width: 100px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 2px solid #ffd700;
-        }
+        .flag-container { display: flex; justify-content: center; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
+        .flag-emoji { font-size: 3rem; }
+        .flag-img { width: 80px; height: 55px; object-fit: cover; border-radius: 10px; border: 2px solid #ffd700; }
         .quiz-option {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,215,0,0.3);
@@ -306,580 +243,524 @@
             margin: 6px 0;
             cursor: pointer;
             font-size: 0.8em;
-            transition: all 0.2s;
         }
-        .quiz-option:hover { background: rgba(255,215,0,0.3); transform: scale(1.02); }
-        .quiz-option.selected { background: #ffd700; color: #1e3c72; font-weight: bold; border-color: #ffd700; }
+        .quiz-option.selected { background: #ffd700; color: #1e3c72; font-weight: bold; }
         .quiz-progress { font-size: 0.8em; margin-bottom: 8px; color: #ffd700; }
-        .quiz-result { font-size: 0.9em; margin-top: 10px; padding: 10px; border-radius: 16px; }
-        .quiz-result.success { background: #2ecc71; }
-        .quiz-result.fail { background: #e74c3c; }
         
         .loading { text-align: center; padding: 40px; font-size: 0.9em; }
-        .error-message { background: #e74c3c; padding: 15px; border-radius: 16px; margin: 15px; text-align: center; font-size: 0.8em; }
-        
         @media (min-width: 600px) {
             .products-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
-            .container { max-width: 100%; padding: 15px; }
-            .flag-img { width: 120px; height: 80px; }
         }
     </style>
 </head>
 <body>
     <div id="app"></div>
 
-    <!-- MODALE INSCRIPTION -->
-    <div id="registerModal" class="modal">
+    <!-- MODALE CONNEXION / INSCRIPTION -->
+    <div id="authModal" class="modal active">
         <div class="modal-content">
-            <h2>📝 INSCRIPTION</h2>
-            <input type="text" id="registerUsername" placeholder="👤 Pseudo">
-            <input type="tel" id="registerPhone" placeholder="📞 Téléphone">
-            <button class="confirm-btn" onclick="window.registerOrLogin()">🎮 Commencer</button>
+            <h2 id="authTitle">🔐 CONNEXION</h2>
+            <input type="text" id="authUsername" placeholder="👤 Nom d'utilisateur">
+            <input type="text" id="authCountry" placeholder="🌍 Pays">
+            <input type="tel" id="authPhone" placeholder="📞 Numéro de téléphone">
+            <input type="password" id="authPassword" placeholder="🔒 Mot de passe">
+            <button class="confirm-btn" onclick="window.handleAuth()" id="authBtn">Se connecter</button>
+            <div class="switch-auth" onclick="window.toggleAuthMode()">🔄 Pas de compte ? S'inscrire</div>
         </div>
     </div>
 
-    <!-- MODALE QUIZ DRAPEAUX -->
+    <!-- MODALE QUIZ -->
     <div id="quizModal" class="modal">
         <div class="modal-content">
-            <h2>🏆 QUIZ DRAPEAUX 🏆</h2>
-            <p style="font-size:0.75em; margin-bottom:10px;">💰 100 FCFA | 10 questions | tout bon → remboursé</p>
+            <h2>🏆 QUIZ DRAPEAUX</h2>
+            <p style="font-size:0.7em;">💰 100 FCFA | 10 questions | tout bon → remboursé</p>
             <div id="quizContainer"></div>
             <div id="quizResult" style="display:none;"></div>
             <button class="close-modal" onclick="window.closeQuizModal()">Fermer</button>
         </div>
     </div>
 
-    <!-- MODALE DÉPÔT -->
-    <div id="depositModal" class="modal">
-        <div class="modal-content">
-            <h2>💰 DÉPÔT</h2>
-            <p style="font-size:0.7em;">📌 Envoyez à: <strong>97413067</strong> (Amanata)</p>
-            <input type="number" id="depositAmount" placeholder="Montant (min 1000)">
-            <input type="text" id="depositCode" placeholder="Code d'envoi">
-            <button class="confirm-btn" onclick="window.submitDeposit()">Valider</button>
-            <button class="close-modal" onclick="window.closeDepositModal()">Fermer</button>
-        </div>
-    </div>
-
-    <!-- MODALE RETRAIT -->
-    <div id="withdrawModal" class="modal">
-        <div class="modal-content">
-            <h2>💸 RETRAIT</h2>
-            <p style="font-size:0.7em;">3000 - 50000 CFA</p>
-            <input type="number" id="withdrawAmount" placeholder="Montant">
-            <button class="confirm-btn" onclick="window.submitWithdraw()">Demander</button>
-            <button class="close-modal" onclick="window.closeWithdrawModal()">Annuler</button>
-        </div>
-    </div>
+    <!-- MODALES DÉPÔT / RETRAIT -->
+    <div id="depositModal" class="modal"><div class="modal-content"><h2>💰 DÉPÔT</h2><p>📌 Envoyez à: <strong>97413067</strong> (Amanata)</p><input type="number" id="depositAmount" placeholder="Montant (min 1000)"><input type="text" id="depositCode" placeholder="Code d'envoi"><button class="confirm-btn" onclick="window.submitDeposit()">Valider</button><button class="close-modal" onclick="window.closeDepositModal()">Fermer</button></div></div>
+    <div id="withdrawModal" class="modal"><div class="modal-content"><h2>💸 RETRAIT</h2><p>3000 - 50000 CFA</p><input type="number" id="withdrawAmount" placeholder="Montant"><button class="confirm-btn" onclick="window.submitWithdraw()">Demander</button><button class="close-modal" onclick="window.closeWithdrawModal()">Annuler</button></div></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('app').innerHTML = '<div class="loading">🚀 Chargement...</div>';
-            initApp();
-        });
-
-        async function initApp() {
-            try {
-                const firebaseModule = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js");
-                const databaseModule = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js");
-                
-                const { initializeApp } = firebaseModule;
-                const { getDatabase, ref, set, get, push, onValue, update, remove } = databaseModule;
-                
-                const firebaseConfig = {
-                    apiKey: "AIzaSyCxsXpj3ovdd2Wu5HNHN1Zyvf7qG00aXx4",
-                    authDomain: "dubai-dbd3f.firebaseapp.com",
-                    databaseURL: "https://dubai-dbd3f-default-rtdb.firebaseio.com",
-                    projectId: "dubai-dbd3f",
-                    storageBucket: "dubai-dbd3f.firebasestorage.app",
-                    messagingSenderId: "543622740538",
-                    appId: "1:543622740538:web:0e4e6abf3124a878dad303"
-                };
-                
-                const app = initializeApp(firebaseConfig);
-                const db = getDatabase(app);
-                
-                window.db = db;
-                window.ref = ref;
-                window.set = set;
-                window.get = get;
-                window.push = push;
-                window.onValue = onValue;
-                window.update = update;
-                window.remove = remove;
-                
-                startApp(db, ref, set, get, push, onValue, update, remove);
-                
-            } catch (error) {
-                console.error(error);
-                document.getElementById('app').innerHTML = `<div class="error-message">⚠️ Erreur: ${error.message}<br>Ouvrez sur un serveur HTTP</div>`;
-            }
+        let isLoginMode = true;
+        let currentUser = null;
+        let products = [];
+        let userInventory = [];
+        let currentTab = 'market';
+        let searchTerm = '';
+        let selectedCategory = '';
+        let currentPage = 1;
+        const itemsPerPage = 20;
+        
+        let quizQuestions = [], quizAnswers = [], quizIndex = 0, quizActive = false;
+        
+        const FIXED_PRICES = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000];
+        
+        const COUNTRIES = [
+            { name: "France", emoji: "🇫🇷", code: "fr" }, { name: "Allemagne", emoji: "🇩🇪", code: "de" },
+            { name: "Espagne", emoji: "🇪🇸", code: "es" }, { name: "Italie", emoji: "🇮🇹", code: "it" },
+            { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" }, { name: "USA", emoji: "🇺🇸", code: "us" },
+            { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Brésil", emoji: "🇧🇷", code: "br" },
+            { name: "Japon", emoji: "🇯🇵", code: "jp" }, { name: "Sénégal", emoji: "🇸🇳", code: "sn" },
+            { name: "Maroc", emoji: "🇲🇦", code: "ma" }, { name: "Tunisie", emoji: "🇹🇳", code: "tn" },
+            { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" }
+        ];
+        
+        function getFlagUrl(code) { return `https://flagcdn.com/w80/${code}.png`; }
+        
+        function generateQuizQuestions() {
+            const shuffled = [...COUNTRIES].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 10);
+            return selected.map(item => {
+                const wrong = COUNTRIES.filter(c => c.name !== item.name).sort(() => 0.5 - Math.random()).slice(0, 3);
+                const options = [item.name, ...wrong.map(w => w.name)];
+                for (let i = options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [options[i], options[j]] = [options[j], options[i]];
+                }
+                return { name: item.name, emoji: item.emoji, code: item.code, flagUrl: getFlagUrl(item.code), correctAnswer: item.name, options };
+            });
         }
-
-        function startApp(db, ref, set, get, push, onValue, update, remove) {
-            let currentUser = null;
-            let products = [];
-            let userInventory = [];
-            let currentTab = 'market';
-            let searchTerm = '';
-            let selectedCategory = '';
-            let currentPage = 1;
-            const itemsPerPage = 20;
-            
-            let quizQuestions = [], quizAnswers = [], quizIndex = 0, quizActive = false;
-            
-            // Prix par paliers de 500 de 500 à 8000
-            const FIXED_PRICES = [500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000];
-            
-            // Base de données des pays avec drapeaux (emoji + code pays pour image)
-            const COUNTRIES = [
-                { name: "France", emoji: "🇫🇷", code: "fr" },
-                { name: "Allemagne", emoji: "🇩🇪", code: "de" },
-                { name: "Espagne", emoji: "🇪🇸", code: "es" },
-                { name: "Italie", emoji: "🇮🇹", code: "it" },
-                { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" },
-                { name: "États-Unis", emoji: "🇺🇸", code: "us" },
-                { name: "Canada", emoji: "🇨🇦", code: "ca" },
-                { name: "Brésil", emoji: "🇧🇷", code: "br" },
-                { name: "Japon", emoji: "🇯🇵", code: "jp" },
-                { name: "Chine", emoji: "🇨🇳", code: "cn" },
-                { name: "Inde", emoji: "🇮🇳", code: "in" },
-                { name: "Sénégal", emoji: "🇸🇳", code: "sn" },
-                { name: "Maroc", emoji: "🇲🇦", code: "ma" },
-                { name: "Tunisie", emoji: "🇹🇳", code: "tn" },
-                { name: "Algérie", emoji: "🇩🇿", code: "dz" },
-                { name: "Égypte", emoji: "🇪🇬", code: "eg" },
-                { name: "Nigeria", emoji: "🇳🇬", code: "ng" },
-                { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" },
-                { name: "Cameroun", emoji: "🇨🇲", code: "cm" },
-                { name: "Belgique", emoji: "🇧🇪", code: "be" },
-                { name: "Suisse", emoji: "🇨🇭", code: "ch" },
-                { name: "Pays-Bas", emoji: "🇳🇱", code: "nl" },
-                { name: "Portugal", emoji: "🇵🇹", code: "pt" },
-                { name: "Suède", emoji: "🇸🇪", code: "se" },
-                { name: "Norvège", emoji: "🇳🇴", code: "no" },
-                { name: "Danemark", emoji: "🇩🇰", code: "dk" },
-                { name: "Finlande", emoji: "🇫🇮", code: "fi" },
-                { name: "Pologne", emoji: "🇵🇱", code: "pl" },
-                { name: "Grèce", emoji: "🇬🇷", code: "gr" },
-                { name: "Turquie", emoji: "🇹🇷", code: "tr" },
-                { name: "Russie", emoji: "🇷🇺", code: "ru" },
-                { name: "Mexique", emoji: "🇲🇽", code: "mx" },
-                { name: "Argentine", emoji: "🇦🇷", code: "ar" },
-                { name: "Australie", emoji: "🇦🇺", code: "au" }
-            ];
-            
-            // URL des images de drapeaux (CDN fiable)
-            function getFlagUrl(countryCode) {
-                return `https://flagcdn.com/w80/${countryCode}.png`;
-            }
-            
-            function generateQuizQuestions() {
-                const shuffled = [...COUNTRIES].sort(() => 0.5 - Math.random());
-                const selected = shuffled.slice(0, 10);
-                return selected.map(item => {
-                    const wrong = COUNTRIES.filter(c => c.name !== item.name).sort(() => 0.5 - Math.random()).slice(0, 3);
-                    const options = [item.name, ...wrong.map(w => w.name)];
-                    for (let i = options.length - 1; i > 0; i--) {
-                        const j = Math.floor(Math.random() * (i + 1));
-                        [options[i], options[j]] = [options[j], options[i]];
-                    }
-                    return {
-                        name: item.name,
-                        emoji: item.emoji,
-                        code: item.code,
-                        flagUrl: getFlagUrl(item.code),
-                        correctAnswer: item.name,
-                        options: options
-                    };
+        
+        function generate30Products() {
+            const categories = ["Or", "Diamants", "Voitures", "Motos", "Avions", "Montres", "Smartphones", "PC Gamer", "Immobilier", "Cryptos"];
+            const emojis = { "Or": "🪙", "Diamants": "💎", "Voitures": "🚗", "Motos": "🏍️", "Avions": "✈️", "Montres": "⌚", "Smartphones": "📱", "PC Gamer": "💻", "Immobilier": "🏠", "Cryptos": "₿" };
+            const list = [];
+            for (let i = 0; i < 30; i++) {
+                list.push({
+                    id: i + 1,
+                    name: `${categories[i % categories.length]} ${Math.floor(i / categories.length) + 1}`,
+                    category: categories[i % categories.length],
+                    emoji: emojis[categories[i % categories.length]] || "📦",
+                    currentPrice: FIXED_PRICES[i % FIXED_PRICES.length],
+                    lastVariation: 0,
+                    isAvailable: true,
+                    ownerId: null,
+                    ownerName: null,
+                    availableUntil: null
                 });
             }
+            return list;
+        }
+        
+        async function initFirebase() {
+            const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js");
+            const { getDatabase, ref, set, get, push, onValue, update, remove } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js");
+            const firebaseConfig = {
+                apiKey: "AIzaSyCxsXpj3ovdd2Wu5HNHN1Zyvf7qG00aXx4",
+                authDomain: "dubai-dbd3f.firebaseapp.com",
+                databaseURL: "https://dubai-dbd3f-default-rtdb.firebaseio.com",
+                projectId: "dubai-dbd3f",
+                storageBucket: "dubai-dbd3f.firebasestorage.app",
+                messagingSenderId: "543622740538",
+                appId: "1:543622740538:web:0e4e6abf3124a878dad303"
+            };
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+            return { db, ref, set, get, push, onValue, update, remove };
+        }
+        
+        async function handleAuth() {
+            const username = document.getElementById('authUsername').value.trim();
+            const country = document.getElementById('authCountry').value.trim();
+            const phone = document.getElementById('authPhone').value.trim();
+            const password = document.getElementById('authPassword').value;
             
-            function generate30Products() {
-                const categories = ["Or", "Diamants", "Voitures", "Motos", "Avions", "Montres", "Smartphones", "PC Gamer", "Immobilier", "Cryptos"];
-                const emojis = { "Or": "🪙", "Diamants": "💎", "Voitures": "🚗", "Motos": "🏍️", "Avions": "✈️", "Montres": "⌚", "Smartphones": "📱", "PC Gamer": "💻", "Immobilier": "🏠", "Cryptos": "₿" };
-                const productList = [];
-                
-                for (let i = 0; i < 30; i++) {
-                    const category = categories[i % categories.length];
-                    const price = FIXED_PRICES[i % FIXED_PRICES.length];
-                    productList.push({
-                        id: i + 1,
-                        name: `${category} ${Math.floor(i / categories.length) + 1}`,
-                        category: category,
-                        emoji: emojis[category] || "📦",
-                        currentPrice: price,
-                        lastVariation: 0,
-                        isAvailable: true,
-                        ownerId: null,
-                        ownerName: null
-                    });
-                }
-                return productList;
+            if (!username || !country || !phone || !password) {
+                showMessage("Tous les champs sont requis", "error");
+                return;
             }
             
-            async function initFirebaseData() {
-                const productsRef = ref(db, 'products');
-                const snap = await get(productsRef);
-                if (!snap.exists()) {
-                    const defaultProducts = generate30Products();
-                    await set(productsRef, defaultProducts);
-                    products = defaultProducts;
-                    console.log("✅ 30 produits créés");
-                } else {
-                    const data = snap.val();
-                    products = Array.isArray(data) ? data : Object.values(data || {});
-                    if (products.length !== 30) {
-                        const freshProducts = generate30Products();
-                        await set(productsRef, freshProducts);
-                        products = freshProducts;
-                    }
-                }
-                
-                onValue(productsRef, (snapshot) => {
-                    const data = snapshot.val();
-                    products = Array.isArray(data) ? data : Object.values(data || {});
-                    renderApp();
-                });
-                
-                const invRef = ref(db, `inventory/${currentUser.uid}`);
-                onValue(invRef, (snap) => {
-                    const data = snap.val();
-                    userInventory = data ? Object.values(data) : [];
-                    renderApp();
-                });
-            }
+            const { db, ref, get, set } = await initFirebase();
+            const usersRef = ref(db, 'users');
+            const snapshot = await get(usersRef);
+            const users = snapshot.val() || {};
             
-            async function registerOrLogin() {
-                const username = document.getElementById('registerUsername').value.trim();
-                const phone = document.getElementById('registerPhone').value.trim();
-                if (!username || !phone) { showMessage("Remplissez tous les champs", "error"); return; }
-                
-                const usersRef = ref(db, 'users');
-                const snap = await get(usersRef);
-                const users = snap.val() || {};
-                
+            if (isLoginMode) {
                 let found = null;
                 for (const [uid, data] of Object.entries(users)) {
-                    if (data.username === username && data.phone === phone) { found = uid; break; }
+                    if (data.username === username && data.password === password) {
+                        found = { uid, ...data };
+                        break;
+                    }
                 }
-                
                 if (found) {
-                    const userSnap = await get(ref(db, `users/${found}`));
-                    currentUser = { uid: found, ...userSnap.val() };
-                    showMessage(`✅ Bonjour ${currentUser.username}`, "success");
+                    currentUser = found;
+                    localStorage.setItem('tradingUser', JSON.stringify({ uid: currentUser.uid, username: currentUser.username }));
+                    showMessage(`✅ Bienvenue ${currentUser.username} !`, "success");
+                    document.getElementById('authModal').classList.remove('active');
+                    await startApp();
                 } else {
-                    const newUid = `user_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
-                    await set(ref(db, `users/${newUid}`), { username, phone, balance: 2700, createdAt: new Date().toISOString() });
-                    currentUser = { uid: newUid, username, phone, balance: 2700 };
-                    showMessage(`✅ Bienvenue ${username} ! 2700 CFA offerts`, "success");
+                    showMessage("Nom ou mot de passe incorrect", "error");
                 }
-                
-                document.getElementById('registerModal').classList.remove('active');
-                await initFirebaseData();
-                startPriceVariation();
-                renderApp();
+            } else {
+                let exists = false;
+                for (const [uid, data] of Object.entries(users)) {
+                    if (data.username === username) { exists = true; break; }
+                }
+                if (exists) {
+                    showMessage("Ce nom d'utilisateur existe déjà", "error");
+                    return;
+                }
+                const newUid = `user_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+                await set(ref(db, `users/${newUid}`), {
+                    username, country, phone, password,
+                    balance: 5000,
+                    createdAt: new Date().toISOString()
+                });
+                currentUser = { uid: newUid, username, country, phone, balance: 5000 };
+                localStorage.setItem('tradingUser', JSON.stringify({ uid: currentUser.uid, username: currentUser.username }));
+                showMessage(`✅ Inscription réussie ! 5000 CFA offerts`, "success");
+                document.getElementById('authModal').classList.remove('active');
+                await startApp();
+            }
+        }
+        
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('authTitle').innerText = isLoginMode ? "🔐 CONNEXION" : "📝 INSCRIPTION";
+            document.getElementById('authBtn').innerText = isLoginMode ? "Se connecter" : "S'inscrire";
+        }
+        
+        async function startApp() {
+            const { db, ref, set, get, push, onValue, update, remove } = await initFirebase();
+            window.db = db; window.ref = ref; window.set = set; window.get = get; window.push = push; window.onValue = onValue; window.update = update; window.remove = remove;
+            
+            // Initialiser les produits si besoin
+            const productsRef = ref(db, 'products');
+            const snap = await get(productsRef);
+            if (!snap.exists()) {
+                await set(productsRef, generate30Products());
             }
             
-            function startPriceVariation() {
-                setInterval(async () => {
-                    if (!products?.length) return;
-                    const updated = [...products];
-                    let changed = false;
-                    for (let i = 0; i < updated.length; i++) {
-                        if (updated[i].isAvailable) {
-                            let variation = 0.92 + Math.random() * 0.16;
-                            let newRaw = Math.round(updated[i].currentPrice * variation);
-                            newRaw = Math.round(newRaw / 50) * 50;
-                            let closest = FIXED_PRICES.reduce((a, b) => Math.abs(b - newRaw) < Math.abs(a - newRaw) ? b : a);
-                            if (closest !== updated[i].currentPrice) {
-                                let lastVar = ((closest - updated[i].currentPrice) / updated[i].currentPrice) * 100;
-                                updated[i] = { ...updated[i], currentPrice: closest, lastVariation: lastVar };
-                                changed = true;
-                            }
+            // Écouter les produits disponibles (ceux qui sont isAvailable === true)
+            onValue(productsRef, (snapshot) => {
+                const data = snapshot.val();
+                const allProducts = Array.isArray(data) ? data : Object.values(data || {});
+                // Ne montrer que les produits disponibles (non possédés par personne)
+                products = allProducts.filter(p => p.isAvailable === true);
+                renderApp();
+            });
+            
+            // Écouter l'inventaire de l'utilisateur
+            const invRef = ref(db, `inventory/${currentUser.uid}`);
+            onValue(invRef, (snapshot) => {
+                const data = snapshot.val();
+                userInventory = data ? Object.values(data) : [];
+                renderApp();
+            });
+            
+            // Démarrer la variation des prix
+            setInterval(async () => {
+                const allProdsSnap = await get(productsRef);
+                const allProds = Array.isArray(allProdsSnap.val()) ? allProdsSnap.val() : Object.values(allProdsSnap.val() || {});
+                let changed = false;
+                const updated = [...allProds];
+                for (let i = 0; i < updated.length; i++) {
+                    if (updated[i].isAvailable) {
+                        let variation = 0.92 + Math.random() * 0.16;
+                        let newRaw = Math.round(updated[i].currentPrice * variation);
+                        newRaw = Math.round(newRaw / 50) * 50;
+                        let closest = FIXED_PRICES.reduce((a, b) => Math.abs(b - newRaw) < Math.abs(a - newRaw) ? b : a);
+                        if (closest !== updated[i].currentPrice) {
+                            updated[i].currentPrice = closest;
+                            updated[i].lastVariation = ((closest - updated[i].currentPrice) / updated[i].currentPrice) * 100;
+                            changed = true;
                         }
                     }
-                    if (changed) await set(ref(db, 'products'), updated);
-                }, 45000);
-            }
-            
-            async function buyProduct(productId) {
-                const idx = products.findIndex(p => p.id === productId);
-                if (idx === -1 || !products[idx].isAvailable) { showMessage("Produit indisponible", "error"); return; }
-                if (currentUser.balance < products[idx].currentPrice) { showMessage("Solde insuffisant", "error"); return; }
-                
-                const updated = [...products];
-                updated[idx] = { ...products[idx], isAvailable: false, ownerId: currentUser.uid, ownerName: currentUser.username };
-                await set(ref(db, 'products'), updated);
-                
-                const invItem = {
-                    id: Date.now(),
-                    productId: products[idx].id,
-                    productName: products[idx].name,
-                    productEmoji: products[idx].emoji,
-                    productCategory: products[idx].category,
-                    purchasePrice: products[idx].currentPrice,
-                    purchaseDate: new Date().toISOString(),
-                    resellAvailableAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
-                    isOnSale: false,
-                    salePrice: null,
-                    userId: currentUser.uid
-                };
-                await set(push(ref(db, `inventory/${currentUser.uid}`)), invItem);
-                
-                currentUser.balance -= products[idx].currentPrice;
-                await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
-                showMessage(`✅ Acheté: ${products[idx].name} (${products[idx].currentPrice.toLocaleString()} CFA)`, "success");
-            }
-            
-            async function buyResale(invId) {
-                const listing = userInventory.find(i => i.id === invId);
-                if (!listing || !listing.isOnSale) { showMessage("Produit non disponible", "error"); return; }
-                if (currentUser.balance < listing.salePrice) { showMessage("Solde insuffisant", "error"); return; }
-                
-                const sellerRef = ref(db, `users/${listing.userId}`);
-                const sellerSnap = await get(sellerRef);
-                if (sellerSnap.exists()) {
-                    await update(sellerRef, { balance: (sellerSnap.val().balance || 0) + listing.salePrice });
                 }
-                
-                currentUser.balance -= listing.salePrice;
-                await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
-                
-                const prodIdx = products.findIndex(p => p.id === listing.productId);
-                if (prodIdx !== -1) {
-                    const updated = [...products];
-                    updated[prodIdx] = { ...updated[prodIdx], isAvailable: true, ownerId: null, ownerName: null };
-                    await set(ref(db, 'products'), updated);
-                }
-                
-                await remove(ref(db, `inventory/${listing.userId}/${invId}`));
-                showMessage(`🎉 Achat réussi ! Produit de retour sur le marché`, "success");
-            }
+                if (changed) await set(productsRef, updated);
+            }, 45000);
             
-            async function listForSale(invId, priceRaw) {
-                const item = userInventory.find(i => i.id === invId);
-                if (!item) return;
-                const price = parseInt(priceRaw);
-                if (isNaN(price) || price < 100) { showMessage("Prix invalide (min 100)", "error"); return; }
-                if (new Date() < new Date(item.resellAvailableAt)) { showMessage("Attendez 30min", "error"); return; }
-                await update(ref(db, `inventory/${currentUser.uid}/${invId}`), { isOnSale: true, salePrice: price });
-                showMessage(`📢 ${item.productName} en vente à ${price.toLocaleString()} CFA`, "success");
-            }
-            
-            async function cancelListing(invId) {
-                await update(ref(db, `inventory/${currentUser.uid}/${invId}`), { isOnSale: false, salePrice: null });
-                showMessage("Vente annulée", "info");
-            }
-            
-            async function payAndStartQuiz() {
-                if (!currentUser) return;
-                if (currentUser.balance < 100) { showMessage("100 FCFA requis", "error"); return; }
-                currentUser.balance -= 100;
-                await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
-                showMessage("100 FCFA débités. Bonne chance !", "success");
-                startQuiz();
-            }
-            
-            function startQuiz() {
-                quizQuestions = generateQuizQuestions();
-                quizAnswers = [];
-                quizIndex = 0;
-                quizActive = true;
-                renderQuiz();
-                document.getElementById('quizModal').classList.add('active');
-            }
-            
-            function renderQuiz() {
-                const container = document.getElementById('quizContainer');
-                const resultDiv = document.getElementById('quizResult');
-                resultDiv.style.display = 'none';
-                
-                if (quizIndex >= quizQuestions.length) {
-                    const allCorrect = quizAnswers.length === 10 && quizAnswers.every((a, i) => a === quizQuestions[i].correctAnswer);
-                    if (allCorrect) {
-                        currentUser.balance += 100;
-                        update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
-                        resultDiv.innerHTML = '<div style="color:#ffd700;">🏆 FÉLICITATIONS ! 100 FCFA remboursés</div>';
-                        resultDiv.className = "quiz-result success";
-                        showMessage("🎉 Bravo ! 100 FCFA remboursés", "success");
-                    } else {
-                        const correct = quizAnswers.filter((a, i) => a === quizQuestions[i].correctAnswer).length;
-                        resultDiv.innerHTML = `<div>📊 ${correct}/10 bonnes réponses</div><div style="margin-top:8px;">Réessayez pour être remboursé !</div>`;
-                        resultDiv.className = "quiz-result fail";
-                    }
-                    resultDiv.style.display = "block";
-                    quizActive = false;
-                    return;
-                }
-                
-                const q = quizQuestions[quizIndex];
-                const selected = quizAnswers[quizIndex] || null;
-                
-                // Affichage avec à la fois l'emoji et l'image pour garantir l'affichage
-                container.innerHTML = `
-                    <div class="quiz-progress">🎯 ${quizIndex+1}/10</div>
-                    <div class="flag-container">
-                        <div class="flag-emoji" style="font-size:3rem;">${q.emoji}</div>
-                        <img class="flag-img" src="${q.flagUrl}" alt="Drapeau ${q.name}" onerror="this.style.display='none'">
-                    </div>
-                    <div style="margin:10px 0; font-weight:bold;">De quel pays est ce drapeau ?</div>
-                    ${q.options.map(opt => `
-                        <div class="quiz-option ${selected === opt ? 'selected' : ''}" onclick="window.selectQuizAnswer('${opt.replace(/'/g, "\\'")}')">
-                            ${opt}
-                        </div>
-                    `).join('')}
-                    <div style="margin-top:15px; display:flex; gap:8px; justify-content:center;">
-                        ${quizIndex > 0 ? `<button class="confirm-btn" onclick="window.prevQuiz()" style="background:#e67e22; padding:6px 15px;">◀ Préc.</button>` : ''}
-                        ${selected ? `<button class="confirm-btn" onclick="window.nextQuiz()" style="padding:6px 20px;">Suiv. ▶</button>` : '<button style="background:#7f8c8d; padding:6px 20px; border-radius:30px; border:none;" disabled>Répondez</button>'}
-                    </div>
-                `;
-            }
-            
-            function selectQuizAnswer(answer) { if (quizActive) { quizAnswers[quizIndex] = answer; renderQuiz(); } }
-            function nextQuiz() { if (quizActive && quizAnswers[quizIndex]) { quizIndex++; renderQuiz(); } }
-            function prevQuiz() { if (quizActive && quizIndex > 0) { quizIndex--; renderQuiz(); } }
-            function closeQuizModal() { document.getElementById('quizModal').classList.remove('active'); quizActive = false; }
-            
-            function renderApp() {
-                const appDiv = document.getElementById('app');
-                if (!products?.length || !currentUser) {
-                    appDiv.innerHTML = '<div class="loading">✨ Chargement...</div>';
-                    return;
-                }
-                
-                let available = products.filter(p => p.isAvailable === true);
-                if (searchTerm) available = available.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
-                if (selectedCategory && selectedCategory !== 'all') available = available.filter(p => p.category === selectedCategory);
-                
-                const totalPages = Math.ceil(available.length / itemsPerPage);
-                const paginated = available.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
-                const allCats = [...new Set(products.map(p => p.category))];
-                const myItems = userInventory.filter(i => !i.isOnSale);
-                const mySales = userInventory.filter(i => i.isOnSale);
-                
-                let content = `
-                    <div class="container">
-                        <div class="header">
-                            <div class="logo"><h1>📊 Trading Game Pro</h1><p>🎯 30 produits | 500→8000 CFA</p></div>
-                            <div class="user-info">
-                                <span class="username">👤 ${currentUser.username}</span>
-                                <span class="balance">💰 ${currentUser.balance.toLocaleString()} CFA</span>
-                                <button class="quiz-btn" onclick="window.payAndStartQuiz()">🏆 Quiz</button>
-                                <button class="deposit-btn" onclick="window.openDepositModal()">💳 Dépôt</button>
-                                <button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button>
-                                <button class="whatsapp-btn" onclick="window.openWhatsApp()">📱 Aide</button>
-                            </div>
-                        </div>
-                        <div class="tabs">
-                            <button class="tab-btn ${currentTab==='market' ? 'active' : ''}" onclick="window.switchTab('market')">🏪 Marché (${available.length})</button>
-                            <button class="tab-btn ${currentTab==='inventory' ? 'active' : ''}" onclick="window.switchTab('inventory')">📦 Stock (${myItems.length})</button>
-                            <button class="tab-btn ${currentTab==='resale' ? 'active' : ''}" onclick="window.switchTab('resale')">🔄 Vente (${mySales.length})</button>
-                        </div>
-                `;
-                
-                if (currentTab === 'market') {
-                    content += `
-                        <div class="search-bar">
-                            <input placeholder="🔎 Rechercher..." id="searchInput" value="${searchTerm}" onkeyup="window.updateSearch(this.value)">
-                            <select id="categorySelect" onchange="window.updateCategory(this.value)"><option value="all">Toutes</option>${allCats.map(c=>`<option value="${c}" ${selectedCategory===c ? 'selected' : ''}>${c}</option>`).join('')}</select>
-                        </div>
-                        <div class="products-grid">
-                            ${paginated.map(p => `
-                                <div class="product-card">
-                                    <div class="product-emoji">${p.emoji}</div>
-                                    <div class="product-name">${p.name}</div>
-                                    <div class="product-category">${p.category}</div>
-                                    <div class="product-price">${p.currentPrice.toLocaleString()} CFA</div>
-                                    <div class="price-variation ${p.lastVariation >= 0 ? 'price-up' : 'price-down'}">${p.lastVariation >= 0 ? '📈 +' : '📉 '}${Math.abs(p.lastVariation || 0).toFixed(1)}%</div>
-                                    <button class="buy-btn" onclick="window.buyProduct(${p.id})">🛒 Acheter</button>
-                                </div>
-                            `).join('')}
-                        </div>
-                        ${totalPages > 1 ? `<div class="pagination">${Array.from({length: Math.min(totalPages, 6)}, (_,i)=>i+1).map(p=>`<button class="page-btn ${p===currentPage ? 'active':''}" onclick="window.goToPage(${p})">${p}</button>`).join('')}</div>` : ''}
-                    `;
-                } else if (currentTab === 'inventory') {
-                    content += myItems.length === 0 ? '<div class="loading">📭 Aucun produit en stock</div>' : 
-                        myItems.map(i => `
-                            <div class="inventory-item">
-                                <div><h4>${i.productEmoji} ${i.productName}</h4><p>Achat: ${i.purchasePrice.toLocaleString()} CFA</p></div>
-                                <div><input id="price_${i.id}" placeholder="Prix" class="set-price-input"><button class="sell-btn" onclick="window.listForSale(${i.id}, document.getElementById('price_${i.id}').value)">📢 Vendre</button></div>
-                            </div>
-                        `).join('');
-                } else {
-                    content += mySales.length === 0 ? '<div class="loading">📭 Aucune vente en cours</div>' :
-                        mySales.map(i => `
-                            <div class="listing-card">
-                                <div><h4>${i.productEmoji} ${i.productName}</h4><p>💰 ${i.salePrice.toLocaleString()} CFA</p></div>
-                                <div><button class="sell-btn" onclick="window.buyResale(${i.id})">🛒 Acheter</button><button class="sell-btn" style="background:#e74c3c;" onclick="window.cancelListing(${i.id})">❌</button></div>
-                            </div>
-                        `).join('');
-                }
-                
-                content += `</div>`;
-                appDiv.innerHTML = content;
-            }
-            
-            function showMessage(msg, type) {
-                const div = document.createElement('div');
-                div.className = `message message-${type}`;
-                div.innerText = msg;
-                document.body.appendChild(div);
-                setTimeout(() => div.remove(), 3000);
-            }
-            
-            async function submitDeposit() {
-                const amount = parseInt(document.getElementById('depositAmount')?.value);
-                const code = document.getElementById('depositCode')?.value;
-                if (!amount || amount < 1000) { showMessage("Min 1000 CFA", "error"); return; }
-                if (!code) { showMessage("Code requis", "error"); return; }
-                await push(ref(db, 'deposits'), { userId: currentUser.uid, username: currentUser.username, phone: currentUser.phone, amount, transferCode: code, status: "pending", date: new Date().toISOString() });
-                closeDepositModal();
-                showMessage(`Dépôt ${amount.toLocaleString()} CFA demandé`, "success");
-            }
-            
-            async function submitWithdraw() {
-                const amount = parseInt(document.getElementById('withdrawAmount')?.value);
-                if (!amount || amount < 3000 || amount > 50000 || amount > currentUser.balance) { showMessage("Montant invalide", "error"); return; }
-                await push(ref(db, 'withdraws'), { userId: currentUser.uid, username: currentUser.username, phone: currentUser.phone, amount, status: "pending", date: new Date().toISOString() });
-                closeWithdrawModal();
-                showMessage(`Retrait ${amount.toLocaleString()} CFA demandé`, "success");
-            }
-            
-            function openWhatsApp() { window.open("https://wa.me/22797413067", "_blank"); }
-            function openDepositModal() { document.getElementById('depositModal').classList.add('active'); }
-            function closeDepositModal() { document.getElementById('depositModal').classList.remove('active'); }
-            function openWithdrawModal() { document.getElementById('withdrawModal').classList.add('active'); }
-            function closeWithdrawModal() { document.getElementById('withdrawModal').classList.remove('active'); }
-            function switchTab(tab) { currentTab = tab; currentPage = 1; renderApp(); }
-            function updateSearch(v) { searchTerm = v; currentPage = 1; renderApp(); }
-            function updateCategory(v) { selectedCategory = v; currentPage = 1; renderApp(); }
-            function goToPage(p) { currentPage = p; renderApp(); }
-            
-            window.registerOrLogin = registerOrLogin;
-            window.buyProduct = buyProduct;
-            window.buyResale = buyResale;
-            window.listForSale = listForSale;
-            window.cancelListing = cancelListing;
-            window.payAndStartQuiz = payAndStartQuiz;
-            window.selectQuizAnswer = selectQuizAnswer;
-            window.nextQuiz = nextQuiz;
-            window.prevQuiz = prevQuiz;
-            window.closeQuizModal = closeQuizModal;
-            window.switchTab = switchTab;
-            window.updateSearch = updateSearch;
-            window.updateCategory = updateCategory;
-            window.goToPage = goToPage;
-            window.openDepositModal = openDepositModal;
-            window.closeDepositModal = closeDepositModal;
-            window.openWithdrawModal = openWithdrawModal;
-            window.closeWithdrawModal = closeWithdrawModal;
-            window.submitDeposit = submitDeposit;
-            window.submitWithdraw = submitWithdraw;
-            window.openWhatsApp = openWhatsApp;
-            
-            document.getElementById('registerModal').classList.add('active');
+            renderApp();
         }
+        
+        async function buyProduct(productId) {
+            const { db, ref, get, set, update, push } = window;
+            const productsRef = ref(db, 'products');
+            const snap = await get(productsRef);
+            let allProducts = Array.isArray(snap.val()) ? snap.val() : Object.values(snap.val() || {});
+            const product = allProducts.find(p => p.id === productId);
+            
+            if (!product || !product.isAvailable) { showMessage("Produit indisponible", "error"); return; }
+            if (currentUser.balance < product.currentPrice) { showMessage("Solde insuffisant", "error"); return; }
+            
+            // Marquer le produit comme non disponible (acheté)
+            const updatedProducts = allProducts.map(p => {
+                if (p.id === productId) {
+                    return { ...p, isAvailable: false, ownerId: currentUser.uid, ownerName: currentUser.username };
+                }
+                return p;
+            });
+            await set(productsRef, updatedProducts);
+            
+            // Ajouter à l'inventaire avec délai de 30 minutes avant revente
+            const resellTime = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+            const invItem = {
+                id: Date.now(),
+                productId: product.id,
+                productName: product.name,
+                productEmoji: product.emoji,
+                productCategory: product.category,
+                purchasePrice: product.currentPrice,
+                purchaseDate: new Date().toISOString(),
+                resellAvailableAt: resellTime,
+                isOnSale: false,
+                salePrice: null
+            };
+            await set(push(ref(db, `inventory/${currentUser.uid}`)), invItem);
+            
+            // Débiter l'utilisateur
+            currentUser.balance -= product.currentPrice;
+            await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
+            showMessage(`✅ Achat : ${product.name} (${product.currentPrice.toLocaleString()} CFA)`, "success");
+        }
+        
+        async function listForSale(invId, priceRaw) {
+            const item = userInventory.find(i => i.id === invId);
+            if (!item) return;
+            const price = parseInt(priceRaw);
+            if (isNaN(price) || price < 100) { showMessage("Prix invalide", "error"); return; }
+            if (new Date() < new Date(item.resellAvailableAt)) {
+                const minutes = Math.ceil((new Date(item.resellAvailableAt) - new Date()) / 60000);
+                showMessage(`⏳ Délai de revente: encore ${minutes} minutes`, "error");
+                return;
+            }
+            await window.update(window.ref(window.db, `inventory/${currentUser.uid}/${invId}`), { isOnSale: true, salePrice: price });
+            showMessage(`📢 ${item.productName} en vente à ${price.toLocaleString()} CFA`, "success");
+        }
+        
+        async function buyResale(invId) {
+            const { db, ref, get, set, update, remove } = window;
+            const listing = userInventory.find(i => i.id === invId);
+            if (!listing || !listing.isOnSale) { showMessage("Produit non disponible", "error"); return; }
+            if (currentUser.balance < listing.salePrice) { showMessage("Solde insuffisant", "error"); return; }
+            
+            // Récupérer le produit original
+            const productsRef = ref(db, 'products');
+            const snap = await get(productsRef);
+            let allProducts = Array.isArray(snap.val()) ? snap.val() : Object.values(snap.val() || {});
+            
+            // Créditer le vendeur
+            const sellerRef = ref(db, `users/${listing.userId}`);
+            const sellerSnap = await get(sellerRef);
+            if (sellerSnap.exists()) {
+                await update(sellerRef, { balance: (sellerSnap.val().balance || 0) + listing.salePrice });
+            }
+            
+            // Débiter l'acheteur
+            currentUser.balance -= listing.salePrice;
+            await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
+            
+            // Remettre le produit sur le marché (isAvailable = true)
+            const updatedProducts = allProducts.map(p => {
+                if (p.id === listing.productId) {
+                    return { ...p, isAvailable: true, ownerId: null, ownerName: null, currentPrice: listing.salePrice };
+                }
+                return p;
+            });
+            await set(productsRef, updatedProducts);
+            
+            // Supprimer de l'inventaire du vendeur
+            await remove(ref(db, `inventory/${listing.userId}/${invId}`));
+            showMessage(`🎉 Achat réussi ! ${listing.productName} de retour sur le marché`, "success");
+        }
+        
+        async function cancelListing(invId) {
+            await window.update(window.ref(window.db, `inventory/${currentUser.uid}/${invId}`), { isOnSale: false, salePrice: null });
+            showMessage("Vente annulée", "info");
+        }
+        
+        async function payAndStartQuiz() {
+            if (!currentUser) return;
+            if (currentUser.balance < 100) { showMessage("100 FCFA requis", "error"); return; }
+            currentUser.balance -= 100;
+            await window.update(window.ref(window.db, `users/${currentUser.uid}`), { balance: currentUser.balance });
+            showMessage("100 FCFA débités. Bonne chance !", "success");
+            startQuiz();
+        }
+        
+        function startQuiz() {
+            quizQuestions = generateQuizQuestions();
+            quizAnswers = [];
+            quizIndex = 0;
+            quizActive = true;
+            renderQuiz();
+            document.getElementById('quizModal').classList.add('active');
+        }
+        
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.style.display = 'none';
+            if (quizIndex >= quizQuestions.length) {
+                const allCorrect = quizAnswers.length === 10 && quizAnswers.every((a, i) => a === quizQuestions[i].correctAnswer);
+                if (allCorrect) {
+                    currentUser.balance += 100;
+                    window.update(window.ref(window.db, `users/${currentUser.uid}`), { balance: currentUser.balance });
+                    resultDiv.innerHTML = '<div style="color:#ffd700;">🏆 FÉLICITATIONS ! 100 FCFA remboursés</div>';
+                    resultDiv.className = "quiz-result success";
+                    showMessage("🎉 Bravo ! 100 FCFA remboursés", "success");
+                } else {
+                    const correct = quizAnswers.filter((a, i) => a === quizQuestions[i].correctAnswer).length;
+                    resultDiv.innerHTML = `<div>📊 ${correct}/10 bonnes réponses</div>`;
+                    resultDiv.className = "quiz-result fail";
+                }
+                resultDiv.style.display = "block";
+                quizActive = false;
+                return;
+            }
+            const q = quizQuestions[quizIndex];
+            const selected = quizAnswers[quizIndex] || null;
+            container.innerHTML = `
+                <div class="quiz-progress">🎯 ${quizIndex+1}/10</div>
+                <div class="flag-container"><div class="flag-emoji">${q.emoji}</div><img class="flag-img" src="${q.flagUrl}" onerror="this.style.display='none'"></div>
+                <div style="margin:10px 0;">De quel pays est ce drapeau ?</div>
+                ${q.options.map(opt => `<div class="quiz-option ${selected === opt ? 'selected' : ''}" onclick="window.selectQuizAnswer('${opt.replace(/'/g, "\\'")}')">${opt}</div>`).join('')}
+                <div style="margin-top:15px;">${quizIndex > 0 ? `<button class="confirm-btn" onclick="window.prevQuiz()" style="background:#e67e22;">◀ Préc.</button>` : ''}${selected ? `<button class="confirm-btn" onclick="window.nextQuiz()">Suiv. ▶</button>` : '<button style="background:#7f8c8d;padding:8px 20px;border-radius:30px;" disabled>Répondre</button>'}</div>
+            `;
+        }
+        
+        function selectQuizAnswer(a) { if (quizActive) { quizAnswers[quizIndex] = a; renderQuiz(); } }
+        function nextQuiz() { if (quizActive && quizAnswers[quizIndex]) { quizIndex++; renderQuiz(); } }
+        function prevQuiz() { if (quizActive && quizIndex > 0) { quizIndex--; renderQuiz(); } }
+        function closeQuizModal() { document.getElementById('quizModal').classList.remove('active'); quizActive = false; }
+        
+        function renderApp() {
+            const appDiv = document.getElementById('app');
+            if (!products || !currentUser) { appDiv.innerHTML = '<div class="loading">✨ Chargement...</div>'; return; }
+            
+            let available = products.filter(p => p.isAvailable === true);
+            if (searchTerm) available = available.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+            if (selectedCategory && selectedCategory !== 'all') available = available.filter(p => p.category === selectedCategory);
+            
+            const totalPages = Math.ceil(available.length / itemsPerPage);
+            const paginated = available.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
+            const allCats = [...new Set(products.map(p => p.category))];
+            const myItems = userInventory.filter(i => !i.isOnSale);
+            const mySales = userInventory.filter(i => i.isOnSale);
+            
+            let content = `
+                <div class="container">
+                    <div class="header">
+                        <div class="logo"><h1>📊 Trading Game Pro</h1><p>🎯 Produits uniques par utilisateur</p></div>
+                        <div class="user-info">
+                            <span class="username">👤 ${currentUser.username}</span>
+                            <span class="country-badge">🌍 ${currentUser.country || '?'}</span>
+                            <span class="balance">💰 ${currentUser.balance.toLocaleString()} CFA</span>
+                            <button class="quiz-btn" onclick="window.payAndStartQuiz()">🏆 Quiz</button>
+                            <button class="deposit-btn" onclick="window.openDepositModal()">💳 Dépôt</button>
+                            <button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button>
+                            <button class="logout-btn" onclick="window.logout()">🚪 Quitter</button>
+                        </div>
+                    </div>
+                    <div class="tabs">
+                        <button class="tab-btn ${currentTab==='market' ? 'active' : ''}" onclick="window.switchTab('market')">🏪 Marché (${available.length})</button>
+                        <button class="tab-btn ${currentTab==='inventory' ? 'active' : ''}" onclick="window.switchTab('inventory')">📦 Mon stock (${myItems.length})</button>
+                        <button class="tab-btn ${currentTab==='resale' ? 'active' : ''}" onclick="window.switchTab('resale')">🔄 Mes ventes (${mySales.length})</button>
+                    </div>
+            `;
+            
+            if (currentTab === 'market') {
+                content += `<div class="search-bar"><input placeholder="🔎 Rechercher..." id="searchInput" value="${searchTerm}" onkeyup="window.updateSearch(this.value)"><select id="categorySelect" onchange="window.updateCategory(this.value)"><option value="all">Toutes</option>${allCats.map(c=>`<option value="${c}" ${selectedCategory===c?'selected':''}>${c}</option>`).join('')}</select></div>
+                <div class="products-grid">${paginated.map(p => `<div class="product-card"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-category">${p.category}</div><div class="product-price">${p.currentPrice.toLocaleString()} CFA</div><div class="price-variation ${p.lastVariation>=0?'price-up':'price-down'}">${p.lastVariation>=0?'📈 +':'📉 '}${Math.abs(p.lastVariation||0).toFixed(1)}%</div><button class="buy-btn" onclick="window.buyProduct(${p.id})">🛒 Acheter</button></div>`).join('')}</div>${totalPages>1?`<div class="pagination">${Array.from({length:Math.min(totalPages,6)},(_,i)=>i+1).map(p=>`<button class="page-btn ${p===currentPage?'active':''}" onclick="window.goToPage(${p})">${p}</button>`).join('')}</div>`:''}`;
+            } else if (currentTab === 'inventory') {
+                content += myItems.length === 0 ? '<div class="loading">📭 Aucun produit en stock</div>' : myItems.map(i => {
+                    const canSell = new Date() >= new Date(i.resellAvailableAt);
+                    const waitTime = canSell ? null : Math.ceil((new Date(i.resellAvailableAt) - new Date()) / 60000);
+                    return `<div class="inventory-item"><div><h4>${i.productEmoji} ${i.productName}</h4><p>Achat: ${i.purchasePrice.toLocaleString()} CFA</p>${!canSell ? `<div class="timer-warning">⏳ Revente disponible dans ${waitTime} min</div>` : ''}</div><div>${canSell ? `<input id="price_${i.id}" placeholder="Prix" class="set-price-input"><button class="sell-btn" onclick="window.listForSale(${i.id}, document.getElementById('price_${i.id}').value)">📢 Vendre</button>` : `<button disabled style="background:#7f8c8d;padding:5px 12px;border-radius:30px;">⏳ Attente</button>`}</div></div>`;
+                }).join('');
+            } else {
+                content += mySales.length === 0 ? '<div class="loading">📭 Aucune vente en cours</div>' : mySales.map(i => `<div class="listing-card"><div><h4>${i.productEmoji} ${i.productName}</h4><p>💰 ${i.salePrice.toLocaleString()} CFA</p></div><div><button class="sell-btn" onclick="window.buyResale(${i.id})">🛒 Acheter</button><button class="sell-btn" style="background:#e74c3c;" onclick="window.cancelListing(${i.id})">❌</button></div></div>`).join('');
+            }
+            content += `</div>`;
+            appDiv.innerHTML = content;
+        }
+        
+        function logout() {
+            localStorage.removeItem('tradingUser');
+            currentUser = null;
+            document.getElementById('authModal').classList.add('active');
+            document.getElementById('app').innerHTML = '';
+            isLoginMode = true;
+            document.getElementById('authTitle').innerText = "🔐 CONNEXION";
+            document.getElementById('authBtn').innerText = "Se connecter";
+            document.getElementById('authUsername').value = '';
+            document.getElementById('authCountry').value = '';
+            document.getElementById('authPhone').value = '';
+            document.getElementById('authPassword').value = '';
+        }
+        
+        function showMessage(msg, type) {
+            const div = document.createElement('div');
+            div.className = `message message-${type}`;
+            div.innerText = msg;
+            document.body.appendChild(div);
+            setTimeout(() => div.remove(), 3000);
+        }
+        
+        async function submitDeposit() {
+            const amount = parseInt(document.getElementById('depositAmount')?.value);
+            const code = document.getElementById('depositCode')?.value;
+            if (!amount || amount < 1000) { showMessage("Min 1000 CFA", "error"); return; }
+            if (!code) { showMessage("Code requis", "error"); return; }
+            await window.push(window.ref(window.db, 'deposits'), { userId: currentUser.uid, username: currentUser.username, amount, transferCode: code, status: "pending" });
+            window.closeDepositModal();
+            showMessage(`Dépôt ${amount.toLocaleString()} CFA demandé`, "success");
+        }
+        
+        async function submitWithdraw() {
+            const amount = parseInt(document.getElementById('withdrawAmount')?.value);
+            if (!amount || amount < 3000 || amount > 50000 || amount > currentUser.balance) { showMessage("Montant invalide", "error"); return; }
+            await window.push(window.ref(window.db, 'withdraws'), { userId: currentUser.uid, username: currentUser.username, amount, status: "pending" });
+            window.closeWithdrawModal();
+            showMessage(`Retrait ${amount.toLocaleString()} CFA demandé`, "success");
+        }
+        
+        // Vérifier session enregistrée
+        (async () => {
+            const saved = localStorage.getItem('tradingUser');
+            if (saved) {
+                try {
+                    const { uid, username } = JSON.parse(saved);
+                    const { db, ref, get } = await initFirebase();
+                    const userSnap = await get(ref(db, `users/${uid}`));
+                    if (userSnap.exists()) {
+                        currentUser = { uid, ...userSnap.val() };
+                        document.getElementById('authModal').classList.remove('active');
+                        await startApp();
+                        return;
+                    }
+                } catch(e) {}
+            }
+            document.getElementById('authModal').classList.add('active');
+        })();
+        
+        window.handleAuth = handleAuth;
+        window.toggleAuthMode = toggleAuthMode;
+        window.buyProduct = buyProduct;
+        window.buyResale = buyResale;
+        window.listForSale = listForSale;
+        window.cancelListing = cancelListing;
+        window.payAndStartQuiz = payAndStartQuiz;
+        window.selectQuizAnswer = selectQuizAnswer;
+        window.nextQuiz = nextQuiz;
+        window.prevQuiz = prevQuiz;
+        window.closeQuizModal = closeQuizModal;
+        window.switchTab = (t) => { currentTab = t; currentPage = 1; renderApp(); };
+        window.updateSearch = (v) => { searchTerm = v; currentPage = 1; renderApp(); };
+        window.updateCategory = (v) => { selectedCategory = v; currentPage = 1; renderApp(); };
+        window.goToPage = (p) => { currentPage = p; renderApp(); };
+        window.openDepositModal = () => document.getElementById('depositModal').classList.add('active');
+        window.closeDepositModal = () => document.getElementById('depositModal').classList.remove('active');
+        window.openWithdrawModal = () => document.getElementById('withdrawModal').classList.add('active');
+        window.closeWithdrawModal = () => document.getElementById('withdrawModal').classList.remove('active');
+        window.submitDeposit = submitDeposit;
+        window.submitWithdraw = submitWithdraw;
+        window.logout = logout;
     </script>
 </body>
 </html>

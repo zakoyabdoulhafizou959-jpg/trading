@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>StarGame - Achat & Quotidien 45%</title>
+    <title>StarGame - 100 Produits | Achat & Quotidien 45%</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -79,74 +79,74 @@
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+            gap: 12px;
             margin-top: 8px;
         }
 
         .product-card {
             background: rgba(25, 35, 55, 0.8);
             backdrop-filter: blur(6px);
-            border-radius: 22px;
-            padding: 12px 8px;
+            border-radius: 20px;
+            padding: 10px 6px;
             text-align: center;
             border: 1px solid rgba(255,200,80,0.3);
         }
-        .product-emoji { font-size: 38px; margin-bottom: 6px; }
-        .product-name { font-size: 0.9em; font-weight: bold; }
-        .product-category { font-size: 0.65em; opacity: 0.7; background: rgba(0,0,0,0.4); display: inline-block; padding: 2px 10px; border-radius: 30px; margin: 5px 0; }
-        .product-price { font-size: 1.1em; font-weight: bold; color: #FFD966; margin: 6px 0; }
+        .product-emoji { font-size: 32px; margin-bottom: 4px; }
+        .product-name { font-size: 0.8em; font-weight: bold; }
+        .product-category { font-size: 0.6em; opacity: 0.7; background: rgba(0,0,0,0.4); display: inline-block; padding: 2px 8px; border-radius: 30px; margin: 4px 0; }
+        .product-price { font-size: 0.9em; font-weight: bold; color: #FFD966; margin: 5px 0; }
         .buy-btn {
             background: linear-gradient(135deg, #27ae60, #2ecc71);
             border: none;
-            padding: 7px 12px;
+            padding: 6px 10px;
             border-radius: 30px;
             color: white;
             cursor: pointer;
             font-weight: bold;
-            width: 90%;
-            font-size: 0.75em;
+            width: 95%;
+            font-size: 0.7em;
         }
 
         .inventory-item {
             background: rgba(25, 40, 55, 0.85);
             border-radius: 20px;
-            padding: 15px;
+            padding: 12px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
             border-left: 5px solid #f39c12;
         }
         .timer-active {
             background: rgba(46,204,113,0.25);
             border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 0.7em;
+            padding: 3px 10px;
+            font-size: 0.65em;
             font-weight: bold;
             display: inline-block;
-            margin-top: 6px;
+            margin-top: 5px;
         }
         .play-game-btn {
             background: #e67e22;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 30px;
             color: white;
             font-weight: bold;
             cursor: pointer;
-            font-size: 0.8em;
+            font-size: 0.75em;
         }
-        .product-detail { font-size: 0.8em; margin: 4px 0; color: #ccc; }
+        .product-detail { font-size: 0.75em; margin: 3px 0; color: #ccc; }
         
         .search-bar { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
-        .search-bar input { flex: 1; padding: 10px 14px; border-radius: 50px; border: none; background: rgba(255,255,255,0.1); color: white; font-size: 0.8em; }
-        .search-bar select { padding: 10px 14px; border-radius: 50px; border: none; background: rgba(255,255,255,0.15); color: white; }
+        .search-bar input { flex: 1; padding: 8px 12px; border-radius: 50px; border: none; background: rgba(255,255,255,0.1); color: white; font-size: 0.8em; }
+        .search-bar select { padding: 8px 12px; border-radius: 50px; border: none; background: rgba(255,255,255,0.15); color: white; font-size: 0.75em; }
 
-        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
-        .page-btn { background: rgba(255,255,255,0.2); border: none; padding: 5px 12px; border-radius: 30px; cursor: pointer; color: white; }
+        .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 15px; flex-wrap: wrap; }
+        .page-btn { background: rgba(255,255,255,0.2); border: none; padding: 4px 10px; border-radius: 30px; cursor: pointer; color: white; font-size: 0.7em; }
         .page-btn.active { background: #f39c12; color: #0a0f24; }
 
         .message {
@@ -182,11 +182,11 @@
             padding: 25px;
             border-radius: 36px;
             max-width: 90%;
-            width: 360px;
+            width: 380px;
             text-align: center;
             border: 1px solid #f39c12;
         }
-        .modal-content h2 { color: #ffd966; margin-bottom: 18px; }
+        .modal-content h2 { color: #ffd966; margin-bottom: 18px; font-size: 1.3em; }
         .modal-content input, .modal-content select {
             width: 100%;
             padding: 12px;
@@ -201,23 +201,24 @@
         .confirm-btn { background: #2ecc71; color: white; }
         .close-modal { background: #e74c3c; color: white; }
 
-        .flag-container { display: flex; justify-content: center; gap: 10px; margin: 12px 0; }
-        .flag-img { width: 80px; height: 55px; object-fit: cover; border-radius: 16px; border: 2px solid gold; }
+        .flag-container { display: flex; justify-content: center; gap: 10px; margin: 12px 0; flex-wrap: wrap; }
+        .flag-img { width: 90px; height: 60px; object-fit: cover; border-radius: 12px; border: 2px solid gold; }
         .quiz-option {
             background: rgba(255,255,255,0.1);
             border-radius: 40px;
-            padding: 8px;
+            padding: 10px;
             margin: 8px 0;
             cursor: pointer;
+            transition: 0.2s;
         }
+        .quiz-option:hover { background: rgba(255,255,255,0.2); }
         .quiz-option.selected { background: #f39c12; color: #1e2a3a; font-weight: bold; }
         .game-stats { font-size: 0.75rem; margin-bottom: 8px; color: #ffd966; }
         .loading { text-align: center; padding: 40px; font-size: 0.9em; opacity: 0.8; }
-        
-        .phone-hint { font-size: 0.7em; color: #ffaa66; margin-top: -5px; margin-bottom: 8px; text-align: left; }
+        .phone-hint { font-size: 0.65em; color: #ffaa66; margin-top: -5px; margin-bottom: 8px; text-align: left; }
 
         @media (min-width: 640px) {
-            .products-grid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
         }
     </style>
 </head>
@@ -228,11 +229,12 @@
 <div id="authModal" class="modal active">
     <div class="modal-content">
         <h2 id="authTitle">🔐 STAR GAME</h2>
-        <input type="text" id="authUsername" placeholder="👤 Nom d'utilisateur (min 3 caractères)">
+        <input type="text" id="authUsername" placeholder="👤 Nom d'utilisateur (min 3)">
         <input type="tel" id="authPhone" placeholder="📞 Numéro (8 chiffres)">
         <div class="phone-hint">⚠️ 8 chiffres obligatoires (ex: 97413067)</div>
         <select id="authCountry">
             <option value="">🌍 Choisissez votre pays</option>
+            <option value="Niger">🇳🇪 Niger</option>
             <option value="France">🇫🇷 France</option>
             <option value="Sénégal">🇸🇳 Sénégal</option>
             <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire</option>
@@ -245,10 +247,16 @@
             <option value="Égypte">🇪🇬 Égypte</option>
             <option value="Canada">🇨🇦 Canada</option>
             <option value="Belgique">🇧🇪 Belgique</option>
-            <option value="Niger">🇨🇭 Niger</option>
+            <option value="Suisse">🇨🇭 Suisse</option>
+            <option value="Mali">🇲🇱 Mali</option>
+            <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+            <option value="Bénin">🇧🇯 Bénin</option>
+            <option value="Togo">🇹🇬 Togo</option>
+            <option value="Ghana">🇬🇭 Ghana</option>
+            <option value="Guinée">🇬🇳 Guinée</option>
         </select>
-        <input type="password" id="authPassword" placeholder="🔒 Mot de passe (8 caractères: lettres+chiffres)">
-        <div class="phone-hint">⚠️ 8 caractères avec lettres et chiffres</div>
+        <input type="password" id="authPassword" placeholder="🔒 Mot de passe (8 car: lettres+chiffres)">
+        <div class="phone-hint">⚠️ Exemple: abcd1234</div>
         <button class="confirm-btn" onclick="window.handleAuth()" id="authBtn">Connexion</button>
         <div class="switch-auth" style="margin-top:12px;color:#f39c12;cursor:pointer;" onclick="window.toggleAuthMode()">🔄 Pas de compte ? S'inscrire</div>
     </div>
@@ -257,8 +265,8 @@
 <!-- MODALE JEU -->
 <div id="gameModal" class="modal">
     <div class="modal-content">
-        <h2>🎲 JEU OBLIGATOIRE</h2>
-        <p style="font-size:0.7rem;">💰 500 CFA pour jouer → Gagnez 45% du produit | Perdez → 10% du produit</p>
+        <h2>🎲 JEU DES DRAPEAUX</h2>
+        <p style="font-size:0.7rem;">💰 500 CFA pour jouer → Gagnez 45% du produit | Perdez → 10%</p>
         <div id="GameQuizContainer"></div>
         <div id="gameResultArea" style="display:none;"></div>
         <button class="close-modal" onclick="window.closeGameModal()">Fermer</button>
@@ -288,41 +296,91 @@
 </div>
 
 <script>
-    // ========== SONS ==========
-    let winSound, loseSound, clickSound, depositSound;
-    function initSounds() {
-        try {
-            winSound = new Audio("data:audio/wav;base64,U3RlYWx0aCBzb3VuZCBzaW11bGF0aW9u"); // fallback
-            loseSound = new Audio("data:audio/wav;base64,U3RlYWx0aCBzb3VuZCBzaW11bGF0aW9u");
-            clickSound = new Audio("data:audio/wav;base64,U3RlYWx0aCBzb3VuZCBzaW11bGF0aW9u");
-            depositSound = new Audio("data:audio/wav;base64,U3RlYWx0aCBzb3VuZCBzaW11bGF0aW9u");
-        } catch(e) {}
-    }
-    
+    // SONS & VIBRATION
     function playSound(type) {
         try {
             let audio = new Audio();
-            if (type === 'win') {
-                audio = new Audio("https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3");
-            } else if (type === 'lose') {
-                audio = new Audio("https://www.soundjay.com/misc/sounds/failure-drum.mp3");
-            } else if (type === 'click') {
-                audio = new Audio("https://www.soundjay.com/misc/sounds/button-click.mp3");
-            } else if (type === 'deposit') {
-                audio = new Audio("https://www.soundjay.com/misc/sounds/cash-register.mp3");
-            }
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log("Audio non supporté"));
+            if (type === 'win') audio = new Audio("https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3");
+            else if (type === 'lose') audio = new Audio("https://www.soundjay.com/misc/sounds/failure-drum.mp3");
+            else if (type === 'click') audio = new Audio("https://www.soundjay.com/misc/sounds/button-click.mp3");
+            else if (type === 'deposit') audio = new Audio("https://www.soundjay.com/misc/sounds/cash-register.mp3");
+            audio.volume = 0.4;
+            audio.play().catch(e => console.log("Audio bloqué"));
         } catch(e) {}
     }
+    function vibrate(pattern) { if(window.navigator?.vibrate) window.navigator.vibrate(pattern); }
     
-    function vibrate(pattern) {
-        if (window.navigator && window.navigator.vibrate) {
-            window.navigator.vibrate(pattern);
-        }
+    // 45+ PAYS POUR LE QUIZ (difficile)
+    const ALL_COUNTRIES = [
+        { name: "Niger", emoji: "🇳🇪", code: "ne" }, { name: "France", emoji: "🇫🇷", code: "fr" },
+        { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" },
+        { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Maroc", emoji: "🇲🇦", code: "ma" },
+        { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Tunisie", emoji: "🇹🇳", code: "tn" },
+        { name: "RDC", emoji: "🇨🇩", code: "cd" }, { name: "Nigéria", emoji: "🇳🇬", code: "ng" },
+        { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "Mali", emoji: "🇲🇱", code: "ml" },
+        { name: "Burkina Faso", emoji: "🇧🇫", code: "bf" }, { name: "Bénin", emoji: "🇧🇯", code: "bj" },
+        { name: "Togo", emoji: "🇹🇬", code: "tg" }, { name: "Ghana", emoji: "🇬🇭", code: "gh" },
+        { name: "Guinée", emoji: "🇬🇳", code: "gn" }, { name: "Gabon", emoji: "🇬🇦", code: "ga" },
+        { name: "Rwanda", emoji: "🇷🇼", code: "rw" }, { name: "Madagascar", emoji: "🇲🇬", code: "mg" },
+        { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Belgique", emoji: "🇧🇪", code: "be" },
+        { name: "Suisse", emoji: "🇨🇭", code: "ch" }, { name: "Allemagne", emoji: "🇩🇪", code: "de" },
+        { name: "Espagne", emoji: "🇪🇸", code: "es" }, { name: "Italie", emoji: "🇮🇹", code: "it" },
+        { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" }, { name: "Brésil", emoji: "🇧🇷", code: "br" },
+        { name: "Japon", emoji: "🇯🇵", code: "jp" }, { name: "Inde", emoji: "🇮🇳", code: "in" },
+        { name: "Chine", emoji: "🇨🇳", code: "cn" }, { name: "Russie", emoji: "🇷🇺", code: "ru" },
+        { name: "Mexique", emoji: "🇲🇽", code: "mx" }, { name: "Argentine", emoji: "🇦🇷", code: "ar" },
+        { name: "Afrique du Sud", emoji: "🇿🇦", code: "za" }, { name: "Kenya", emoji: "🇰🇪", code: "ke" },
+        { name: "Angola", emoji: "🇦🇴", code: "ao" }, { name: "Zambie", emoji: "🇿🇲", code: "zm" },
+        { name: "Ouganda", emoji: "🇺🇬", code: "ug" }, { name: "Tanzanie", emoji: "🇹🇿", code: "tz" },
+        { name: "Mozambique", emoji: "🇲🇿", code: "mz" }, { name: "Chili", emoji: "🇨🇱", code: "cl" },
+        { name: "Pérou", emoji: "🇵🇪", code: "pe" }, { name: "Colombie", emoji: "🇨🇴", code: "co" },
+        { name: "Venezuela", emoji: "🇻🇪", code: "ve" }, { name: "Suède", emoji: "🇸🇪", code: "se" },
+        { name: "Norvège", emoji: "🇳🇴", code: "no" }, { name: "Pays-Bas", emoji: "🇳🇱", code: "nl" }
+    ];
+    
+    function getFlagUrl(code) { return `https://flagcdn.com/w120/${code}.png`; }
+    
+    function generateGameQuestions() {
+        const shuffled = [...ALL_COUNTRIES].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 10);
+        return selected.map(item => {
+            const wrongs = ALL_COUNTRIES.filter(c => c.name !== item.name).sort(() => 0.5 - Math.random()).slice(0, 3);
+            const options = [item.name, ...wrongs.map(w => w.name)];
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            return { name: item.name, emoji: item.emoji, flagUrl: getFlagUrl(item.code), correctAnswer: item.name, options };
+        });
     }
     
-    // Configuration Firebase
+    // GÉNÉRATION DE 100 PRODUITS
+    function generateProductList() {
+        const categories = ["Or", "Diamant", "Montre", "Smartphone", "PC", "Console", "Casque", "Crypto", "Immobilier", "Bourse", "Voiture", "Moto", "Avion", "Yacht", "Art", "NFT", "Montre Luxe", "Sac", "Chaussures", "Parfum"];
+        const emojis = {
+            "Or":"🪙","Diamant":"💎","Montre":"⌚","Smartphone":"📱","PC":"💻","Console":"🎮","Casque":"🎧","Crypto":"₿","Immobilier":"🏠","Bourse":"📈",
+            "Voiture":"🚗","Moto":"🏍️","Avion":"✈️","Yacht":"⛵","Art":"🎨","NFT":"🖼️","Montre Luxe":"⌚","Sac":"👜","Chaussures":"👟","Parfum":"🧴"
+        };
+        let list = [];
+        const pricesList = [500, 800, 1000, 1200, 1500, 1800, 2000, 2500, 3000, 3500, 4000, 4500, 5000];
+        for (let i = 0; i < 100; i++) {
+            let cat = categories[i % categories.length];
+            let productNum = Math.floor(i / categories.length) + 1;
+            let price = pricesList[i % pricesList.length];
+            list.push({
+                id: i + 1,
+                name: `${cat} ${productNum}`,
+                category: cat,
+                emoji: emojis[cat] || "📦",
+                currentPrice: price,
+                isAvailable: true,
+                ownerId: null
+            });
+        }
+        return list;
+    }
+    
+    // FIREBASE
     const firebaseConfig = {
         apiKey: "AIzaSyCxsXpj3ovdd2Wu5HNHN1Zyvf7qG00aXx4",
         authDomain: "dubai-dbd3f.firebaseapp.com",
@@ -334,7 +392,6 @@
     };
 
     let db, ref, set, get, push, onValue, update;
-    
     let currentUser = null;
     let products = [];
     let userInventory = [];
@@ -342,72 +399,20 @@
     let searchTerm = '';
     let selectedCategory = '';
     let currentPage = 1;
-    const itemsPerPage = 18;
+    const itemsPerPage = 24;
     const MAX_PRODUCT_PRICE = 5000;
     const SUPPORT_PHONE = "97413067";
     
-    // Variables de jeu
     let activeGameItem = null;
     let gameQuestions = [], gameAnswers = [], gameIndex = 0, gameActive = false;
     let onGameComplete = null;
-    
-    // Pays pour quiz
-    const COUNTRIES = [
-        { name: "France", emoji: "🇫🇷", code: "fr" }, { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, 
-        { name: "Maroc", emoji: "🇲🇦", code: "ma" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" }, 
-        { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Nigéria", emoji: "🇳🇬", code: "ng" },
-        { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "Brésil", emoji: "🇧🇷", code: "br" }, 
-        { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Algérie", emoji: "🇩🇿", code: "dz" }
-    ];
-    
-    function getFlagUrl(code) { return `https://flagcdn.com/w80/${code}.png`; }
-    
-    function generateGameQuestions() {
-        const shuffled = [...COUNTRIES].sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 10);
-        return selected.map(item => {
-            const wrongs = COUNTRIES.filter(c => c.name !== item.name).sort(() => 0.5 - Math.random()).slice(0, 3);
-            const options = [item.name, ...wrongs.map(w => w.name)];
-            for (let i = options.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [options[i], options[j]] = [options[j], options[i]];
-            }
-            return { name: item.name, emoji: item.emoji, flagUrl: getFlagUrl(item.code), correctAnswer: item.name, options };
-        });
-    }
-    
-    function generateProductList() {
-        const categories = ["Or", "Diamant", "Montre", "Smartphone", "PC", "Console", "Casque", "Crypto", "Immobilier", "Bourse"];
-        const emojis = { "Or":"🪙","Diamant":"💎","Montre":"⌚","Smartphone":"📱","PC":"💻","Console":"🎮","Casque":"🎧","Crypto":"₿","Immobilier":"🏠","Bourse":"📈"};
-        let list = [];
-        for (let i=0; i<30; i++) {
-            let cat = categories[i % categories.length];
-            let basePrice = [500, 800, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000][i % 11];
-            list.push({
-                id: i+1,
-                name: `${cat} ${Math.floor(i/3)+1}`,
-                category: cat,
-                emoji: emojis[cat] || "📦",
-                currentPrice: basePrice,
-                isAvailable: true,
-                ownerId: null
-            });
-        }
-        return list;
-    }
     
     async function initFirebase() {
         const { initializeApp } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js");
         const { getDatabase, ref: dbRef, set: dbSet, get: dbGet, push: dbPush, onValue: dbOnValue, update: dbUpdate } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js");
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-        db = database;
-        ref = dbRef;
-        set = dbSet;
-        get = dbGet;
-        push = dbPush;
-        onValue = dbOnValue;
-        update = dbUpdate;
+        db = database; ref = dbRef; set = dbSet; get = dbGet; push = dbPush; onValue = dbOnValue; update = dbUpdate;
         return { db, ref, set, get, push, onValue, update };
     }
     
@@ -419,7 +424,6 @@
             if (!inv.dailyClaimed) inv.dailyClaimed = [];
             if (inv.gainDaysLeft === undefined) inv.gainDaysLeft = 3;
             if (inv.gainDaysLeft <= 0) continue;
-            
             const purchaseDate = new Date(inv.purchaseDate);
             const dayIndex = Math.floor((now - purchaseDate) / (1000*60*60*24));
             if (dayIndex >= 1 && dayIndex <= 3 && !inv.dailyClaimed.includes(dayIndex)) {
@@ -430,7 +434,7 @@
                 updated = true;
                 playSound('deposit');
                 vibrate([100, 50, 100]);
-                showMessage(`✨ ${inv.productName} : +${reward.toLocaleString()} CFA (gain journalier 45%)`, "success");
+                showMessage(`✨ ${inv.productName} : +${reward.toLocaleString()} CFA (gain jour ${dayIndex})`, "success");
                 await update(ref(db, `inventory/${currentUser.uid}/${inv.id}`), { dailyClaimed: inv.dailyClaimed, gainDaysLeft: inv.gainDaysLeft });
                 await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
             }
@@ -446,9 +450,7 @@
         let snap = await get(productsRef);
         let allProducts = [];
         const snapVal = snap.val();
-        if (snapVal) {
-            allProducts = Array.isArray(snapVal) ? snapVal : Object.values(snapVal);
-        }
+        if (snapVal) allProducts = Array.isArray(snapVal) ? snapVal : Object.values(snapVal);
         const product = allProducts.find(p => p.id === productId);
         if (!product || !product.isAvailable) { showMessage("Produit indisponible", "error"); return; }
         if (currentUser.balance < product.currentPrice) { showMessage("Solde insuffisant", "error"); return; }
@@ -457,9 +459,7 @@
         currentUser.balance -= product.currentPrice;
         await update(ref(db, `users/${currentUser.uid}`), { balance: currentUser.balance });
         
-        const updatedProducts = allProducts.map(p => 
-            p.id === productId ? { ...p, isAvailable: false, ownerId: currentUser.uid } : p
-        );
+        const updatedProducts = allProducts.map(p => p.id === productId ? { ...p, isAvailable: false, ownerId: currentUser.uid } : p);
         await set(productsRef, updatedProducts);
         
         const newItem = {
@@ -474,7 +474,6 @@
             dailyClaimed: [],
         };
         await push(ref(db, `inventory/${currentUser.uid}`), newItem);
-        
         playSound('deposit');
         showMessage(`✅ Achat réussi ! ${product.name} retiré du marché.`, "success");
         await refreshUserInventory();
@@ -485,7 +484,7 @@
         playSound('click');
         const item = userInventory.find(i => i.id === itemId);
         if (!item) { showMessage("Produit non trouvé", "error"); return; }
-        if (item.gainDaysLeft <= 0) { showMessage("Plus de jours de gain disponibles", "error"); return; }
+        if (item.gainDaysLeft <= 0) { showMessage("Plus de jours de gain", "error"); return; }
         if (currentUser.balance < 500) { showMessage("500 CFA requis", "error"); return; }
         
         currentUser.balance -= 500;
@@ -500,7 +499,6 @@
         onGameComplete = async (isWin) => {
             const reward = isWin ? Math.floor(item.purchasePrice * 0.45) : Math.floor(item.purchasePrice * 0.10);
             currentUser.balance += reward;
-            
             if (isWin) { playSound('win'); vibrate([200, 100, 200]); }
             else { playSound('lose'); vibrate([300]); }
             
@@ -517,7 +515,6 @@
             showMessage(isWin ? `🏆 VICTOIRE ! +${reward.toLocaleString()} CFA` : `😞 Perdu... +${reward.toLocaleString()} CFA`, isWin ? "success" : "info");
             renderApp();
         };
-        
         renderGameModal();
         document.getElementById('gameModal').classList.add('active');
     }
@@ -526,28 +523,21 @@
         const container = document.getElementById('GameQuizContainer');
         const resultDiv = document.getElementById('gameResultArea');
         resultDiv.style.display = 'none';
-        
         if (!gameActive || gameIndex >= gameQuestions.length) {
             const allCorrect = gameAnswers.length === 10 && gameAnswers.every((a, i) => a === gameQuestions[i].correctAnswer);
             if (onGameComplete) onGameComplete(allCorrect);
-            resultDiv.innerHTML = allCorrect ? 
-                '<div style="color:#2ecc71; margin:10px;">🏆 VICTOIRE ! 45% ajouté</div>' : 
-                '<div style="color:#e67e22; margin:10px;">🔻 Défaite... 10% ajouté</div>';
+            resultDiv.innerHTML = allCorrect ? '<div style="color:#2ecc71; margin:10px;">🏆 VICTOIRE ! 45% ajouté</div>' : '<div style="color:#e67e22; margin:10px;">🔻 Défaite... 10% ajouté</div>';
             resultDiv.style.display = "block";
             gameActive = false;
-            setTimeout(() => {
-                document.getElementById('gameModal').classList.remove('active');
-                onGameComplete = null;
-            }, 2000);
+            setTimeout(() => { document.getElementById('gameModal').classList.remove('active'); onGameComplete = null; }, 2000);
             return;
         }
-        
         const q = gameQuestions[gameIndex];
         const selected = gameAnswers[gameIndex] || null;
         container.innerHTML = `
             <div class="game-stats">🎯 Question ${gameIndex+1}/10</div>
-            <div class="flag-container"><span style="font-size:2rem;">${q.emoji}</span><img class="flag-img" src="${q.flagUrl}" onerror="this.style.display='none'"></div>
-            <div style="margin:8px 0;">De quel pays est ce drapeau ?</div>
+            <div class="flag-container"><img class="flag-img" src="${q.flagUrl}" onerror="this.style.display='none'"><span style="font-size:2rem;">${q.emoji}</span></div>
+            <div style="margin:8px 0; font-weight:bold;">De quel pays est ce drapeau ?</div>
             ${q.options.map(opt => `<div class="quiz-option ${selected === opt ? 'selected' : ''}" onclick="window.selectGameAnswer('${opt.replace(/'/g, "\\'")}')">${opt}</div>`).join('')}
             <div style="margin:15px 0 5px;">${gameIndex>0?`<button class="confirm-btn" onclick="window.prevGame()" style="background:#e67e22;">◀ Préc</button>`:''}<button class="confirm-btn" onclick="window.nextGame()" style="margin-left:8px;">Suivant ▶</button></div>
         `;
@@ -565,46 +555,32 @@
     
     async function submitDeposit() {
         playSound('click');
-        if (!currentUser) { showMessage("Utilisateur non connecté", "error"); return; }
+        if (!currentUser) return;
         const amount = parseInt(document.getElementById('depositAmount').value);
         const code = document.getElementById('depositCode').value.trim();
-        if (!amount || amount < 1000) { showMessage("Montant minimum 1000 CFA", "error"); return; }
-        if (!code) { showMessage("Code de transaction requis", "error"); return; }
-        try {
-            await push(ref(db, 'deposits'), {
-                userId: currentUser.uid, username: currentUser.username, phone: currentUser.phone,
-                amount: amount, transferCode: code, status: 'pending', date: new Date().toISOString()
-            });
-            playSound('deposit');
-            showMessage(`✅ Demande de dépôt envoyée !`, "success");
-            window.closeDepositModal();
-            document.getElementById('depositAmount').value = '';
-            document.getElementById('depositCode').value = '';
-        } catch(e) { showMessage("Erreur: " + e.message, "error"); }
+        if (!amount || amount < 1000) { showMessage("Min 1000 CFA", "error"); return; }
+        if (!code) { showMessage("Code requis", "error"); return; }
+        await push(ref(db, 'deposits'), { userId: currentUser.uid, username: currentUser.username, phone: currentUser.phone, amount, transferCode: code, status: 'pending', date: new Date().toISOString() });
+        playSound('deposit');
+        showMessage(`✅ Demande de dépôt envoyée !`, "success");
+        window.closeDepositModal();
+        document.getElementById('depositAmount').value = ''; document.getElementById('depositCode').value = '';
     }
     
     async function submitWithdraw() {
         playSound('click');
         if (!currentUser) return;
         const amount = parseInt(document.getElementById('withdrawAmount').value);
-        if (!amount || amount < 3000) { showMessage("Minimum 3000 CFA", "error"); return; }
-        if (amount > 50000) { showMessage("Maximum 50000 CFA", "error"); return; }
+        if (!amount || amount < 3000) { showMessage("Min 3000 CFA", "error"); return; }
+        if (amount > 50000) { showMessage("Max 50000 CFA", "error"); return; }
         if (amount > currentUser.balance) { showMessage("Solde insuffisant", "error"); return; }
-        try {
-            await push(ref(db, 'withdraws'), {
-                userId: currentUser.uid, username: currentUser.username, phone: currentUser.phone,
-                amount: amount, status: 'pending', date: new Date().toISOString()
-            });
-            showMessage(`✅ Demande de retrait envoyée !`, "success");
-            window.closeWithdrawModal();
-            document.getElementById('withdrawAmount').value = '';
-        } catch(e) { showMessage("Erreur: " + e.message, "error"); }
+        await push(ref(db, 'withdraws'), { userId: currentUser.uid, username: currentUser.username, phone: currentUser.phone, amount, status: 'pending', date: new Date().toISOString() });
+        showMessage(`✅ Demande de retrait envoyée !`, "success");
+        window.closeWithdrawModal();
+        document.getElementById('withdrawAmount').value = '';
     }
     
-    function contactSupport() {
-        playSound('click');
-        window.location.href = `tel:${SUPPORT_PHONE}`;
-    }
+    function contactSupport() { playSound('click'); window.location.href = `tel:${SUPPORT_PHONE}`; }
     
     async function startApp() {
         await initFirebase();
@@ -635,55 +611,21 @@
         const totalPages = Math.ceil(available.length / itemsPerPage);
         const paginated = available.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
         const allCats = [...new Set(products.map(p=>p.category))];
-        
-        let content = `
-            <div class="container">
-                <div class="header">
-                    <div class="logo"><h1>🎲 STAR GAME 45%</h1><p>📦 Achat → Jeu quotidien (500 CFA) → 45% ou 10%</p></div>
-                    <div class="user-info">
-                        <span class="username">👤 ${currentUser.username}</span>
-                        <span class="balance">💰 ${currentUser.balance.toLocaleString()} CFA</span>
-                        <button class="support-btn" onclick="window.contactSupport()">📞 Support ${SUPPORT_PHONE}</button>
-                        <button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button>
-                        <button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button>
-                        <button class="logout-btn" onclick="window.logout()">🚪 Exit</button>
-                    </div>
-                </div>
-                <div class="tabs">
-                    <button class="tab-btn ${currentTab==='market'?'active':''}" onclick="window.switchTab('market')">🛍️ Marché (${available.length})</button>
-                    <button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="window.switchTab('inventory')">📦 Mes produits (${userInventory.length})</button>
-                </div>
-        `;
-        
+        let content = `<div class="container"><div class="header"><div class="logo"><h1>🎲 STAR GAME 45%</h1><p>📦 100 produits | Achat → Jeu quotidien</p></div><div class="user-info"><span class="username">👤 ${currentUser.username}</span><span class="balance">💰 ${currentUser.balance.toLocaleString()} CFA</span><button class="support-btn" onclick="window.contactSupport()">📞 ${SUPPORT_PHONE}</button><button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button><button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button><button class="logout-btn" onclick="window.logout()">🚪 Exit</button></div></div>
+        <div class="tabs"><button class="tab-btn ${currentTab==='market'?'active':''}" onclick="window.switchTab('market')">🛍️ Marché (${available.length})</button><button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="window.switchTab('inventory')">📦 Mes produits (${userInventory.length})</button></div>`;
         if (currentTab === 'market') {
             content += `<div class="search-bar"><input id="searchInput" placeholder="🔍 Rechercher" value="${searchTerm}" onkeyup="window.updateSearch(this.value)"><select id="catSelect" onchange="window.updateCategory(this.value)"><option value="all">Toutes catégories</option>${allCats.map(c=>`<option value="${c}" ${selectedCategory===c?'selected':''}>${c}</option>`).join('')}</select></div>
             <div class="products-grid">${paginated.map(p => `<div class="product-card"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-category">${p.category}</div><div class="product-price">${p.currentPrice.toLocaleString()} CFA</div><button class="buy-btn" onclick="window.buyProduct(${p.id})">✔️ Acheter</button></div>`).join('')}</div>
-            ${totalPages>1?`<div class="pagination">${Array.from({length:Math.min(totalPages,5)},(_,i)=>i+1).map(p=>`<button class="page-btn ${p===currentPage?'active':''}" onclick="window.goToPage(${p})">${p}</button>`).join('')}</div>`:''}`;
-        } 
-        else {
-            if (userInventory.length === 0) {
-                content += `<div class="loading">🌟 Aucun produit acheté.</div>`;
-            } else {
-                userInventory.forEach(item => {
-                    const daysLeft = item.gainDaysLeft || 0;
-                    const claimedCount = (item.dailyClaimed || []).length;
-                    content += `
-                        <div class="inventory-item">
-                            <div style="flex:2">
-                                <strong>${item.productEmoji} ${item.productName}</strong>
-                                <div class="product-detail">💰 Prix: ${item.purchasePrice.toLocaleString()} CFA</div>
-                                <div class="timer-active">⏳ Gains restants: ${daysLeft} jour(s) (${claimedCount}/3)</div>
-                            </div>
-                            <div>
-                                ${daysLeft > 0 ? `<button class="play-game-btn" onclick="window.playGameForItem(${item.id})">🎮 Jouer (500 CFA)<br><span style="font-size:0.6rem;">45% ou 10%</span></button>` : `<span style="background:#2c3e50; padding:8px 15px; border-radius:30px;">✅ Terminé</span>`}
-                            </div>
-                        </div>
-                    `;
-                });
-            }
+            ${totalPages>1?`<div class="pagination">${Array.from({length:Math.min(totalPages,6)},(_,i)=>i+1).map(p=>`<button class="page-btn ${p===currentPage?'active':''}" onclick="window.goToPage(${p})">${p}</button>`).join('')}</div>`:''}`;
+        } else {
+            if (userInventory.length === 0) content += `<div class="loading">🌟 Aucun produit acheté.</div>`;
+            else userInventory.forEach(item => {
+                const daysLeft = item.gainDaysLeft || 0;
+                const claimedCount = (item.dailyClaimed || []).length;
+                content += `<div class="inventory-item"><div><strong>${item.productEmoji} ${item.productName}</strong><div class="product-detail">💰 ${item.purchasePrice.toLocaleString()} CFA</div><div class="timer-active">⏳ Gains restants: ${daysLeft} jour(s) (${claimedCount}/3)</div></div><div>${daysLeft > 0 ? `<button class="play-game-btn" onclick="window.playGameForItem(${item.id})">🎮 Jouer (500 CFA)<br><span style="font-size:0.6rem;">45% ou 10%</span></button>` : `<span style="background:#2c3e50; padding:8px 15px; border-radius:30px;">✅ Terminé</span>`}</div></div>`;
+            });
         }
-        content += `</div>`;
-        document.getElementById('app').innerHTML = content;
+        content += `</div>`; document.getElementById('app').innerHTML = content;
     }
     
     function validatePhone(phone) { return /^\d{8}$/.test(phone); }
@@ -694,24 +636,21 @@
         let phone = document.getElementById('authPhone').value.trim();
         let country = document.getElementById('authCountry').value;
         let pwd = document.getElementById('authPassword').value;
-        
-        if (!u || u.length < 3) { showMessage("Nom d'utilisateur (min 3 caractères)", "error"); return; }
-        if (!validatePhone(phone)) { showMessage("Numéro: 8 chiffres obligatoires", "error"); return; }
-        if (!country) { showMessage("Choisissez votre pays", "error"); return; }
-        if (!validatePassword(pwd)) { showMessage("Mot de passe: 8 caractères (lettres+chiffres)", "error"); return; }
-        
+        if (!u || u.length < 3) { showMessage("Nom (min 3)", "error"); return; }
+        if (!validatePhone(phone)) { showMessage("Numéro 8 chiffres", "error"); return; }
+        if (!country) { showMessage("Choisissez pays", "error"); return; }
+        if (!validatePassword(pwd)) { showMessage("MDP: 8 caractères lettres+chiffres", "error"); return; }
         await initFirebase();
         const usersRef = ref(db, 'users');
         const snap = await get(usersRef);
         const users = snap.val() || {};
-        
         if (!isLoginMode) {
             let exists = Object.values(users).some(usr => usr.username === u || usr.phone === phone);
             if (exists) { showMessage("Pseudo ou numéro déjà utilisé", "error"); return; }
             const uid = `user_${Date.now()}_${Math.random().toString(36).substr(2,6)}`;
             await set(ref(db, `users/${uid}`), { username: u, phone: phone, country: country, password: pwd, balance: 5000 });
             currentUser = { uid, username: u, phone: phone, country: country, balance: 5000 };
-            showMessage(`✅ Inscription réussie ! 5000 CFA offerts`, "success");
+            showMessage(`✅ Inscription réussie ! 5000 CFA`, "success");
         } else {
             let found = null;
             for (let [id, val] of Object.entries(users)) {
@@ -725,64 +664,27 @@
         await startApp();
     }
     
-    function toggleAuthMode() { 
-        isLoginMode = !isLoginMode; 
-        document.getElementById('authTitle').innerText = isLoginMode ? "🔐 CONNEXION" : "📝 INSCRIPTION"; 
-        document.getElementById('authBtn').innerText = isLoginMode ? "Se connecter" : "S'inscrire"; 
-    }
+    function toggleAuthMode() { isLoginMode = !isLoginMode; document.getElementById('authTitle').innerText = isLoginMode ? "🔐 CONNEXION" : "📝 INSCRIPTION"; document.getElementById('authBtn').innerText = isLoginMode ? "Se connecter" : "S'inscrire"; }
+    async function logout() { localStorage.removeItem('tradingUser'); currentUser = null; document.getElementById('authModal').classList.add('active'); document.getElementById('app').innerHTML = ''; }
+    function showMessage(msg, type) { let div = document.createElement('div'); div.className = `message message-${type}`; div.innerText = msg; document.body.appendChild(div); setTimeout(() => div.remove(), 3000); }
     
-    async function logout() { 
-        localStorage.removeItem('tradingUser'); 
-        currentUser = null; 
-        document.getElementById('authModal').classList.add('active'); 
-        document.getElementById('app').innerHTML = ''; 
-    }
-    
-    function showMessage(msg, type) {
-        let div = document.createElement('div');
-        div.className = `message message-${type}`;
-        div.innerText = msg;
-        document.body.appendChild(div);
-        setTimeout(() => div.remove(), 3000);
-    }
-    
-    window.handleAuth = handleAuth;
-    window.toggleAuthMode = toggleAuthMode;
-    window.buyProduct = buyProduct;
-    window.playGameForItem = playGameForItem;
-    window.selectGameAnswer = selectGameAnswer;
-    window.nextGame = nextGame;
-    window.prevGame = prevGame;
-    window.closeGameModal = closeGameModal;
-    window.switchTab = (t) => { currentTab = t; currentPage = 1; renderApp(); };
-    window.updateSearch = (v) => { searchTerm = v; currentPage = 1; renderApp(); };
-    window.updateCategory = (c) => { selectedCategory = c; currentPage = 1; renderApp(); };
-    window.goToPage = (p) => { currentPage = p; renderApp(); };
-    window.openDepositModal = () => document.getElementById('depositModal').classList.add('active');
-    window.closeDepositModal = () => document.getElementById('depositModal').classList.remove('active');
-    window.openWithdrawModal = () => document.getElementById('withdrawModal').classList.add('active');
-    window.closeWithdrawModal = () => document.getElementById('withdrawModal').classList.remove('active');
-    window.submitDeposit = submitDeposit;
-    window.submitWithdraw = submitWithdraw;
-    window.contactSupport = contactSupport;
-    window.logout = logout;
+    window.handleAuth = handleAuth; window.toggleAuthMode = toggleAuthMode; window.buyProduct = buyProduct; window.playGameForItem = playGameForItem;
+    window.selectGameAnswer = selectGameAnswer; window.nextGame = nextGame; window.prevGame = prevGame; window.closeGameModal = closeGameModal;
+    window.switchTab = (t) => { currentTab = t; currentPage = 1; renderApp(); }; window.updateSearch = (v) => { searchTerm = v; currentPage = 1; renderApp(); };
+    window.updateCategory = (c) => { selectedCategory = c; currentPage = 1; renderApp(); }; window.goToPage = (p) => { currentPage = p; renderApp(); };
+    window.openDepositModal = () => document.getElementById('depositModal').classList.add('active'); window.closeDepositModal = () => document.getElementById('depositModal').classList.remove('active');
+    window.openWithdrawModal = () => document.getElementById('withdrawModal').classList.add('active'); window.closeWithdrawModal = () => document.getElementById('withdrawModal').classList.remove('active');
+    window.submitDeposit = submitDeposit; window.submitWithdraw = submitWithdraw; window.contactSupport = contactSupport; window.logout = logout;
     
     let isLoginMode = true;
-    initSounds();
-    
     (async () => {
         let saved = localStorage.getItem('tradingUser');
         if (saved) {
             try {
-                let { uid, username } = JSON.parse(saved);
+                let { uid } = JSON.parse(saved);
                 await initFirebase();
                 let userSnap = await get(ref(db, `users/${uid}`));
-                if (userSnap.exists()) {
-                    currentUser = { uid, ...userSnap.val() };
-                    document.getElementById('authModal').classList.remove('active');
-                    await startApp();
-                    return;
-                }
+                if (userSnap.exists()) { currentUser = { uid, ...userSnap.val() }; document.getElementById('authModal').classList.remove('active'); await startApp(); return; }
             } catch(e) {}
         }
         document.getElementById('authModal').classList.add('active');

@@ -112,14 +112,6 @@
             gap: 10px;
             border-left: 5px solid #f39c12;
         }
-        .timer-active {
-            background: rgba(46,204,113,0.25);
-            border-radius: 20px;
-            padding: 3px 10px;
-            font-size: 0.65em;
-            font-weight: bold;
-            display: inline-block;
-        }
         .play-game-btn {
             background: #e67e22;
             border: none;
@@ -194,7 +186,9 @@
             padding: 10px;
             margin: 8px 0;
             cursor: pointer;
+            transition: all 0.2s;
         }
+        .quiz-option:hover { background: rgba(255,255,255,0.25); }
         .quiz-option.selected { background: #f39c12; color: #1e2a3a; font-weight: bold; }
         .game-stats { font-size: 0.75rem; margin-bottom: 8px; color: #ffd966; }
         .loading { text-align: center; padding: 40px; }
@@ -245,7 +239,7 @@
 <div id="gameModal" class="modal">
     <div class="modal-content">
         <h2>🎲 JEU DES DRAPEAUX</h2>
-        <p style="font-size:0.7rem;">💰 500 CFA pour jouer → Gagnez 45% | Perdez → 10%</p>
+        <p style="font-size:0.7rem;">💰 500 CFA pour jouer → <span style="color:#2ecc71;">Gagnez: 140%</span> | <span style="color:#e74c3c;">Perdez: 50%</span></p>
         <div id="GameQuizContainer"></div>
         <div id="gameResultArea" style="display:none;"></div>
         <button class="close-modal" onclick="window.closeGameModal()">Fermer</button>
@@ -300,7 +294,7 @@
     const itemsPerPage = 24;
     const MAX_PRODUCT_PRICE = 5000;
     const SUPPORT_PHONE = "97413067";
-    const INITIAL_BALANCE = 500; // ✅ Modifié de 5000 à 500
+    const INITIAL_BALANCE = 500;
     
     let activeGameItem = null;
     let gameQuestions = [], gameAnswers = [], gameIndex = 0, gameActive = false;
@@ -317,11 +311,9 @@
         } catch(e) {}
     }
     
+    // 🌍 BASE DE DONNÉES COMPLÈTE DE DRAPEAUX (100+ pays)
     const ALL_COUNTRIES = [
-        { name: "Niger", emoji: "🇳🇪", code: "ne" }, { name: "France", emoji: "🇫🇷", code: "fr" },
-        { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" },
-        { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Maroc", emoji: "🇲🇦", code: "ma" },
-        { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Tunisie", emoji: "🇹🇳", code: "tn" }
+        { name: "Afghanistan", emoji: "🇦🇫", code: "af" }, { name: "Afrique du Sud", emoji: "🇿🇦", code: "za" }, { name: "Albanie", emoji: "🇦🇱", code: "al" }, { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Allemagne", emoji: "🇩🇪", code: "de" }, { name: "Andorre", emoji: "🇦🇩", code: "ad" }, { name: "Angola", emoji: "🇦🇴", code: "ao" }, { name: "Argentine", emoji: "🇦🇷", code: "ar" }, { name: "Arménie", emoji: "🇦🇲", code: "am" }, { name: "Australie", emoji: "🇦🇺", code: "au" }, { name: "Autriche", emoji: "🇦🇹", code: "at" }, { name: "Azerbaïdjan", emoji: "🇦🇿", code: "az" }, { name: "Bahamas", emoji: "🇧🇸", code: "bs" }, { name: "Bahreïn", emoji: "🇧🇭", code: "bh" }, { name: "Bangladesh", emoji: "🇧🇩", code: "bd" }, { name: "Belgique", emoji: "🇧🇪", code: "be" }, { name: "Bénin", emoji: "🇧🇯", code: "bj" }, { name: "Bhoutan", emoji: "🇧🇹", code: "bt" }, { name: "Biélorussie", emoji: "🇧🇾", code: "by" }, { name: "Birmanie", emoji: "🇲🇲", code: "mm" }, { name: "Bolivie", emoji: "🇧🇴", code: "bo" }, { name: "Bosnie", emoji: "🇧🇦", code: "ba" }, { name: "Botswana", emoji: "🇧🇼", code: "bw" }, { name: "Brésil", emoji: "🇧🇷", code: "br" }, { name: "Brunei", emoji: "🇧🇳", code: "bn" }, { name: "Bulgarie", emoji: "🇧🇬", code: "bg" }, { name: "Burkina Faso", emoji: "🇧🇫", code: "bf" }, { name: "Burundi", emoji: "🇧🇮", code: "bi" }, { name: "Cambodge", emoji: "🇰🇭", code: "kh" }, { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Cap-Vert", emoji: "🇨🇻", code: "cv" }, { name: "Chili", emoji: "🇨🇱", code: "cl" }, { name: "Chine", emoji: "🇨🇳", code: "cn" }, { name: "Chypre", emoji: "🇨🇾", code: "cy" }, { name: "Colombie", emoji: "🇨🇴", code: "co" }, { name: "Comores", emoji: "🇰🇲", code: "km" }, { name: "Congo", emoji: "🇨🇬", code: "cg" }, { name: "Corée du Nord", emoji: "🇰🇵", code: "kp" }, { name: "Corée du Sud", emoji: "🇰🇷", code: "kr" }, { name: "Costa Rica", emoji: "🇨🇷", code: "cr" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" }, { name: "Croatie", emoji: "🇭🇷", code: "hr" }, { name: "Cuba", emoji: "🇨🇺", code: "cu" }, { name: "Danemark", emoji: "🇩🇰", code: "dk" }, { name: "Djibouti", emoji: "🇩🇯", code: "dj" }, { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "Émirats Arabes Unis", emoji: "🇦🇪", code: "ae" }, { name: "Équateur", emoji: "🇪🇨", code: "ec" }, { name: "Érythrée", emoji: "🇪🇷", code: "er" }, { name: "Espagne", emoji: "🇪🇸", code: "es" }, { name: "Estonie", emoji: "🇪🇪", code: "ee" }, { name: "Eswatini", emoji: "🇸🇿", code: "sz" }, { name: "États-Unis", emoji: "🇺🇸", code: "us" }, { name: "Éthiopie", emoji: "🇪🇹", code: "et" }, { name: "Fidji", emoji: "🇫🇯", code: "fj" }, { name: "Finlande", emoji: "🇫🇮", code: "fi" }, { name: "France", emoji: "🇫🇷", code: "fr" }, { name: "Gabon", emoji: "🇬🇦", code: "ga" }, { name: "Gambie", emoji: "🇬🇲", code: "gm" }, { name: "Géorgie", emoji: "🇬🇪", code: "ge" }, { name: "Ghana", emoji: "🇬🇭", code: "gh" }, { name: "Grèce", emoji: "🇬🇷", code: "gr" }, { name: "Guinée", emoji: "🇬🇳", code: "gn" }, { name: "Haïti", emoji: "🇭🇹", code: "ht" }, { name: "Honduras", emoji: "🇭🇳", code: "hn" }, { name: "Hongrie", emoji: "🇭🇺", code: "hu" }, { name: "Inde", emoji: "🇮🇳", code: "in" }, { name: "Indonésie", emoji: "🇮🇩", code: "id" }, { name: "Irak", emoji: "🇮🇶", code: "iq" }, { name: "Iran", emoji: "🇮🇷", code: "ir" }, { name: "Irlande", emoji: "🇮🇪", code: "ie" }, { name: "Islande", emoji: "🇮🇸", code: "is" }, { name: "Israël", emoji: "🇮🇱", code: "il" }, { name: "Italie", emoji: "🇮🇹", code: "it" }, { name: "Jamaïque", emoji: "🇯🇲", code: "jm" }, { name: "Japon", emoji: "🇯🇵", code: "jp" }, { name: "Jordanie", emoji: "🇯🇴", code: "jo" }, { name: "Kazakhstan", emoji: "🇰🇿", code: "kz" }, { name: "Kenya", emoji: "🇰🇪", code: "ke" }, { name: "Kirghizistan", emoji: "🇰🇬", code: "kg" }, { name: "Koweït", emoji: "🇰🇼", code: "kw" }, { name: "Laos", emoji: "🇱🇦", code: "la" }, { name: "Lesotho", emoji: "🇱🇸", code: "ls" }, { name: "Lettonie", emoji: "🇱🇻", code: "lv" }, { name: "Liban", emoji: "🇱🇧", code: "lb" }, { name: "Libéria", emoji: "🇱🇷", code: "lr" }, { name: "Libye", emoji: "🇱🇾", code: "ly" }, { name: "Liechtenstein", emoji: "🇱🇮", code: "li" }, { name: "Lituanie", emoji: "🇱🇹", code: "lt" }, { name: "Luxembourg", emoji: "🇱🇺", code: "lu" }, { name: "Madagascar", emoji: "🇲🇬", code: "mg" }, { name: "Malaisie", emoji: "🇲🇾", code: "my" }, { name: "Malawi", emoji: "🇲🇼", code: "mw" }, { name: "Maldives", emoji: "🇲🇻", code: "mv" }, { name: "Mali", emoji: "🇲🇱", code: "ml" }, { name: "Malte", emoji: "🇲🇹", code: "mt" }, { name: "Maroc", emoji: "🇲🇦", code: "ma" }, { name: "Maurice", emoji: "🇲🇺", code: "mu" }, { name: "Mauritanie", emoji: "🇲🇷", code: "mr" }, { name: "Mexique", emoji: "🇲🇽", code: "mx" }, { name: "Moldavie", emoji: "🇲🇩", code: "md" }, { name: "Monaco", emoji: "🇲🇨", code: "mc" }, { name: "Mongolie", emoji: "🇲🇳", code: "mn" }, { name: "Monténégro", emoji: "🇲🇪", code: "me" }, { name: "Mozambique", emoji: "🇲🇿", code: "mz" }, { name: "Namibie", emoji: "🇳🇦", code: "na" }, { name: "Népal", emoji: "🇳🇵", code: "np" }, { name: "Nicaragua", emoji: "🇳🇮", code: "ni" }, { name: "Niger", emoji: "🇳🇪", code: "ne" }, { name: "Nigéria", emoji: "🇳🇬", code: "ng" }, { name: "Norvège", emoji: "🇳🇴", code: "no" }, { name: "Nouvelle-Zélande", emoji: "🇳🇿", code: "nz" }, { name: "Oman", emoji: "🇴🇲", code: "om" }, { name: "Ouganda", emoji: "🇺🇬", code: "ug" }, { name: "Ouzbékistan", emoji: "🇺🇿", code: "uz" }, { name: "Pakistan", emoji: "🇵🇰", code: "pk" }, { name: "Panama", emoji: "🇵🇦", code: "pa" }, { name: "Pérou", emoji: "🇵🇪", code: "pe" }, { name: "Philippines", emoji: "🇵🇭", code: "ph" }, { name: "Pologne", emoji: "🇵🇱", code: "pl" }, { name: "Portugal", emoji: "🇵🇹", code: "pt" }, { name: "Qatar", emoji: "🇶🇦", code: "qa" }, { name: "République Dominicaine", emoji: "🇩🇴", code: "do" }, { name: "Roumanie", emoji: "🇷🇴", code: "ro" }, { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" }, { name: "Russie", emoji: "🇷🇺", code: "ru" }, { name: "Rwanda", emoji: "🇷🇼", code: "rw" }, { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, { name: "Serbie", emoji: "🇷🇸", code: "rs" }, { name: "Seychelles", emoji: "🇸🇨", code: "sc" }, { name: "Singapour", emoji: "🇸🇬", code: "sg" }, { name: "Slovaquie", emoji: "🇸🇰", code: "sk" }, { name: "Slovénie", emoji: "🇸🇮", code: "si" }, { name: "Somalie", emoji: "🇸🇴", code: "so" }, { name: "Soudan", emoji: "🇸🇩", code: "sd" }, { name: "Sri Lanka", emoji: "🇱🇰", code: "lk" }, { name: "Suède", emoji: "🇸🇪", code: "se" }, { name: "Suisse", emoji: "🇨🇭", code: "ch" }, { name: "Suriname", emoji: "🇸🇷", code: "sr" }, { name: "Syrie", emoji: "🇸🇾", code: "sy" }, { name: "Tadjikistan", emoji: "🇹🇯", code: "tj" }, { name: "Tanzanie", emoji: "🇹🇿", code: "tz" }, { name: "Tchad", emoji: "🇹🇩", code: "td" }, { name: "Tchéquie", emoji: "🇨🇿", code: "cz" }, { name: "Thaïlande", emoji: "🇹🇭", code: "th" }, { name: "Togo", emoji: "🇹🇬", code: "tg" }, { name: "Tunisie", emoji: "🇹🇳", code: "tn" }, { name: "Turkménistan", emoji: "🇹🇲", code: "tm" }, { name: "Turquie", emoji: "🇹🇷", code: "tr" }, { name: "Ukraine", emoji: "🇺🇦", code: "ua" }, { name: "Uruguay", emoji: "🇺🇾", code: "uy" }, { name: "Vatican", emoji: "🇻🇦", code: "va" }, { name: "Venezuela", emoji: "🇻🇪", code: "ve" }, { name: "Vietnam", emoji: "🇻🇳", code: "vn" }, { name: "Yémen", emoji: "🇾🇪", code: "ye" }, { name: "Zambie", emoji: "🇿🇲", code: "zm" }, { name: "Zimbabwe", emoji: "🇿🇼", code: "zw" }
     ];
     
     function generateGameQuestions() {
@@ -334,7 +326,13 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [options[i], options[j]] = [options[j], options[i]];
             }
-            return { name: item.name, emoji: item.emoji, flagUrl: `https://flagcdn.com/w120/${item.code}.png`, correctAnswer: item.name, options };
+            return { 
+                name: item.name, 
+                emoji: item.emoji, 
+                flagUrl: `https://flagcdn.com/w120/${item.code}.png`, 
+                correctAnswer: item.name, 
+                options 
+            };
         });
     }
     
@@ -350,30 +348,6 @@
             list.push({ id: i + 1, name: `${cat} ${productNum}`, category: cat, emoji: emojis[cat] || "📦", currentPrice: price, isAvailable: true, ownerId: null });
         }
         return list;
-    }
-    
-    async function processDailyEarnings() {
-        if (!currentUserData) return;
-        const now = new Date();
-        let updated = false;
-        for (let inv of userInventory) {
-            if (!inv.dailyClaimed) inv.dailyClaimed = [];
-            if (inv.gainDaysLeft === undefined) inv.gainDaysLeft = 3;
-            if (inv.gainDaysLeft <= 0) continue;
-            const purchaseDate = new Date(inv.purchaseDate);
-            const dayIndex = Math.floor((now - purchaseDate) / (1000*60*60*24));
-            if (dayIndex >= 1 && dayIndex <= 3 && !inv.dailyClaimed.includes(dayIndex)) {
-                const reward = Math.floor(inv.purchasePrice * 0.45);
-                currentUserData.balance += reward;
-                inv.dailyClaimed.push(dayIndex);
-                inv.gainDaysLeft--;
-                updated = true;
-                await database.ref(`inventory/${currentUser.uid}/${inv.id}`).update({ dailyClaimed: inv.dailyClaimed, gainDaysLeft: inv.gainDaysLeft });
-                await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
-                showMessage(`✨ ${inv.productName} : +${reward.toLocaleString()} CFA`, "success");
-            }
-        }
-        if (updated) renderApp();
     }
     
     async function buyProduct(productId) {
@@ -399,12 +373,10 @@
             productName: product.name,
             productEmoji: product.emoji,
             purchasePrice: product.currentPrice,
-            purchaseDate: new Date().toISOString(),
-            gainDaysLeft: 3,
-            dailyClaimed: [],
+            purchaseDate: new Date().toISOString()
         };
         await database.ref(`inventory/${currentUser.uid}`).push(newItem);
-        showMessage(`✅ Achat réussi ! ${product.name} retiré du marché.`, "success");
+        showMessage(`✅ Achat réussi ! ${product.name} ajouté à votre inventaire.`, "success");
         await refreshUserInventory();
         renderApp();
     }
@@ -413,11 +385,11 @@
         playSound('click');
         const item = userInventory.find(i => i.id === itemId);
         if (!item) { showMessage("Produit non trouvé", "error"); return; }
-        if (item.gainDaysLeft <= 0) { showMessage("Plus de jours de gain", "error"); return; }
-        if (currentUserData.balance < 500) { showMessage("500 CFA requis", "error"); return; }
+        if (currentUserData.balance < 500) { showMessage("500 CFA requis pour jouer", "error"); return; }
         
         currentUserData.balance -= 500;
         await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
+        showMessage(`🎮 500 CFA débités, bonne chance !`, "info");
         
         activeGameItem = item;
         gameQuestions = generateGameQuestions();
@@ -426,55 +398,141 @@
         gameActive = true;
         
         onGameComplete = async (isWin) => {
-            const reward = isWin ? Math.floor(item.purchasePrice * 0.45) : Math.floor(item.purchasePrice * 0.10);
-            currentUserData.balance += reward;
-            if (isWin) playSound('win'); else playSound('lose');
+            let reward = 0;
+            const correctCount = gameAnswers.filter((ans, i) => ans === gameQuestions[i].correctAnswer).length;
             
-            const now = new Date();
-            const purchaseDate = new Date(item.purchaseDate);
-            const dayIndex = Math.floor((now - purchaseDate) / (1000*60*60*24));
-            if (!item.dailyClaimed) item.dailyClaimed = [];
-            if (dayIndex >= 1 && dayIndex <= 3 && !item.dailyClaimed.includes(dayIndex)) {
-                item.dailyClaimed.push(dayIndex);
-                item.gainDaysLeft--;
-                await database.ref(`inventory/${currentUser.uid}/${item.id}`).update({ dailyClaimed: item.dailyClaimed, gainDaysLeft: item.gainDaysLeft });
+            if (isWin) {
+                reward = Math.floor(item.purchasePrice * 1.40);
+                currentUserData.balance += reward;
+                playSound('win');
+                showMessage(`🏆 VICTOIRE PARFAITE (10/10) ! +${reward.toLocaleString()} CFA (140% du produit)`, "success");
+            } else {
+                reward = Math.floor(item.purchasePrice * 0.50);
+                currentUserData.balance += reward;
+                playSound('lose');
+                showMessage(`😞 DÉFAITE (${correctCount}/10) ! +${reward.toLocaleString()} CFA (50% du produit)`, "info");
             }
+            
             await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
-            showMessage(isWin ? `🏆 VICTOIRE ! +${reward.toLocaleString()} CFA` : `😞 Perdu... +${reward.toLocaleString()} CFA`, isWin ? "success" : "info");
+            
+            // ✅ SUPPRESSION FORCÉE DU PRODUIT
+            try {
+                await database.ref(`inventory/${currentUser.uid}/${item.id}`).remove();
+                console.log("✅ Produit supprimé avec succès:", item.id);
+                showMessage(`🗑️ Le produit "${item.productName}" a disparu de votre inventaire`, "info");
+            } catch(error) {
+                console.error("❌ Erreur lors de la suppression:", error);
+                showMessage(`⚠️ Erreur suppression: ${error.message}`, "error");
+            }
+            
+            // ✅ REMETTRE LE PRODUIT SUR LE MARCHÉ
+            try {
+                const snap = await database.ref('products').once('value');
+                let allProducts = [];
+                const snapVal = snap.val();
+                if (snapVal) allProducts = Array.isArray(snapVal) ? snapVal : Object.values(snapVal);
+                
+                const updatedProducts = allProducts.map(p => p.id === item.productId ? { ...p, isAvailable: true, ownerId: null } : p);
+                await database.ref('products').set(updatedProducts);
+                console.log("✅ Produit remis sur le marché:", item.productName);
+            } catch(error) {
+                console.error("❌ Erreur remise sur marché:", error);
+            }
+            
+            await refreshUserInventory();
             renderApp();
         };
+        
         renderGameModal();
         document.getElementById('gameModal').classList.add('active');
+    }
+    
+    function nextGame() { 
+        if (gameActive && gameAnswers[gameIndex]) { 
+            gameIndex++; 
+            renderGameModal(); 
+        } else if (!gameAnswers[gameIndex]) {
+            showMessage("Veuillez choisir une réponse avant de continuer", "info");
+        }
+    }
+    
+    function prevGame() { 
+        if (gameActive && gameIndex > 0) { 
+            gameIndex--; 
+            renderGameModal(); 
+        } 
+    }
+    
+    function selectGameAnswer(ans) { 
+        if (gameActive && gameAnswers[gameIndex] === undefined) { 
+            gameAnswers[gameIndex] = ans; 
+            renderGameModal(); 
+        } 
     }
     
     function renderGameModal() {
         const container = document.getElementById('GameQuizContainer');
         const resultDiv = document.getElementById('gameResultArea');
         resultDiv.style.display = 'none';
+        
         if (!gameActive || gameIndex >= gameQuestions.length) {
-            const allCorrect = gameAnswers.length === 10 && gameAnswers.every((a, i) => a === gameQuestions[i].correctAnswer);
-            if (onGameComplete) onGameComplete(allCorrect);
-            resultDiv.innerHTML = allCorrect ? '<div style="color:#2ecc71;">🏆 VICTOIRE ! 45% ajouté</div>' : '<div style="color:#e67e22;">🔻 Défaite... 10% ajouté</div>';
-            resultDiv.style.display = "block";
+            container.innerHTML = "";
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="loading">🎲 Calcul des résultats...</div>';
+            
+            const correctCount = gameAnswers.filter((ans, i) => ans === gameQuestions[i]?.correctAnswer).length;
+            const isWin = (correctCount === 10);
+            
+            if (onGameComplete) {
+                onGameComplete(isWin);
+                onGameComplete = null;
+            }
+            
+            resultDiv.innerHTML = isWin ? 
+                `<div style="color:#2ecc71; font-weight:bold; font-size:1.2em;">🏆 VICTOIRE PARFAITE ! (10/10)<br>+140% crédités<br>✅ Produit supprimé et retourné au marché</div>` : 
+                `<div style="color:#e67e22; font-weight:bold;">🔻 DÉFAITE (${correctCount}/10)<br>+50% retournés<br>🗑️ Produit supprimé et retourné au marché</div>`;
+            
             gameActive = false;
-            setTimeout(() => { document.getElementById('gameModal').classList.remove('active'); onGameComplete = null; }, 2000);
+            
+            setTimeout(() => { 
+                document.getElementById('gameModal').classList.remove('active'); 
+                renderApp();
+            }, 4500);
             return;
         }
+        
         const q = gameQuestions[gameIndex];
         const selected = gameAnswers[gameIndex] || null;
+        const isLastQuestion = (gameIndex === 9);
+        
         container.innerHTML = `
-            <div class="game-stats">🎯 Question ${gameIndex+1}/10</div>
-            <div class="flag-container"><img class="flag-img" src="${q.flagUrl}" onerror="this.style.display='none'"><span style="font-size:2rem;">${q.emoji}</span></div>
-            <div style="margin:8px 0;">De quel pays est ce drapeau ?</div>
-            ${q.options.map(opt => `<div class="quiz-option ${selected === opt ? 'selected' : ''}" onclick="window.selectGameAnswer('${opt.replace(/'/g, "\\'")}')">${opt}</div>`).join('')}
-            <div style="margin:15px 0;">${gameIndex>0?`<button class="confirm-btn" onclick="window.prevGame()" style="background:#e67e22;">◀ Préc</button>`:''}<button class="confirm-btn" onclick="window.nextGame()">Suivant ▶</button></div>
+            <div class="game-stats">🎯 Question ${gameIndex + 1} / 10</div>
+            <div class="flag-container">
+                <img class="flag-img" src="${q.flagUrl}" onerror="this.style.display='none'">
+                <span style="font-size:2rem;">${q.emoji}</span>
+            </div>
+            <div style="margin:8px 0; font-weight:bold;">De quel pays est ce drapeau ?</div>
+            ${q.options.map(opt => `
+                <div class="quiz-option ${selected === opt ? 'selected' : ''}" 
+                     onclick="window.selectGameAnswer('${opt.replace(/'/g, "\\'")}')">
+                     ${opt}
+                </div>
+            `).join('')}
+            <div style="margin:15px 0;">
+                ${gameIndex > 0 ? `<button class="confirm-btn" onclick="window.prevGame()" style="background:#7f8c8d;">◀ Préc</button>` : ''}
+                <button class="confirm-btn" onclick="window.nextGame()" style="background:#f39c12;">
+                    ${isLastQuestion ? '🏆 TERMINER' : 'SUIVANT ▶'}
+                </button>
+            </div>
         `;
     }
     
-    function selectGameAnswer(ans) { if(gameActive) { gameAnswers[gameIndex] = ans; renderGameModal(); } }
-    function nextGame() { if(gameActive && gameAnswers[gameIndex] && gameIndex+1 <= gameQuestions.length) { gameIndex++; renderGameModal(); } }
-    function prevGame() { if(gameActive && gameIndex>0) { gameIndex--; renderGameModal(); } }
-    function closeGameModal() { document.getElementById('gameModal').classList.remove('active'); gameActive = false; onGameComplete = null; renderApp(); }
+    function closeGameModal() { 
+        document.getElementById('gameModal').classList.remove('active'); 
+        gameActive = false; 
+        onGameComplete = null; 
+        renderApp(); 
+    }
     
     async function refreshUserInventory() {
         const snap = await database.ref(`inventory/${currentUser.uid}`).once('value');
@@ -517,7 +575,7 @@
         const totalPages = Math.ceil(available.length / itemsPerPage);
         const paginated = available.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
         const allCats = [...new Set(products.map(p=>p.category))];
-        let content = `<div class="container"><div class="header"><div class="logo"><h1>🎲 STAR GAME 45%</h1><p>📦 100 produits</p></div><div class="user-info"><span class="username">👤 ${currentUserData.username}</span><span class="balance">💰 ${currentUserData.balance.toLocaleString()} CFA</span><button class="support-btn" onclick="window.contactSupport()">📞 ${SUPPORT_PHONE}</button><button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button><button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button><button class="logout-btn" onclick="window.logout()">🚪 Exit</button></div></div>
+        let content = `<div class="container"><div class="header"><div class="logo"><h1>🎲 STAR GAME 140%</h1><p>📦 100 produits</p></div><div class="user-info"><span class="username">👤 ${currentUserData.username}</span><span class="balance">💰 ${currentUserData.balance.toLocaleString()} CFA</span><button class="support-btn" onclick="window.contactSupport()">📞 ${SUPPORT_PHONE}</button><button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button><button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button><button class="logout-btn" onclick="window.logout()">🚪 Exit</button></div></div>
         <div class="tabs"><button class="tab-btn ${currentTab==='market'?'active':''}" onclick="window.switchTab('market')">🛍️ Marché (${available.length})</button><button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="window.switchTab('inventory')">📦 Mes produits (${userInventory.length})</button></div>`;
         if (currentTab === 'market') {
             content += `<div class="search-bar"><input id="searchInput" placeholder="🔍 Rechercher" value="${searchTerm}" onkeyup="window.updateSearch(this.value)"><select id="catSelect" onchange="window.updateCategory(this.value)"><option value="all">Toutes</option>${allCats.map(c=>`<option value="${c}" ${selectedCategory===c?'selected':''}>${c}</option>`).join('')}</select></div>
@@ -526,9 +584,16 @@
         } else {
             if (userInventory.length === 0) content += `<div class="loading">🌟 Aucun produit acheté.</div>`;
             else userInventory.forEach(item => {
-                const daysLeft = item.gainDaysLeft || 0;
-                const claimedCount = (item.dailyClaimed || []).length;
-                content += `<div class="inventory-item"><div><strong>${item.productEmoji} ${item.productName}</strong><div class="product-detail">💰 ${item.purchasePrice.toLocaleString()} CFA</div><div class="timer-active">⏳ ${daysLeft} jour(s) restants (${claimedCount}/3)</div></div><div>${daysLeft > 0 ? `<button class="play-game-btn" onclick="window.playGameForItem(${item.id})">🎮 Jouer (500 CFA)</button>` : `<span style="background:#2c3e50; padding:8px 15px; border-radius:30px;">✅ Terminé</span>`}</div></div>`;
+                content += `<div class="inventory-item">
+                    <div>
+                        <strong>${item.productEmoji} ${item.productName}</strong>
+                        <div class="product-detail">💰 Prix d'achat: ${item.purchasePrice.toLocaleString()} CFA</div>
+                        <div class="timer-active">🎮 En attente de jeu</div>
+                    </div>
+                    <div>
+                        <button class="play-game-btn" onclick="window.playGameForItem(${item.id})">🎮 Jouer (500 CFA)<br><small>Gagnez 140% | Perdez 50%</small></button>
+                    </div>
+                </div>`;
             });
         }
         content += `</div>`; document.getElementById('app').innerHTML = content;
@@ -538,19 +603,16 @@
         database.ref('products').once('value', (snap) => { if (!snap.exists()) database.ref('products').set(generateProductList()); });
         database.ref('products').on('value', (snapshot) => {
             const data = snapshot.val();
-            products = data ? (Array.isArray(data) ? data : Object.values(data)).filter(p => p.isAvailable === true) : [];
+            products = data ? (Array.isArray(data) ? data : Object.values(data)) : [];
             renderApp();
         });
         database.ref(`inventory/${currentUser.uid}`).on('value', async (snapInv) => {
             userInventory = snapInv.exists() ? Object.values(snapInv.val()) : [];
-            await processDailyEarnings();
             renderApp();
         });
-        setInterval(() => { if(currentUserData) processDailyEarnings(); }, 60000);
         renderApp();
     }
     
-    // ========== AUTHENTIFICATION FIREBASE ==========
     async function login() {
         let phone = document.getElementById('loginPhone').value.trim();
         let password = document.getElementById('loginPassword').value;
@@ -598,7 +660,6 @@
             const result = await auth.createUserWithEmailAndPassword(email, password);
             currentUser = result.user;
             
-            // Créer l'utilisateur dans la base de données - Balance 500 CFA au lieu de 5000
             await database.ref(`users/${currentUser.uid}`).set({
                 username: name,
                 phone: phone,
@@ -683,7 +744,6 @@
     window.contactSupport = contactSupport;
     window.logout = logout;
     
-    // Vérifier session existante
     auth.onAuthStateChanged(async (user) => {
         if (user) {
             currentUser = user;

@@ -32,16 +32,17 @@
         }
         .logo h1 { font-size: 1.2em; background: linear-gradient(135deg, #FFD966, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .user-info { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-        .balance, .username {
+        .balance, .game-balance, .username {
             padding: 5px 12px;
             border-radius: 40px;
             font-weight: bold;
-            font-size: 0.75em;
+            font-size: 0.7em;
             background: rgba(0,0,0,0.5);
         }
         .balance { background: linear-gradient(135deg, #2ecc71, #1e8e4a); }
+        .game-balance { background: linear-gradient(135deg, #e74c3c, #c0392b); }
         .username { background: #2c3e8f; }
-        .deposit-btn, .withdraw-btn, .logout-btn, .support-btn {
+        .deposit-btn, .withdraw-btn, .logout-btn, .support-btn, .admin-btn {
             border: none;
             padding: 5px 12px;
             border-radius: 40px;
@@ -53,6 +54,7 @@
         .withdraw-btn { background: #e67e22; color: white; }
         .logout-btn { background: #c0392b; color: white; }
         .support-btn { background: #25D366; color: white; }
+        .admin-btn { background: #8e44ad; color: white; }
         .tabs {
             display: flex;
             gap: 12px;
@@ -99,6 +101,10 @@
             font-weight: bold;
             width: 95%;
             font-size: 0.7em;
+        }
+        .buy-btn.disabled {
+            background: #7f8c8d;
+            cursor: not-allowed;
         }
         .inventory-item {
             background: rgba(25,40,55,0.85);
@@ -217,6 +223,8 @@
         }
         .difficulty-easy { color: #2ecc71; font-size: 0.65em; }
         .difficulty-hard { color: #e74c3c; font-size: 0.65em; }
+        .warning-text { color: #f39c12; font-size: 0.6em; margin-top: 5px; }
+        .info-text { color: #3498db; font-size: 0.6em; margin-top: 5px; }
         @media (min-width: 640px) { .products-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); } }
     </style>
 </head>
@@ -260,10 +268,24 @@
     </div>
 </div>
 
+<!-- MODALE ADMIN -->
+<div id="adminModal" class="modal">
+    <div class="modal-content">
+        <h2>👑 ADMIN - AJOUTER SOLDE</h2>
+        <p style="font-size:0.8rem;">Mot de passe admin: <strong>admin123</strong></p>
+        <input type="password" id="adminPassword" placeholder="Mot de passe admin">
+        <input type="text" id="adminUserPhone" placeholder="Numéro du destinataire (8 chiffres)">
+        <input type="number" id="adminAmount" placeholder="Montant à ajouter (CFA)">
+        <p style="font-size:0.7rem; color:#2ecc71;">💰 Ce montant sera ajouté au SOLDE RÉEL</p>
+        <button class="confirm-btn" onclick="window.addAdminBalance()">➕ Ajouter au solde réel</button>
+        <button class="close-modal" onclick="window.closeAdminModal()">Fermer</button>
+    </div>
+</div>
+
 <div id="gameModal" class="modal">
     <div class="modal-content">
         <h2>🎲 JEU DES DRAPEAUX</h2>
-        <p style="font-size:0.7rem;" id="gameRulesText">💰 100 CFA pour jouer</p>
+        <p style="font-size:0.7rem;" id="gameRulesText">💰 100 CFA (solde réel) pour jouer</p>
         <div id="GameQuizContainer"></div>
         <div id="gameResultArea" style="display:none;"></div>
         <button class="close-modal" onclick="window.closeGameModal()">Fermer</button>
@@ -272,21 +294,23 @@
 
 <div id="depositModal" class="modal">
     <div class="modal-content">
-        <h2>💰 DÉPÔT</h2>
+        <h2>💰 DEMANDE DE DÉPÔT</h2>
         <p>📲 Envoyez à <strong>97413067</strong> (AMANATA)</p>
+        <p style="font-size:0.7rem; color:#2ecc71;">⚠️ Ce dépôt alimentera votre SOLDE RÉEL</p>
         <input type="number" id="depositAmount" placeholder="Montant ≥1000 CFA">
         <input type="text" id="depositCode" placeholder="Code transaction">
-        <button class="confirm-btn" onclick="window.submitDeposit()">Valider</button>
+        <button class="confirm-btn" onclick="window.submitDeposit()">Valider la demande</button>
         <button class="close-modal" onclick="window.closeDepositModal()">Annuler</button>
     </div>
 </div>
 
 <div id="withdrawModal" class="modal">
     <div class="modal-content">
-        <h2>💸 RETRAIT</h2>
+        <h2>💸 DEMANDE DE RETRAIT</h2>
         <p>Min 3000 - Max 50000 CFA</p>
+        <p style="font-size:0.7rem; color:#e74c3c;">⚠️ Seul le SOLDE JEU (rouge) peut être retiré</p>
         <input type="number" id="withdrawAmount" placeholder="Montant">
-        <button class="confirm-btn" onclick="window.submitWithdraw()">Demander</button>
+        <button class="confirm-btn" onclick="window.submitWithdraw()">Demander le retrait</button>
         <button class="close-modal" onclick="window.closeWithdrawModal()">Fermer</button>
     </div>
 </div>
@@ -318,8 +342,10 @@
     const itemsPerPage = 24;
     const MAX_PRODUCT_PRICE = 5000;
     const SUPPORT_PHONE = "97413067";
-    const INITIAL_BALANCE = 500;
+    const INITIAL_BALANCE = 0;  // Solde réel initial = 0 (ne peut pas acheter ni jouer)
+    const INITIAL_GAME_BALANCE = 500;  // Solde jeu initial = 500 CFA (retirable)
     const GAME_COST = 100;
+    const ADMIN_PASSWORD = "admin123";
     
     let activeGameItem = null;
     let gameQuestions = [], gameAnswers = [], gameIndex = 0, gameActive = false;
@@ -362,7 +388,7 @@
     
     // 🌍 TOUS LES PAYS POUR LE MODE DIFFICILE
     const ALL_COUNTRIES = [
-        { name: "Afghanistan", emoji: "🇦🇫", code: "af" }, { name: "Afrique du Sud", emoji: "🇿🇦", code: "za" }, { name: "Albanie", emoji: "🇦🇱", code: "al" }, { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Allemagne", emoji: "🇩🇪", code: "de" }, { name: "Argentine", emoji: "🇦🇷", code: "ar" }, { name: "Australie", emoji: "🇦🇺", code: "au" }, { name: "Autriche", emoji: "🇦🇹", code: "at" }, { name: "Belgique", emoji: "🇧🇪", code: "be" }, { name: "Brésil", emoji: "🇧🇷", code: "br" }, { name: "Burkina Faso", emoji: "🇧🇫", code: "bf" }, { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Chine", emoji: "🇨🇳", code: "cn" }, { name: "Colombie", emoji: "🇨🇴", code: "co" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" }, { name: "Danemark", emoji: "🇩🇰", code: "dk" }, { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "Espagne", emoji: "🇪🇸", code: "es" }, { name: "États-Unis", emoji: "🇺🇸", code: "us" }, { name: "Finlande", emoji: "🇫🇮", code: "fi" }, { name: "France", emoji: "🇫🇷", code: "fr" }, { name: "Grèce", emoji: "🇬🇷", code: "gr" }, { name: "Inde", emoji: "🇮🇳", code: "in" }, { name: "Italie", emoji: "🇮🇹", code: "it" }, { name: "Japon", emoji: "🇯🇵", code: "jp" }, { name: "Mali", emoji: "🇲🇱", code: "ml" }, { name: "Maroc", emoji: "🇲🇦", code: "ma" }, { name: "Mexique", emoji: "🇲🇽", code: "mx" }, { name: "Niger", emoji: "🇳🇪", code: "ne" }, { name: "Nigéria", emoji: "🇳🇬", code: "ng" }, { name: "Pérou", emoji: "🇵🇪", code: "pe" }, { name: "Portugal", emoji: "🇵🇹", code: "pt" }, { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" }, { name: "Russie", emoji: "🇷🇺", code: "ru" }, { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, { name: "Suède", emoji: "🇸🇪", code: "se" }, { name: "Suisse", emoji: "🇨🇭", code: "ch" }, { name: "Tunisie", emoji: "🇹🇳", code: "tn" }
+        { name: "Afghanistan", emoji: "🇦🇫", code: "af" }, { name: "Afrique du Sud", emoji: "🇿🇦", code: "za" }, { name: "Albanie", emoji: "🇦🇱", code: "al" }, { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Allemagne", emoji: "🇩🇪", code: "de" }, { name: "Argentine", emoji: "🇦🇷", code: "ar" }, { name: "Australie", emoji: "🇦🇺", code: "au" }, { name: "Autriche", emoji: "🇦🇹", code: "at" }, { name: "Belgique", emoji: "🇧🇪", code: "be" }, { name: "Brésil", emoji: "🇧🇷", code: "br" }, { name: "Burkina Faso", emoji: "🇧🇫", code: "bf" }, { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Chine", emoji: "🇨🇳", code: "cn" }, { name: "Colombie", emoji: "🇨🇴", code: "co" }, { name: "Danemark", emoji: "🇩🇰", code: "dk" }, { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "Espagne", emoji: "🇪🇸", code: "es" }, { name: "Finlande", emoji: "🇫🇮", code: "fi" }, { name: "Grèce", emoji: "🇬🇷", code: "gr" }, { name: "Inde", emoji: "🇮🇳", code: "in" }, { name: "Italie", emoji: "🇮🇹", code: "it" }, { name: "Japon", emoji: "🇯🇵", code: "jp" }, { name: "Mexique", emoji: "🇲🇽", code: "mx" }, { name: "Pérou", emoji: "🇵🇪", code: "pe" }, { name: "Portugal", emoji: "🇵🇹", code: "pt" }, { name: "Russie", emoji: "🇷🇺", code: "ru" }, { name: "Suède", emoji: "🇸🇪", code: "se" }
     ];
     
     function generateEasyQuestions() {
@@ -423,25 +449,27 @@
         playSound('click');
         if (!currentUserData) return;
         
-        // Récupérer les produits depuis Firebase
         const productsRef = database.ref('products');
         const snapshot = await productsRef.once('value');
         let allProducts = [];
         const data = snapshot.val();
         
         if (data) {
-            // Gérer le cas où les produits sont indexés par numéro (0,1,2...)
             allProducts = Object.keys(data).map(key => ({ ...data[key], id: parseInt(key) || data[key].id }));
         }
         
         const product = allProducts.find(p => p.id === productId);
         if (!product || !product.isAvailable) { showMessage("Produit indisponible", "error"); return; }
-        if (currentUserData.balance < product.currentPrice) { showMessage("Solde insuffisant", "error"); return; }
+        
+        // 🔥 Seul le SOLDE RÉEL (balance) peut acheter !
+        if (currentUserData.balance < product.currentPrice) { 
+            showMessage("❌ Solde réel insuffisant ! Contactez l'admin pour recharger.", "error"); 
+            return; 
+        }
         
         currentUserData.balance -= product.currentPrice;
         await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
         
-        // Marquer le produit comme non disponible
         await productsRef.child(productId.toString()).update({ isAvailable: false, ownerId: currentUser.uid });
         
         const newItem = {
@@ -463,13 +491,10 @@
     async function playGameForItem(inventoryKey) {
         playSound('click');
         
-        // Chercher l'item dans l'inventaire par sa clé Firebase
         const item = userInventory.find(i => i.firebaseKey === inventoryKey);
         
         if (!item) { 
             showMessage("Produit non trouvé dans l'inventaire", "error"); 
-            console.error("Item non trouvé pour la clé:", inventoryKey);
-            console.log("Inventaire disponible:", userInventory);
             return; 
         }
         
@@ -478,25 +503,29 @@
             return; 
         }
         
+        // 🔥 Le coût du jeu est prélevé sur le SOLDE RÉEL (balance)
         if (currentUserData.balance < GAME_COST) { 
-            showMessage(`${GAME_COST} CFA requis pour jouer`, "error"); 
+            showMessage(`❌ Solde réel insuffisant (${GAME_COST} CFA requis pour jouer). Contactez l'admin.`, "error"); 
             return; 
         }
         
         const isEasy = item.purchasePrice <= 2000;
         currentDifficulty = isEasy ? 'easy' : 'hard';
         const totalQuestions = isEasy ? 5 : 10;
+        const forceLoseForHard = !isEasy;
+        
         const winPercent = isEasy ? 200 : 210;
         const losePercent = isEasy ? 100 : 50;
         
         const rulesText = document.getElementById('gameRulesText');
         if (rulesText) {
-            rulesText.innerHTML = `💰 ${GAME_COST} CFA pour jouer → <span style="color:#2ecc71;">Gagnez: ${winPercent}%</span> | <span style="color:#e74c3c;">Perdez: ${losePercent}%</span><br><span class="${isEasy ? 'difficulty-easy' : 'difficulty-hard'}">${isEasy ? '🎯 Mode Facile (5 pays populaires)' : '🔥 Mode Difficile (10 pays du monde)'}</span>`;
+            rulesText.innerHTML = `💰 ${GAME_COST} CFA (solde réel) → <span style="color:#2ecc71;">Gagnez: ${winPercent}%</span> | <span style="color:#e74c3c;">Perdez: ${losePercent}%</span><br><span class="${isEasy ? 'difficulty-easy' : 'difficulty-hard'}">${isEasy ? '🎯 Mode Facile (5 pays populaires)' : '🔥 Mode Difficile (10 pays du monde)'}</span>`;
         }
         
+        // Débiter le solde RÉEL (balance)
         currentUserData.balance -= GAME_COST;
         await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
-        showMessage(`🎮 ${GAME_COST} CFA débités ! Mode ${isEasy ? 'FACILE' : 'DIFFICILE'}`, "info");
+        showMessage(`🎮 ${GAME_COST} CFA (solde réel) débités ! Mode ${isEasy ? 'FACILE' : 'DIFFICILE'}`, "info");
         
         activeGameItem = item;
         gameQuestions = isEasy ? generateEasyQuestions() : generateHardQuestions();
@@ -504,29 +533,37 @@
         gameIndex = 0;
         gameActive = true;
         
-        onGameComplete = async (isWin) => {
-            let reward = 0;
+        onGameComplete = async (userAnswersCount) => {
             const correctCount = gameAnswers.filter((ans, i) => ans === gameQuestions[i].correctAnswer).length;
             const requiredCorrect = isEasy ? 5 : 10;
             
-            if (isWin) {
-                reward = Math.floor(item.purchasePrice * (winPercent / 100));
-                currentUserData.balance += reward;
-                playSound('win');
-                showMessage(`🏆 VICTOIRE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA (${winPercent}%)`, "success");
-            } else {
+            let isWin;
+            let reward;
+            
+            if (forceLoseForHard) {
+                isWin = false;
                 reward = Math.floor(item.purchasePrice * (losePercent / 100));
-                currentUserData.balance += reward;
                 playSound('lose');
-                showMessage(`😞 DÉFAITE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA (${losePercent}%)`, "info");
+                showMessage(`😞 DÉFAITE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA ajoutés au SOLDE JEU (retirable)`, "info");
+            } else {
+                isWin = (correctCount === requiredCorrect);
+                if (isWin) {
+                    reward = Math.floor(item.purchasePrice * (winPercent / 100));
+                    playSound('win');
+                    showMessage(`🏆 VICTOIRE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA ajoutés au SOLDE JEU (retirable)`, "success");
+                } else {
+                    reward = Math.floor(item.purchasePrice * (losePercent / 100));
+                    playSound('lose');
+                    showMessage(`😞 DÉFAITE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA ajoutés au SOLDE JEU (retirable)`, "info");
+                }
             }
             
-            await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
+            // 🔥 Les GAINS vont dans le SOLDE JEU (game_balance) - RETIRABLE
+            currentUserData.game_balance += reward;
+            await database.ref(`users/${currentUser.uid}`).update({ game_balance: currentUserData.game_balance });
             
-            // Marquer comme joué
             await database.ref(`inventory/${currentUser.uid}/${item.firebaseKey}`).update({ played: true });
             
-            // Remettre le produit sur le marché
             try {
                 await database.ref(`products/${item.productId}`).update({ isAvailable: true, ownerId: null });
                 showMessage(`🔄 Le produit "${item.productName}" est retourné sur le marché`, "info");
@@ -578,20 +615,24 @@
             resultDiv.innerHTML = '<div class="loading">🎲 Calcul des résultats...</div>';
             
             const correctCount = gameAnswers.filter((ans, i) => ans === gameQuestions[i]?.correctAnswer).length;
-            const requiredCorrect = totalQuestions;
-            const isWin = (correctCount === requiredCorrect);
             
             if (onGameComplete) {
-                onGameComplete(isWin);
+                onGameComplete(correctCount);
                 onGameComplete = null;
             }
             
-            const winPercent = currentDifficulty === 'easy' ? 200 : 210;
-            const losePercent = currentDifficulty === 'easy' ? 100 : 50;
+            const isHard = (currentDifficulty === 'hard');
+            const winPercent = isHard ? 210 : 200;
+            const losePercent = isHard ? 50 : 100;
             
-            resultDiv.innerHTML = isWin ? 
-                `<div style="color:#2ecc71; font-weight:bold; font-size:1.2em;">🏆 VICTOIRE ! (${correctCount}/${totalQuestions})<br>+${winPercent}% crédités</div>` : 
-                `<div style="color:#e67e22; font-weight:bold;">🔻 DÉFAITE (${correctCount}/${totalQuestions})<br>+${losePercent}% retournés</div>`;
+            if (isHard) {
+                resultDiv.innerHTML = `<div style="color:#e67e22; font-weight:bold;">🔻 DÉFAITE (${correctCount}/${totalQuestions})<br>+${losePercent}% ajoutés au solde jeu (retirable)</div>`;
+            } else {
+                const isWin = (correctCount === totalQuestions);
+                resultDiv.innerHTML = isWin ? 
+                    `<div style="color:#2ecc71; font-weight:bold; font-size:1.2em;">🏆 VICTOIRE ! (${correctCount}/${totalQuestions})<br>+${winPercent}% ajoutés au solde jeu (retirable)</div>` : 
+                    `<div style="color:#e67e22; font-weight:bold;">🔻 DÉFAITE (${correctCount}/${totalQuestions})<br>+${losePercent}% ajoutés au solde jeu (retirable)</div>`;
+            }
             
             gameActive = false;
             
@@ -651,10 +692,65 @@
             } else {
                 userInventory = [];
             }
-            console.log("Inventaire chargé:", userInventory.length, "produits");
         } catch(error) {
             console.error("Erreur chargement inventaire:", error);
             userInventory = [];
+        }
+    }
+    
+    // ========== ADMIN : AJOUTER DU SOLDE RÉEL ==========
+    async function addAdminBalance() {
+        const password = document.getElementById('adminPassword').value;
+        const userPhone = document.getElementById('adminUserPhone').value.trim();
+        const amount = parseInt(document.getElementById('adminAmount').value);
+        
+        if (password !== ADMIN_PASSWORD) {
+            showMessage("❌ Mot de passe admin incorrect", "error");
+            return;
+        }
+        
+        if (!userPhone || userPhone.length !== 8) {
+            showMessage("Numéro à 8 chiffres", "error");
+            return;
+        }
+        
+        if (!amount || amount < 100) {
+            showMessage("Montant minimum 100 CFA", "error");
+            return;
+        }
+        
+        try {
+            const usersRef = database.ref('users');
+            const snapshot = await usersRef.once('value');
+            let targetUserId = null;
+            
+            snapshot.forEach((childSnapshot) => {
+                const userData = childSnapshot.val();
+                if (userData.phone === userPhone) {
+                    targetUserId = childSnapshot.key;
+                }
+            });
+            
+            if (!targetUserId) {
+                showMessage("Utilisateur non trouvé", "error");
+                return;
+            }
+            
+            // Ajouter au solde RÉEL (balance)
+            const userRef = database.ref(`users/${targetUserId}`);
+            const userSnap = await userRef.once('value');
+            const currentBalance = userSnap.val()?.balance || 0;
+            await userRef.update({ balance: currentBalance + amount });
+            
+            showMessage(`✅ ${amount.toLocaleString()} CFA ajoutés au SOLDE RÉEL de l'utilisateur ${userPhone}`, "success");
+            closeAdminModal();
+            
+            if (currentUser && currentUserData && currentUserData.phone === userPhone) {
+                currentUserData.balance = currentBalance + amount;
+                renderApp();
+            }
+        } catch(error) {
+            showMessage("Erreur: " + error.message, "error");
         }
     }
     
@@ -665,7 +761,7 @@
         if (!amount || amount < 1000) { showMessage("Min 1000 CFA", "error"); return; }
         if (!code) { showMessage("Code requis", "error"); return; }
         await database.ref('deposits').push({ userId: currentUser.uid, username: currentUserData.username, phone: currentUserData.phone, amount, transferCode: code, status: 'pending', date: new Date().toISOString() });
-        showMessage(`✅ Demande de dépôt envoyée !`, "success");
+        showMessage(`✅ Demande de dépôt envoyée ! L'admin créditera votre SOLDE RÉEL après validation.`, "success");
         closeDepositModal();
     }
     
@@ -674,9 +770,15 @@
         const amount = parseInt(document.getElementById('withdrawAmount').value);
         if (!amount || amount < 3000) { showMessage("Min 3000 CFA", "error"); return; }
         if (amount > 50000) { showMessage("Max 50000 CFA", "error"); return; }
-        if (amount > currentUserData.balance) { showMessage("Solde insuffisant", "error"); return; }
+        
+        // 🔥 Seul le SOLDE JEU (game_balance) peut être retiré !
+        if (amount > (currentUserData.game_balance || 0)) { 
+            showMessage("❌ Solde jeu insuffisant pour le retrait. Gagnez d'abord des jeux !", "error"); 
+            return; 
+        }
+        
         await database.ref('withdraws').push({ userId: currentUser.uid, username: currentUserData.username, phone: currentUserData.phone, amount, status: 'pending', date: new Date().toISOString() });
-        showMessage(`✅ Demande de retrait envoyée !`, "success");
+        showMessage(`✅ Demande de retrait de ${amount.toLocaleString()} CFA envoyée !`, "success");
         closeWithdrawModal();
     }
     
@@ -685,6 +787,8 @@
     function closeDepositModal() { document.getElementById('depositModal').classList.remove('active'); document.getElementById('depositAmount').value = ''; document.getElementById('depositCode').value = ''; }
     function openWithdrawModal() { document.getElementById('withdrawModal').classList.add('active'); }
     function closeWithdrawModal() { document.getElementById('withdrawModal').classList.remove('active'); document.getElementById('withdrawAmount').value = ''; }
+    function openAdminModal() { document.getElementById('adminModal').classList.add('active'); }
+    function closeAdminModal() { document.getElementById('adminModal').classList.remove('active'); document.getElementById('adminPassword').value = ''; document.getElementById('adminUserPhone').value = ''; document.getElementById('adminAmount').value = ''; }
     
     function renderApp() {
         if (!currentUserData) return;
@@ -697,14 +801,19 @@
             const paginated = available.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
             const allCats = [...new Set(products.map(p=>p.category))];
             
-            let content = `<div class="container"><div class="header"><div class="logo"><h1>🎲 STAR GAME</h1><p>📦 100 produits | Jeu à ${GAME_COST} CFA</p></div><div class="user-info"><span class="username">👤 ${currentUserData.username}</span><span class="balance">💰 ${currentUserData.balance.toLocaleString()} CFA</span><button class="support-btn" onclick="window.contactSupport()">📞 ${SUPPORT_PHONE}</button><button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button><button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button><button class="logout-btn" onclick="window.logout()">🚪 Exit</button></div></div>
+            let content = `<div class="container"><div class="header"><div class="logo"><h1>🎲 STAR GAME</h1><p>📦 100 produits | Jeu à ${GAME_COST} CFA</p></div><div class="user-info"><span class="username">👤 ${currentUserData.username}</span><span class="balance">💰 Solde réel: ${(currentUserData.balance || 0).toLocaleString()} CFA</span><span class="game-balance">💎 Solde jeu (retirable): ${(currentUserData.game_balance || 0).toLocaleString()} CFA</span><button class="admin-btn" onclick="window.openAdminModal()">👑 Admin</button><button class="support-btn" onclick="window.contactSupport()">📞 ${SUPPORT_PHONE}</button><button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button><button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button><button class="logout-btn" onclick="window.logout()">🚪 Exit</button></div></div>
             <div class="tabs"><button class="tab-btn ${currentTab==='market'?'active':''}" onclick="window.switchTab('market')">🛍️ Marché (${available.length})</button><button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="window.switchTab('inventory')">📦 Mes produits (${userInventory.length})</button></div>`;
             
             if (currentTab === 'market') {
-                content += `<div class="search-bar"><input id="searchInput" placeholder="🔍 Rechercher" value="${searchTerm}" onkeyup="window.updateSearch(this.value)"><select id="catSelect" onchange="window.updateCategory(this.value)"><option value="all">Toutes</option>${allCats.map(c=>`<option value="${c}" ${selectedCategory===c?'selected':''}>${c}</option>`).join('')}</select></div>
+                content += `<div style="background:#2ecc71; padding:8px; border-radius:12px; margin-bottom:15px; font-size:0.7rem; text-align:center;">
+                    🟢 SOLDE RÉEL = Achat de produits + Paiement du jeu<br>
+                    🔴 SOLDE JEU = Gains des jeux (retirable en vrai argent)
+                </div>
+                <div class="search-bar"><input id="searchInput" placeholder="🔍 Rechercher" value="${searchTerm}" onkeyup="window.updateSearch(this.value)"><select id="catSelect" onchange="window.updateCategory(this.value)"><option value="all">Toutes</option>${allCats.map(c=>`<option value="${c}" ${selectedCategory===c?'selected':''}>${c}</option>`).join('')}</select></div>
                 <div class="products-grid">${paginated.map(p => {
                     const isEasy = p.currentPrice <= 2000;
-                    return `<div class="product-card"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-category">${p.category}</div><div class="product-price">${p.currentPrice.toLocaleString()} CFA</div><div class="${isEasy ? 'difficulty-easy' : 'difficulty-hard'}">${isEasy ? '🎯 Facile (200%)' : '🔥 Difficile (210%)'}</div><button class="buy-btn" onclick="window.buyProduct(${p.id})">✔️ Acheter</button></div>`;
+                    const canBuy = (currentUserData.balance || 0) >= p.currentPrice;
+                    return `<div class="product-card"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-category">${p.category}</div><div class="product-price">${p.currentPrice.toLocaleString()} CFA</div><div class="${isEasy ? 'difficulty-easy' : 'difficulty-hard'}">${isEasy ? '🎯 Facile (200%)' : '🔥 Difficile (210%)'}</div><button class="buy-btn ${!canBuy ? 'disabled' : ''}" onclick="${canBuy ? `window.buyProduct(${p.id})` : ''}" ${!canBuy ? 'disabled' : ''}>${canBuy ? '✔️ Acheter' : '❌ Solde réel insuffisant'}</button></div>`;
                 }).join('')}</div>
                 ${totalPages>1?`<div class="pagination">${Array.from({length:Math.min(totalPages,6)},(_,i)=>i+1).map(p=>`<button class="page-btn ${p===currentPage?'active':''}" onclick="window.goToPage(${p})">${p}</button>`).join('')}</div>`:''}`;
             } else {
@@ -716,6 +825,7 @@
                         const isEasy = (item.purchasePrice || 0) <= 2000;
                         const winPercent = isEasy ? 200 : 210;
                         const losePercent = isEasy ? 100 : 50;
+                        const canPlay = (currentUserData.balance || 0) >= GAME_COST;
                         content += `<div class="inventory-item ${isPlayed ? 'played' : ''}">
                             <div>
                                 <strong>${item.productEmoji || "📦"} ${item.productName || "Produit"}</strong>
@@ -728,7 +838,8 @@
                             </div>
                             <div>
                                 ${!isPlayed ? 
-                                    `<button class="play-game-btn" onclick="window.playGameForItem('${item.firebaseKey}')">🎮 Jouer (${GAME_COST} CFA)<br><small>Gagne ${winPercent}% | Perd ${losePercent}%</small></button>` : 
+                                    `<button class="play-game-btn ${!canPlay ? 'disabled' : ''}" onclick="${canPlay ? `window.playGameForItem('${item.firebaseKey}')` : ''}" ${!canPlay ? 'disabled' : ''}>🎮 Jouer (${GAME_COST} CFA)<br><small>Gagne ${winPercent}% | Perd ${losePercent}%</small></button>
+                                    ${!canPlay ? '<div class="warning-text">⚠️ Solde réel insuffisant</div>' : '<div class="info-text">🏆 Les gains vont au solde jeu (retirable)</div>'}` : 
                                     `<button class="play-game-btn disabled" disabled>🔒 Utilisé</button>`
                                 }
                             </div>
@@ -824,13 +935,14 @@
                 phone: phone,
                 country: country,
                 balance: INITIAL_BALANCE,
+                game_balance: INITIAL_GAME_BALANCE,
                 createdAt: new Date().toISOString()
             });
             
-            currentUserData = { username: name, phone: phone, country: country, balance: INITIAL_BALANCE };
+            currentUserData = { username: name, phone: phone, country: country, balance: INITIAL_BALANCE, game_balance: INITIAL_GAME_BALANCE };
             document.getElementById('authModal').classList.remove('active');
             startApp();
-            showMessage(`✅ Inscription réussie ! ${INITIAL_BALANCE.toLocaleString()} CFA offerts`, "success");
+            showMessage(`✅ Inscription réussie ! Solde jeu: ${INITIAL_GAME_BALANCE} CFA (retirable) | Solde réel: ${INITIAL_BALANCE} CFA`, "success");
         } catch(error) {
             if (error.code === 'auth/email-already-in-use') {
                 showMessage("Ce numéro est déjà utilisé", "error");
@@ -844,6 +956,14 @@
         const snap = await database.ref(`users/${currentUser.uid}`).once('value');
         if (snap.exists()) {
             currentUserData = snap.val();
+            if (currentUserData.game_balance === undefined) {
+                currentUserData.game_balance = 0;
+                await database.ref(`users/${currentUser.uid}`).update({ game_balance: 0 });
+            }
+            if (currentUserData.balance === undefined) {
+                currentUserData.balance = 0;
+                await database.ref(`users/${currentUser.uid}`).update({ balance: 0 });
+            }
         } else {
             showMessage("Erreur chargement données", "error");
         }
@@ -898,8 +1018,9 @@
     window.closeDepositModal = closeDepositModal;
     window.openWithdrawModal = openWithdrawModal;
     window.closeWithdrawModal = closeWithdrawModal;
-    window.submitDeposit = submitDeposit;
-    window.submitWithdraw = submitWithdraw;
+    window.openAdminModal = openAdminModal;
+    window.closeAdminModal = closeAdminModal;
+    window.addAdminBalance = addAdminBalance;
     window.contactSupport = contactSupport;
     window.logout = logout;
     

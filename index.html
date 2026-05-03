@@ -319,7 +319,7 @@
     const MAX_PRODUCT_PRICE = 5000;
     const SUPPORT_PHONE = "97413067";
     const INITIAL_BALANCE = 500;
-    const GAME_COST = 100; // 100 FCFA pour jouer
+    const GAME_COST = 100;
     
     let activeGameItem = null;
     let gameQuestions = [], gameAnswers = [], gameIndex = 0, gameActive = false;
@@ -337,7 +337,7 @@
         } catch(e) {}
     }
     
-    // 🌍 PAYS TRÈS POPULAIRES POUR LE MODE FACILE (produits ≤ 2000 CFA)
+    // 🌍 PAYS TRÈS POPULAIRES POUR LE MODE FACILE
     const EASY_COUNTRIES = [
         { name: "Niger", emoji: "🇳🇪", code: "ne" },
         { name: "France", emoji: "🇫🇷", code: "fr" },
@@ -357,17 +357,12 @@
         { name: "Allemagne", emoji: "🇩🇪", code: "de" },
         { name: "Espagne", emoji: "🇪🇸", code: "es" },
         { name: "Italie", emoji: "🇮🇹", code: "it" },
-        { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" },
-        { name: "Japon", emoji: "🇯🇵", code: "jp" },
-        { name: "Chine", emoji: "🇨🇳", code: "cn" },
-        { name: "Inde", emoji: "🇮🇳", code: "in" },
-        { name: "Brésil", emoji: "🇧🇷", code: "br" },
-        { name: "Mexique", emoji: "🇲🇽", code: "mx" }
+        { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" }
     ];
     
-    // 🌍 TOUS LES PAYS DU MONDE POUR LE MODE DIFFICILE (produits > 2000 CFA)
+    // 🌍 TOUS LES PAYS POUR LE MODE DIFFICILE
     const ALL_COUNTRIES = [
-        { name: "Afghanistan", emoji: "🇦🇫", code: "af" }, { name: "Afrique du Sud", emoji: "🇿🇦", code: "za" }, { name: "Albanie", emoji: "🇦🇱", code: "al" }, { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Allemagne", emoji: "🇩🇪", code: "de" }, { name: "Andorre", emoji: "🇦🇩", code: "ad" }, { name: "Angola", emoji: "🇦🇴", code: "ao" }, { name: "Argentine", emoji: "🇦🇷", code: "ar" }, { name: "Arménie", emoji: "🇦🇲", code: "am" }, { name: "Australie", emoji: "🇦🇺", code: "au" }, { name: "Autriche", emoji: "🇦🇹", code: "at" }, { name: "Azerbaïdjan", emoji: "🇦🇿", code: "az" }, { name: "Bahamas", emoji: "🇧🇸", code: "bs" }, { name: "Bahreïn", emoji: "🇧🇭", code: "bh" }, { name: "Bangladesh", emoji: "🇧🇩", code: "bd" }, { name: "Belgique", emoji: "🇧🇪", code: "be" }, { name: "Bénin", emoji: "🇧🇯", code: "bj" }, { name: "Bhoutan", emoji: "🇧🇹", code: "bt" }, { name: "Biélorussie", emoji: "🇧🇾", code: "by" }, { name: "Birmanie", emoji: "🇲🇲", code: "mm" }, { name: "Bolivie", emoji: "🇧🇴", code: "bo" }, { name: "Bosnie", emoji: "🇧🇦", code: "ba" }, { name: "Botswana", emoji: "🇧🇼", code: "bw" }, { name: "Brésil", emoji: "🇧🇷", code: "br" }, { name: "Brunei", emoji: "🇧🇳", code: "bn" }, { name: "Bulgarie", emoji: "🇧🇬", code: "bg" }, { name: "Burkina Faso", emoji: "🇧🇫", code: "bf" }, { name: "Burundi", emoji: "🇧🇮", code: "bi" }, { name: "Cambodge", emoji: "🇰🇭", code: "kh" }, { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Cap-Vert", emoji: "🇨🇻", code: "cv" }, { name: "Chili", emoji: "🇨🇱", code: "cl" }, { name: "Chine", emoji: "🇨🇳", code: "cn" }, { name: "Chypre", emoji: "🇨🇾", code: "cy" }, { name: "Colombie", emoji: "🇨🇴", code: "co" }, { name: "Comores", emoji: "🇰🇲", code: "km" }, { name: "Congo", emoji: "🇨🇬", code: "cg" }, { name: "Corée du Nord", emoji: "🇰🇵", code: "kp" }, { name: "Corée du Sud", emoji: "🇰🇷", code: "kr" }, { name: "Costa Rica", emoji: "🇨🇷", code: "cr" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" }, { name: "Croatie", emoji: "🇭🇷", code: "hr" }, { name: "Cuba", emoji: "🇨🇺", code: "cu" }, { name: "Danemark", emoji: "🇩🇰", code: "dk" }, { name: "Djibouti", emoji: "🇩🇯", code: "dj" }, { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "Émirats Arabes Unis", emoji: "🇦🇪", code: "ae" }, { name: "Équateur", emoji: "🇪🇨", code: "ec" }, { name: "Érythrée", emoji: "🇪🇷", code: "er" }, { name: "Espagne", emoji: "🇪🇸", code: "es" }, { name: "Estonie", emoji: "🇪🇪", code: "ee" }, { name: "Eswatini", emoji: "🇸🇿", code: "sz" }, { name: "États-Unis", emoji: "🇺🇸", code: "us" }, { name: "Éthiopie", emoji: "🇪🇹", code: "et" }, { name: "Fidji", emoji: "🇫🇯", code: "fj" }, { name: "Finlande", emoji: "🇫🇮", code: "fi" }, { name: "France", emoji: "🇫🇷", code: "fr" }, { name: "Gabon", emoji: "🇬🇦", code: "ga" }, { name: "Gambie", emoji: "🇬🇲", code: "gm" }, { name: "Géorgie", emoji: "🇬🇪", code: "ge" }, { name: "Ghana", emoji: "🇬🇭", code: "gh" }, { name: "Grèce", emoji: "🇬🇷", code: "gr" }, { name: "Guinée", emoji: "🇬🇳", code: "gn" }, { name: "Haïti", emoji: "🇭🇹", code: "ht" }, { name: "Honduras", emoji: "🇭🇳", code: "hn" }, { name: "Hongrie", emoji: "🇭🇺", code: "hu" }, { name: "Inde", emoji: "🇮🇳", code: "in" }, { name: "Indonésie", emoji: "🇮🇩", code: "id" }, { name: "Irak", emoji: "🇮🇶", code: "iq" }, { name: "Iran", emoji: "🇮🇷", code: "ir" }, { name: "Irlande", emoji: "🇮🇪", code: "ie" }, { name: "Islande", emoji: "🇮🇸", code: "is" }, { name: "Israël", emoji: "🇮🇱", code: "il" }, { name: "Italie", emoji: "🇮🇹", code: "it" }, { name: "Jamaïque", emoji: "🇯🇲", code: "jm" }, { name: "Japon", emoji: "🇯🇵", code: "jp" }, { name: "Jordanie", emoji: "🇯🇴", code: "jo" }, { name: "Kazakhstan", emoji: "🇰🇿", code: "kz" }, { name: "Kenya", emoji: "🇰🇪", code: "ke" }, { name: "Kirghizistan", emoji: "🇰🇬", code: "kg" }, { name: "Koweït", emoji: "🇰🇼", code: "kw" }, { name: "Laos", emoji: "🇱🇦", code: "la" }, { name: "Lesotho", emoji: "🇱🇸", code: "ls" }, { name: "Lettonie", emoji: "🇱🇻", code: "lv" }, { name: "Liban", emoji: "🇱🇧", code: "lb" }, { name: "Libéria", emoji: "🇱🇷", code: "lr" }, { name: "Libye", emoji: "🇱🇾", code: "ly" }, { name: "Liechtenstein", emoji: "🇱🇮", code: "li" }, { name: "Lituanie", emoji: "🇱🇹", code: "lt" }, { name: "Luxembourg", emoji: "🇱🇺", code: "lu" }, { name: "Madagascar", emoji: "🇲🇬", code: "mg" }, { name: "Malaisie", emoji: "🇲🇾", code: "my" }, { name: "Malawi", emoji: "🇲🇼", code: "mw" }, { name: "Maldives", emoji: "🇲🇻", code: "mv" }, { name: "Mali", emoji: "🇲🇱", code: "ml" }, { name: "Malte", emoji: "🇲🇹", code: "mt" }, { name: "Maroc", emoji: "🇲🇦", code: "ma" }, { name: "Maurice", emoji: "🇲🇺", code: "mu" }, { name: "Mauritanie", emoji: "🇲🇷", code: "mr" }, { name: "Mexique", emoji: "🇲🇽", code: "mx" }, { name: "Moldavie", emoji: "🇲🇩", code: "md" }, { name: "Monaco", emoji: "🇲🇨", code: "mc" }, { name: "Mongolie", emoji: "🇲🇳", code: "mn" }, { name: "Monténégro", emoji: "🇲🇪", code: "me" }, { name: "Mozambique", emoji: "🇲🇿", code: "mz" }, { name: "Namibie", emoji: "🇳🇦", code: "na" }, { name: "Népal", emoji: "🇳🇵", code: "np" }, { name: "Nicaragua", emoji: "🇳🇮", code: "ni" }, { name: "Niger", emoji: "🇳🇪", code: "ne" }, { name: "Nigéria", emoji: "🇳🇬", code: "ng" }, { name: "Norvège", emoji: "🇳🇴", code: "no" }, { name: "Nouvelle-Zélande", emoji: "🇳🇿", code: "nz" }, { name: "Oman", emoji: "🇴🇲", code: "om" }, { name: "Ouganda", emoji: "🇺🇬", code: "ug" }, { name: "Ouzbékistan", emoji: "🇺🇿", code: "uz" }, { name: "Pakistan", emoji: "🇵🇰", code: "pk" }, { name: "Panama", emoji: "🇵🇦", code: "pa" }, { name: "Pérou", emoji: "🇵🇪", code: "pe" }, { name: "Philippines", emoji: "🇵🇭", code: "ph" }, { name: "Pologne", emoji: "🇵🇱", code: "pl" }, { name: "Portugal", emoji: "🇵🇹", code: "pt" }, { name: "Qatar", emoji: "🇶🇦", code: "qa" }, { name: "République Dominicaine", emoji: "🇩🇴", code: "do" }, { name: "Roumanie", emoji: "🇷🇴", code: "ro" }, { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" }, { name: "Russie", emoji: "🇷🇺", code: "ru" }, { name: "Rwanda", emoji: "🇷🇼", code: "rw" }, { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, { name: "Serbie", emoji: "🇷🇸", code: "rs" }, { name: "Seychelles", emoji: "🇸🇨", code: "sc" }, { name: "Singapour", emoji: "🇸🇬", code: "sg" }, { name: "Slovaquie", emoji: "🇸🇰", code: "sk" }, { name: "Slovénie", emoji: "🇸🇮", code: "si" }, { name: "Somalie", emoji: "🇸🇴", code: "so" }, { name: "Soudan", emoji: "🇸🇩", code: "sd" }, { name: "Sri Lanka", emoji: "🇱🇰", code: "lk" }, { name: "Suède", emoji: "🇸🇪", code: "se" }, { name: "Suisse", emoji: "🇨🇭", code: "ch" }, { name: "Suriname", emoji: "🇸🇷", code: "sr" }, { name: "Syrie", emoji: "🇸🇾", code: "sy" }, { name: "Tadjikistan", emoji: "🇹🇯", code: "tj" }, { name: "Tanzanie", emoji: "🇹🇿", code: "tz" }, { name: "Tchad", emoji: "🇹🇩", code: "td" }, { name: "Tchéquie", emoji: "🇨🇿", code: "cz" }, { name: "Thaïlande", emoji: "🇹🇭", code: "th" }, { name: "Togo", emoji: "🇹🇬", code: "tg" }, { name: "Tunisie", emoji: "🇹🇳", code: "tn" }, { name: "Turkménistan", emoji: "🇹🇲", code: "tm" }, { name: "Turquie", emoji: "🇹🇷", code: "tr" }, { name: "Ukraine", emoji: "🇺🇦", code: "ua" }, { name: "Uruguay", emoji: "🇺🇾", code: "uy" }, { name: "Vatican", emoji: "🇻🇦", code: "va" }, { name: "Venezuela", emoji: "🇻🇪", code: "ve" }, { name: "Vietnam", emoji: "🇻🇳", code: "vn" }, { name: "Yémen", emoji: "🇾🇪", code: "ye" }, { name: "Zambie", emoji: "🇿🇲", code: "zm" }, { name: "Zimbabwe", emoji: "🇿🇼", code: "zw" }
+        { name: "Afghanistan", emoji: "🇦🇫", code: "af" }, { name: "Afrique du Sud", emoji: "🇿🇦", code: "za" }, { name: "Albanie", emoji: "🇦🇱", code: "al" }, { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Allemagne", emoji: "🇩🇪", code: "de" }, { name: "Argentine", emoji: "🇦🇷", code: "ar" }, { name: "Australie", emoji: "🇦🇺", code: "au" }, { name: "Autriche", emoji: "🇦🇹", code: "at" }, { name: "Belgique", emoji: "🇧🇪", code: "be" }, { name: "Brésil", emoji: "🇧🇷", code: "br" }, { name: "Burkina Faso", emoji: "🇧🇫", code: "bf" }, { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Chine", emoji: "🇨🇳", code: "cn" }, { name: "Colombie", emoji: "🇨🇴", code: "co" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" }, { name: "Danemark", emoji: "🇩🇰", code: "dk" }, { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "Espagne", emoji: "🇪🇸", code: "es" }, { name: "États-Unis", emoji: "🇺🇸", code: "us" }, { name: "Finlande", emoji: "🇫🇮", code: "fi" }, { name: "France", emoji: "🇫🇷", code: "fr" }, { name: "Grèce", emoji: "🇬🇷", code: "gr" }, { name: "Inde", emoji: "🇮🇳", code: "in" }, { name: "Italie", emoji: "🇮🇹", code: "it" }, { name: "Japon", emoji: "🇯🇵", code: "jp" }, { name: "Mali", emoji: "🇲🇱", code: "ml" }, { name: "Maroc", emoji: "🇲🇦", code: "ma" }, { name: "Mexique", emoji: "🇲🇽", code: "mx" }, { name: "Niger", emoji: "🇳🇪", code: "ne" }, { name: "Nigéria", emoji: "🇳🇬", code: "ng" }, { name: "Pérou", emoji: "🇵🇪", code: "pe" }, { name: "Portugal", emoji: "🇵🇹", code: "pt" }, { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" }, { name: "Russie", emoji: "🇷🇺", code: "ru" }, { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, { name: "Suède", emoji: "🇸🇪", code: "se" }, { name: "Suisse", emoji: "🇨🇭", code: "ch" }, { name: "Tunisie", emoji: "🇹🇳", code: "tn" }
     ];
     
     function generateEasyQuestions() {
@@ -427,10 +422,18 @@
     async function buyProduct(productId) {
         playSound('click');
         if (!currentUserData) return;
-        const snap = await database.ref('products').once('value');
+        
+        // Récupérer les produits depuis Firebase
+        const productsRef = database.ref('products');
+        const snapshot = await productsRef.once('value');
         let allProducts = [];
-        const snapVal = snap.val();
-        if (snapVal) allProducts = Array.isArray(snapVal) ? snapVal : Object.values(snapVal);
+        const data = snapshot.val();
+        
+        if (data) {
+            // Gérer le cas où les produits sont indexés par numéro (0,1,2...)
+            allProducts = Object.keys(data).map(key => ({ ...data[key], id: parseInt(key) || data[key].id }));
+        }
+        
         const product = allProducts.find(p => p.id === productId);
         if (!product || !product.isAvailable) { showMessage("Produit indisponible", "error"); return; }
         if (currentUserData.balance < product.currentPrice) { showMessage("Solde insuffisant", "error"); return; }
@@ -438,28 +441,37 @@
         currentUserData.balance -= product.currentPrice;
         await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
         
-        const updatedProducts = allProducts.map(p => p.id === productId ? { ...p, isAvailable: false, ownerId: currentUser.uid } : p);
-        await database.ref('products').set(updatedProducts);
+        // Marquer le produit comme non disponible
+        await productsRef.child(productId.toString()).update({ isAvailable: false, ownerId: currentUser.uid });
         
         const newItem = {
-            id: Date.now(),
             productId: product.id,
             productName: product.name,
             productEmoji: product.emoji,
             purchasePrice: product.currentPrice,
             purchaseDate: new Date().toISOString(),
-            played: false
+            played: false,
+            createdAt: Date.now()
         };
+        
         await database.ref(`inventory/${currentUser.uid}`).push(newItem);
         showMessage(`✅ Achat réussi ! ${product.name} ajouté à votre inventaire.`, "success");
         await refreshUserInventory();
         renderApp();
     }
     
-    async function playGameForItem(itemId) {
+    async function playGameForItem(inventoryKey) {
         playSound('click');
-        const item = userInventory.find(i => i.id === itemId);
-        if (!item) { showMessage("Produit non trouvé", "error"); return; }
+        
+        // Chercher l'item dans l'inventaire par sa clé Firebase
+        const item = userInventory.find(i => i.firebaseKey === inventoryKey);
+        
+        if (!item) { 
+            showMessage("Produit non trouvé dans l'inventaire", "error"); 
+            console.error("Item non trouvé pour la clé:", inventoryKey);
+            console.log("Inventaire disponible:", userInventory);
+            return; 
+        }
         
         if (item.played === true) { 
             showMessage("⚠️ Vous avez déjà joué avec ce produit !", "error"); 
@@ -471,14 +483,12 @@
             return; 
         }
         
-        // Déterminer la difficulté en fonction du prix
         const isEasy = item.purchasePrice <= 2000;
         currentDifficulty = isEasy ? 'easy' : 'hard';
         const totalQuestions = isEasy ? 5 : 10;
         const winPercent = isEasy ? 200 : 210;
         const losePercent = isEasy ? 100 : 50;
         
-        // Mettre à jour les règles dans la modale
         const rulesText = document.getElementById('gameRulesText');
         if (rulesText) {
             rulesText.innerHTML = `💰 ${GAME_COST} CFA pour jouer → <span style="color:#2ecc71;">Gagnez: ${winPercent}%</span> | <span style="color:#e74c3c;">Perdez: ${losePercent}%</span><br><span class="${isEasy ? 'difficulty-easy' : 'difficulty-hard'}">${isEasy ? '🎯 Mode Facile (5 pays populaires)' : '🔥 Mode Difficile (10 pays du monde)'}</span>`;
@@ -486,7 +496,7 @@
         
         currentUserData.balance -= GAME_COST;
         await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
-        showMessage(`🎮 ${GAME_COST} CFA débités, bonne chance ! Mode ${isEasy ? 'FACILE' : 'DIFFICILE'}`, "info");
+        showMessage(`🎮 ${GAME_COST} CFA débités ! Mode ${isEasy ? 'FACILE' : 'DIFFICILE'}`, "info");
         
         activeGameItem = item;
         gameQuestions = isEasy ? generateEasyQuestions() : generateHardQuestions();
@@ -503,31 +513,25 @@
                 reward = Math.floor(item.purchasePrice * (winPercent / 100));
                 currentUserData.balance += reward;
                 playSound('win');
-                showMessage(`🏆 VICTOIRE PARFAITE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA (${winPercent}% du produit)`, "success");
+                showMessage(`🏆 VICTOIRE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA (${winPercent}%)`, "success");
             } else {
                 reward = Math.floor(item.purchasePrice * (losePercent / 100));
                 currentUserData.balance += reward;
                 playSound('lose');
-                showMessage(`😞 DÉFAITE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA (${losePercent}% du produit)`, "info");
+                showMessage(`😞 DÉFAITE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA (${losePercent}%)`, "info");
             }
             
             await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
             
             // Marquer comme joué
-            await database.ref(`inventory/${currentUser.uid}/${item.id}`).update({ played: true });
+            await database.ref(`inventory/${currentUser.uid}/${item.firebaseKey}`).update({ played: true });
             
-            // Remettre sur le marché
+            // Remettre le produit sur le marché
             try {
-                const snap = await database.ref('products').once('value');
-                let allProducts = [];
-                const snapVal = snap.val();
-                if (snapVal) allProducts = Array.isArray(snapVal) ? snapVal : Object.values(snapVal);
-                
-                const updatedProducts = allProducts.map(p => p.id === item.productId ? { ...p, isAvailable: true, ownerId: null } : p);
-                await database.ref('products').set(updatedProducts);
-                showMessage(`🔄 Le produit est retourné sur le marché`, "info");
+                await database.ref(`products/${item.productId}`).update({ isAvailable: true, ownerId: null });
+                showMessage(`🔄 Le produit "${item.productName}" est retourné sur le marché`, "info");
             } catch(error) {
-                console.error("Erreur:", error);
+                console.error("Erreur remise sur marché:", error);
             }
             
             await refreshUserInventory();
@@ -586,7 +590,7 @@
             const losePercent = currentDifficulty === 'easy' ? 100 : 50;
             
             resultDiv.innerHTML = isWin ? 
-                `<div style="color:#2ecc71; font-weight:bold; font-size:1.2em;">🏆 VICTOIRE PARFAITE ! (${correctCount}/${totalQuestions})<br>+${winPercent}% crédités</div>` : 
+                `<div style="color:#2ecc71; font-weight:bold; font-size:1.2em;">🏆 VICTOIRE ! (${correctCount}/${totalQuestions})<br>+${winPercent}% crédités</div>` : 
                 `<div style="color:#e67e22; font-weight:bold;">🔻 DÉFAITE (${correctCount}/${totalQuestions})<br>+${losePercent}% retournés</div>`;
             
             gameActive = false;
@@ -639,7 +643,7 @@
                 userInventory = Object.keys(data).map(key => {
                     const item = data[key];
                     return {
-                        id: key,
+                        firebaseKey: key,
                         ...item,
                         played: item.played === true
                     };
@@ -709,7 +713,7 @@
                 } else {
                     userInventory.forEach(item => {
                         const isPlayed = item.played === true;
-                        const isEasy = item.purchasePrice <= 2000;
+                        const isEasy = (item.purchasePrice || 0) <= 2000;
                         const winPercent = isEasy ? 200 : 210;
                         const losePercent = isEasy ? 100 : 50;
                         content += `<div class="inventory-item ${isPlayed ? 'played' : ''}">
@@ -718,14 +722,14 @@
                                 <div class="product-detail">💰 Prix d'achat: ${(item.purchasePrice || 0).toLocaleString()} CFA</div>
                                 <div class="${isEasy ? 'difficulty-easy' : 'difficulty-hard'}">${isEasy ? '🎯 Mode Facile (5 drapeaux)' : '🔥 Mode Difficile (10 drapeaux)'}</div>
                                 ${isPlayed ? 
-                                    `<span class="badge-played">✅ Déjà joué (partie terminée)</span>` : 
+                                    `<span class="badge-played">✅ Déjà joué</span>` : 
                                     `<span class="badge-waiting">🎮 En attente de jeu</span>`
                                 }
                             </div>
                             <div>
                                 ${!isPlayed ? 
-                                    `<button class="play-game-btn" onclick="window.playGameForItem('${item.id}')">🎮 Jouer (${GAME_COST} CFA)<br><small>Gagnez ${winPercent}% | Perdez ${losePercent}%</small></button>` : 
-                                    `<button class="play-game-btn disabled" disabled>🔒 Déjà utilisé</button>`
+                                    `<button class="play-game-btn" onclick="window.playGameForItem('${item.firebaseKey}')">🎮 Jouer (${GAME_COST} CFA)<br><small>Gagne ${winPercent}% | Perd ${losePercent}%</small></button>` : 
+                                    `<button class="play-game-btn disabled" disabled>🔒 Utilisé</button>`
                                 }
                             </div>
                         </div>`;
@@ -736,17 +740,31 @@
             document.getElementById('app').innerHTML = content;
         } catch(error) {
             console.error("Erreur renderApp:", error);
-            document.getElementById('app').innerHTML = `<div class="container"><div class="loading">⚠️ Erreur d'affichage: ${error.message}</div></div>`;
+            document.getElementById('app').innerHTML = `<div class="container"><div class="loading">⚠️ Erreur: ${error.message}</div></div>`;
         }
     }
     
     function startApp() {
-        database.ref('products').once('value', (snap) => { if (!snap.exists()) database.ref('products').set(generateProductList()); });
-        database.ref('products').on('value', (snapshot) => {
+        const productsRef = database.ref('products');
+        productsRef.once('value', (snap) => { 
+            if (!snap.exists()) {
+                const productList = generateProductList();
+                const formattedProducts = {};
+                productList.forEach(p => { formattedProducts[p.id] = p; });
+                productsRef.set(formattedProducts);
+            }
+        });
+        
+        productsRef.on('value', (snapshot) => {
             const data = snapshot.val();
-            products = data ? (Array.isArray(data) ? data : Object.values(data)) : [];
+            if (data) {
+                products = Object.keys(data).map(key => ({ id: parseInt(key), ...data[key] }));
+            } else {
+                products = [];
+            }
             renderApp();
         });
+        
         database.ref(`inventory/${currentUser.uid}`).on('value', async (snapInv) => {
             await refreshUserInventory();
             renderApp();
@@ -772,7 +790,7 @@
             showMessage(`✅ Bonjour ${currentUserData.username} !`, "success");
         } catch(error) {
             if (error.code === 'auth/user-not-found') {
-                showMessage("Compte non trouvé. Inscrivez-vous d'abord.", "error");
+                showMessage("Compte non trouvé. Inscrivez-vous.", "error");
             } else if (error.code === 'auth/wrong-password') {
                 showMessage("Mot de passe incorrect", "error");
             } else {

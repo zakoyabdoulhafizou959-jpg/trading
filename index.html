@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>StarGame - 100 Produits | Gagnez 140%</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>StarGame - 100 Produits | Firebase Auth</title>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -11,7 +11,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0b1a2e, #0a0f24);
+            background: linear-gradient(135deg, #0b1a2e, #0a0f24, #0a1927);
             min-height: 100vh;
             color: #f0f3fa;
             padding-bottom: 30px;
@@ -31,7 +31,6 @@
             border: 1px solid rgba(255,200,50,0.5);
         }
         .logo h1 { font-size: 1.2em; background: linear-gradient(135deg, #FFD966, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo p { font-size: 0.6em; opacity: 0.8; color: #ffaa44; }
         .user-info { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
         .balance, .username {
             padding: 5px 12px;
@@ -69,38 +68,42 @@
             color: white;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.8em;
         }
         .tab-btn.active { background: #f39c12; color: #0a0f24; }
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
             gap: 12px;
+            margin-top: 8px;
         }
         .product-card {
             background: rgba(25,35,55,0.8);
+            backdrop-filter: blur(6px);
             border-radius: 20px;
-            padding: 10px;
+            padding: 10px 6px;
             text-align: center;
             border: 1px solid rgba(255,200,80,0.3);
         }
         .product-emoji { font-size: 32px; }
-        .product-name { font-size: 0.7em; font-weight: bold; }
-        .product-price { font-size: 0.8em; font-weight: bold; color: #FFD966; }
+        .product-name { font-size: 0.8em; font-weight: bold; }
+        .product-category { font-size: 0.6em; background: rgba(0,0,0,0.4); display: inline-block; padding: 2px 8px; border-radius: 30px; margin: 4px 0; }
+        .product-price { font-size: 0.9em; font-weight: bold; color: #FFD966; }
         .buy-btn {
             background: linear-gradient(135deg, #27ae60, #2ecc71);
             border: none;
-            padding: 6px;
+            padding: 6px 10px;
             border-radius: 30px;
             color: white;
             cursor: pointer;
             font-weight: bold;
-            width: 100%;
-            margin-top: 5px;
+            width: 95%;
+            font-size: 0.7em;
         }
         .inventory-item {
             background: rgba(25,40,55,0.85);
             border-radius: 20px;
-            padding: 15px;
+            padding: 12px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
@@ -108,6 +111,10 @@
             flex-wrap: wrap;
             gap: 10px;
             border-left: 5px solid #f39c12;
+        }
+        .inventory-item.played {
+            border-left: 5px solid #2c3e50;
+            opacity: 0.8;
         }
         .play-game-btn {
             background: #e67e22;
@@ -117,9 +124,18 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
+            font-size: 0.75em;
         }
-        .search-bar { display: flex; gap: 8px; margin-bottom: 15px; }
-        .search-bar input { flex: 1; padding: 8px 12px; border-radius: 50px; background: rgba(255,255,255,0.1); color: white; border: none; }
+        .play-game-btn.disabled {
+            background: #2c3e50;
+            cursor: not-allowed;
+        }
+        .search-bar { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+        .search-bar input { flex: 1; padding: 8px 12px; border-radius: 50px; border: none; background: rgba(255,255,255,0.1); color: white; }
+        .search-bar select { padding: 8px 12px; border-radius: 50px; background: rgba(255,255,255,0.15); color: white; border: none; }
+        .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 15px; }
+        .page-btn { background: rgba(255,255,255,0.2); border: none; padding: 4px 10px; border-radius: 30px; cursor: pointer; color: white; font-size: 0.7em; }
+        .page-btn.active { background: #f39c12; color: #0a0f24; }
         .message {
             position: fixed;
             bottom: 20px;
@@ -133,6 +149,7 @@
         }
         .message-success { background: #27ae60; }
         .message-error { background: #e74c3c; }
+        .message-info { background: #f39c12; color: #1e2a3a; }
         .modal {
             display: none;
             position: fixed;
@@ -151,13 +168,56 @@
             padding: 25px;
             border-radius: 36px;
             max-width: 90%;
-            width: 380px;
+            width: 420px;
             text-align: center;
+            border: 1px solid #f39c12;
         }
+        .modal-content h2 { color: #ffd966; margin-bottom: 18px; }
+        .modal-content input, .modal-content select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+        }
+        .modal-content select option { background: #1e2a3a; }
         .confirm-btn, .close-modal { padding: 8px 20px; border-radius: 50px; margin: 5px; font-weight: bold; cursor: pointer; border: none; }
         .confirm-btn { background: #2ecc71; color: white; }
         .close-modal { background: #e74c3c; color: white; }
-        .pending-badge { background: #f39c12; color: #1e2a3a; padding: 4px 12px; border-radius: 20px; font-size: 0.7em; display: inline-block; }
+        .flag-container { display: flex; justify-content: center; gap: 10px; margin: 12px 0; }
+        .flag-img { width: 90px; height: 60px; object-fit: cover; border-radius: 12px; border: 2px solid gold; }
+        .quiz-option {
+            background: rgba(255,255,255,0.1);
+            border-radius: 40px;
+            padding: 10px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-option:hover { background: rgba(255,255,255,0.25); }
+        .quiz-option.selected { background: #f39c12; color: #1e2a3a; font-weight: bold; }
+        .game-stats { font-size: 0.75rem; margin-bottom: 8px; color: #ffd966; }
+        .loading { text-align: center; padding: 40px; }
+        .phone-hint { font-size: 0.65em; color: #ffaa66; margin-top: -5px; margin-bottom: 8px; text-align: left; }
+        .badge-played {
+            background: #2c3e50;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            display: inline-block;
+        }
+        .badge-waiting {
+            background: #e67e22;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            display: inline-block;
+        }
+        .difficulty-easy { color: #2ecc71; font-size: 0.65em; }
+        .difficulty-hard { color: #e74c3c; font-size: 0.65em; }
+        @media (min-width: 640px) { .products-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); } }
     </style>
 </head>
 <body>
@@ -166,7 +226,7 @@
 <!-- MODALE AUTH -->
 <div id="authModal" class="modal active">
     <div class="modal-content">
-        <h2>🔐 STAR GAME 140%</h2>
+        <h2 id="authTitle">🔐 STAR GAME</h2>
         <div id="loginForm">
             <input type="tel" id="loginPhone" placeholder="📞 Numéro (8 chiffres)">
             <input type="password" id="loginPassword" placeholder="🔒 Mot de passe">
@@ -175,7 +235,23 @@
         <div id="signupForm" style="display:none;">
             <input type="text" id="signupName" placeholder="👤 Nom d'utilisateur">
             <input type="tel" id="signupPhone" placeholder="📞 Numéro (8 chiffres)">
+            <select id="signupCountry">
+                <option value="">🌍 Choisissez votre pays</option>
+                <option value="Niger">🇳🇪 Niger</option>
+                <option value="France">🇫🇷 France</option>
+                <option value="Sénégal">🇸🇳 Sénégal</option>
+                <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire</option>
+                <option value="Cameroun">🇨🇲 Cameroun</option>
+                <option value="Maroc">🇲🇦 Maroc</option>
+                <option value="Algérie">🇩🇿 Algérie</option>
+                <option value="Tunisie">🇹🇳 Tunisie</option>
+                <option value="RDC">🇨🇩 RDC</option>
+                <option value="Nigéria">🇳🇬 Nigéria</option>
+                <option value="Mali">🇲🇱 Mali</option>
+                <option value="Burkina Faso">🇧🇫 Burkina Faso</option>
+            </select>
             <input type="password" id="signupPassword" placeholder="🔒 Mot de passe (8 caractères)">
+            <div class="phone-hint">⚠️ Mot de passe: 8 caractères (ex: abcd1234)</div>
             <button class="confirm-btn" onclick="window.signup()">S'inscrire</button>
         </div>
         <div class="switch-auth" style="margin-top:12px;color:#f39c12;cursor:pointer;" onclick="window.toggleAuthMode()">
@@ -186,14 +262,32 @@
 
 <div id="gameModal" class="modal">
     <div class="modal-content">
-        <h2>🎲 JEU FLASH</h2>
-        <p>💰 500 CFA pour jouer → <span style="color:#2ecc71;">Gagnez +140%</span> | <span style="color:#e74c3c;">Perdez -50%</span></p>
-        <div id="gameArea">
-            <div style="font-size:2rem; margin:20px;">🎯</div>
-            <button class="confirm-btn" onclick="window.winGame()">🏆 GAGNER (140%)</button>
-            <button class="close-modal" onclick="window.loseGame()">😞 PERDRE (50%)</button>
-        </div>
+        <h2>🎲 JEU DES DRAPEAUX</h2>
+        <p style="font-size:0.7rem;" id="gameRulesText">💰 100 CFA pour jouer</p>
+        <div id="GameQuizContainer"></div>
+        <div id="gameResultArea" style="display:none;"></div>
         <button class="close-modal" onclick="window.closeGameModal()">Fermer</button>
+    </div>
+</div>
+
+<div id="depositModal" class="modal">
+    <div class="modal-content">
+        <h2>💰 DÉPÔT</h2>
+        <p>📲 Envoyez à <strong>97413067</strong> (AMANATA)</p>
+        <input type="number" id="depositAmount" placeholder="Montant ≥1000 CFA">
+        <input type="text" id="depositCode" placeholder="Code transaction">
+        <button class="confirm-btn" onclick="window.submitDeposit()">Valider</button>
+        <button class="close-modal" onclick="window.closeDepositModal()">Annuler</button>
+    </div>
+</div>
+
+<div id="withdrawModal" class="modal">
+    <div class="modal-content">
+        <h2>💸 RETRAIT</h2>
+        <p>Min 3000 - Max 50000 CFA</p>
+        <input type="number" id="withdrawAmount" placeholder="Montant">
+        <button class="confirm-btn" onclick="window.submitWithdraw()">Demander</button>
+        <button class="close-modal" onclick="window.closeWithdrawModal()">Fermer</button>
     </div>
 </div>
 
@@ -205,7 +299,8 @@
         projectId: "dubai-dbd3f",
         storageBucket: "dubai-dbd3f.firebasestorage.app",
         messagingSenderId: "543622740538",
-        appId: "1:543622740538:web:0e4e6abf3124a878dad303"
+        appId: "1:543622740538:web:0e4e6abf3124a878dad303",
+        measurementId: "G-3R4KW05TQ4"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -218,42 +313,132 @@
     let userInventory = [];
     let currentTab = 'market';
     let searchTerm = '';
+    let selectedCategory = '';
     let currentPage = 1;
-    const itemsPerPage = 20;
+    const itemsPerPage = 24;
+    const MAX_PRODUCT_PRICE = 5000;
+    const SUPPORT_PHONE = "97413067";
+    const INITIAL_BALANCE = 500;
+    const GAME_COST = 100; // 100 FCFA pour jouer
+    
     let activeGameItem = null;
-
-    // GÉNÉRATION 100 PRODUITS
+    let gameQuestions = [], gameAnswers = [], gameIndex = 0, gameActive = false;
+    let onGameComplete = null;
+    let currentDifficulty = 'easy';
+    
+    function playSound(type) {
+        try {
+            let audio = new Audio();
+            if (type === 'win') audio = new Audio("https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3");
+            else if (type === 'lose') audio = new Audio("https://www.soundjay.com/misc/sounds/failure-drum.mp3");
+            else if (type === 'click') audio = new Audio("https://www.soundjay.com/misc/sounds/button-click.mp3");
+            audio.volume = 0.4;
+            audio.play().catch(() => {});
+        } catch(e) {}
+    }
+    
+    // 🌍 PAYS TRÈS POPULAIRES POUR LE MODE FACILE (produits ≤ 2000 CFA)
+    const EASY_COUNTRIES = [
+        { name: "Niger", emoji: "🇳🇪", code: "ne" },
+        { name: "France", emoji: "🇫🇷", code: "fr" },
+        { name: "États-Unis", emoji: "🇺🇸", code: "us" },
+        { name: "Burkina Faso", emoji: "🇧🇫", code: "bf" },
+        { name: "Sénégal", emoji: "🇸🇳", code: "sn" },
+        { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" },
+        { name: "Cameroun", emoji: "🇨🇲", code: "cm" },
+        { name: "Maroc", emoji: "🇲🇦", code: "ma" },
+        { name: "Algérie", emoji: "🇩🇿", code: "dz" },
+        { name: "Tunisie", emoji: "🇹🇳", code: "tn" },
+        { name: "Mali", emoji: "🇲🇱", code: "ml" },
+        { name: "Nigéria", emoji: "🇳🇬", code: "ng" },
+        { name: "Canada", emoji: "🇨🇦", code: "ca" },
+        { name: "Belgique", emoji: "🇧🇪", code: "be" },
+        { name: "Suisse", emoji: "🇨🇭", code: "ch" },
+        { name: "Allemagne", emoji: "🇩🇪", code: "de" },
+        { name: "Espagne", emoji: "🇪🇸", code: "es" },
+        { name: "Italie", emoji: "🇮🇹", code: "it" },
+        { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" },
+        { name: "Japon", emoji: "🇯🇵", code: "jp" },
+        { name: "Chine", emoji: "🇨🇳", code: "cn" },
+        { name: "Inde", emoji: "🇮🇳", code: "in" },
+        { name: "Brésil", emoji: "🇧🇷", code: "br" },
+        { name: "Mexique", emoji: "🇲🇽", code: "mx" }
+    ];
+    
+    // 🌍 TOUS LES PAYS DU MONDE POUR LE MODE DIFFICILE (produits > 2000 CFA)
+    const ALL_COUNTRIES = [
+        { name: "Afghanistan", emoji: "🇦🇫", code: "af" }, { name: "Afrique du Sud", emoji: "🇿🇦", code: "za" }, { name: "Albanie", emoji: "🇦🇱", code: "al" }, { name: "Algérie", emoji: "🇩🇿", code: "dz" }, { name: "Allemagne", emoji: "🇩🇪", code: "de" }, { name: "Andorre", emoji: "🇦🇩", code: "ad" }, { name: "Angola", emoji: "🇦🇴", code: "ao" }, { name: "Argentine", emoji: "🇦🇷", code: "ar" }, { name: "Arménie", emoji: "🇦🇲", code: "am" }, { name: "Australie", emoji: "🇦🇺", code: "au" }, { name: "Autriche", emoji: "🇦🇹", code: "at" }, { name: "Azerbaïdjan", emoji: "🇦🇿", code: "az" }, { name: "Bahamas", emoji: "🇧🇸", code: "bs" }, { name: "Bahreïn", emoji: "🇧🇭", code: "bh" }, { name: "Bangladesh", emoji: "🇧🇩", code: "bd" }, { name: "Belgique", emoji: "🇧🇪", code: "be" }, { name: "Bénin", emoji: "🇧🇯", code: "bj" }, { name: "Bhoutan", emoji: "🇧🇹", code: "bt" }, { name: "Biélorussie", emoji: "🇧🇾", code: "by" }, { name: "Birmanie", emoji: "🇲🇲", code: "mm" }, { name: "Bolivie", emoji: "🇧🇴", code: "bo" }, { name: "Bosnie", emoji: "🇧🇦", code: "ba" }, { name: "Botswana", emoji: "🇧🇼", code: "bw" }, { name: "Brésil", emoji: "🇧🇷", code: "br" }, { name: "Brunei", emoji: "🇧🇳", code: "bn" }, { name: "Bulgarie", emoji: "🇧🇬", code: "bg" }, { name: "Burkina Faso", emoji: "🇧🇫", code: "bf" }, { name: "Burundi", emoji: "🇧🇮", code: "bi" }, { name: "Cambodge", emoji: "🇰🇭", code: "kh" }, { name: "Cameroun", emoji: "🇨🇲", code: "cm" }, { name: "Canada", emoji: "🇨🇦", code: "ca" }, { name: "Cap-Vert", emoji: "🇨🇻", code: "cv" }, { name: "Chili", emoji: "🇨🇱", code: "cl" }, { name: "Chine", emoji: "🇨🇳", code: "cn" }, { name: "Chypre", emoji: "🇨🇾", code: "cy" }, { name: "Colombie", emoji: "🇨🇴", code: "co" }, { name: "Comores", emoji: "🇰🇲", code: "km" }, { name: "Congo", emoji: "🇨🇬", code: "cg" }, { name: "Corée du Nord", emoji: "🇰🇵", code: "kp" }, { name: "Corée du Sud", emoji: "🇰🇷", code: "kr" }, { name: "Costa Rica", emoji: "🇨🇷", code: "cr" }, { name: "Côte d'Ivoire", emoji: "🇨🇮", code: "ci" }, { name: "Croatie", emoji: "🇭🇷", code: "hr" }, { name: "Cuba", emoji: "🇨🇺", code: "cu" }, { name: "Danemark", emoji: "🇩🇰", code: "dk" }, { name: "Djibouti", emoji: "🇩🇯", code: "dj" }, { name: "Égypte", emoji: "🇪🇬", code: "eg" }, { name: "Émirats Arabes Unis", emoji: "🇦🇪", code: "ae" }, { name: "Équateur", emoji: "🇪🇨", code: "ec" }, { name: "Érythrée", emoji: "🇪🇷", code: "er" }, { name: "Espagne", emoji: "🇪🇸", code: "es" }, { name: "Estonie", emoji: "🇪🇪", code: "ee" }, { name: "Eswatini", emoji: "🇸🇿", code: "sz" }, { name: "États-Unis", emoji: "🇺🇸", code: "us" }, { name: "Éthiopie", emoji: "🇪🇹", code: "et" }, { name: "Fidji", emoji: "🇫🇯", code: "fj" }, { name: "Finlande", emoji: "🇫🇮", code: "fi" }, { name: "France", emoji: "🇫🇷", code: "fr" }, { name: "Gabon", emoji: "🇬🇦", code: "ga" }, { name: "Gambie", emoji: "🇬🇲", code: "gm" }, { name: "Géorgie", emoji: "🇬🇪", code: "ge" }, { name: "Ghana", emoji: "🇬🇭", code: "gh" }, { name: "Grèce", emoji: "🇬🇷", code: "gr" }, { name: "Guinée", emoji: "🇬🇳", code: "gn" }, { name: "Haïti", emoji: "🇭🇹", code: "ht" }, { name: "Honduras", emoji: "🇭🇳", code: "hn" }, { name: "Hongrie", emoji: "🇭🇺", code: "hu" }, { name: "Inde", emoji: "🇮🇳", code: "in" }, { name: "Indonésie", emoji: "🇮🇩", code: "id" }, { name: "Irak", emoji: "🇮🇶", code: "iq" }, { name: "Iran", emoji: "🇮🇷", code: "ir" }, { name: "Irlande", emoji: "🇮🇪", code: "ie" }, { name: "Islande", emoji: "🇮🇸", code: "is" }, { name: "Israël", emoji: "🇮🇱", code: "il" }, { name: "Italie", emoji: "🇮🇹", code: "it" }, { name: "Jamaïque", emoji: "🇯🇲", code: "jm" }, { name: "Japon", emoji: "🇯🇵", code: "jp" }, { name: "Jordanie", emoji: "🇯🇴", code: "jo" }, { name: "Kazakhstan", emoji: "🇰🇿", code: "kz" }, { name: "Kenya", emoji: "🇰🇪", code: "ke" }, { name: "Kirghizistan", emoji: "🇰🇬", code: "kg" }, { name: "Koweït", emoji: "🇰🇼", code: "kw" }, { name: "Laos", emoji: "🇱🇦", code: "la" }, { name: "Lesotho", emoji: "🇱🇸", code: "ls" }, { name: "Lettonie", emoji: "🇱🇻", code: "lv" }, { name: "Liban", emoji: "🇱🇧", code: "lb" }, { name: "Libéria", emoji: "🇱🇷", code: "lr" }, { name: "Libye", emoji: "🇱🇾", code: "ly" }, { name: "Liechtenstein", emoji: "🇱🇮", code: "li" }, { name: "Lituanie", emoji: "🇱🇹", code: "lt" }, { name: "Luxembourg", emoji: "🇱🇺", code: "lu" }, { name: "Madagascar", emoji: "🇲🇬", code: "mg" }, { name: "Malaisie", emoji: "🇲🇾", code: "my" }, { name: "Malawi", emoji: "🇲🇼", code: "mw" }, { name: "Maldives", emoji: "🇲🇻", code: "mv" }, { name: "Mali", emoji: "🇲🇱", code: "ml" }, { name: "Malte", emoji: "🇲🇹", code: "mt" }, { name: "Maroc", emoji: "🇲🇦", code: "ma" }, { name: "Maurice", emoji: "🇲🇺", code: "mu" }, { name: "Mauritanie", emoji: "🇲🇷", code: "mr" }, { name: "Mexique", emoji: "🇲🇽", code: "mx" }, { name: "Moldavie", emoji: "🇲🇩", code: "md" }, { name: "Monaco", emoji: "🇲🇨", code: "mc" }, { name: "Mongolie", emoji: "🇲🇳", code: "mn" }, { name: "Monténégro", emoji: "🇲🇪", code: "me" }, { name: "Mozambique", emoji: "🇲🇿", code: "mz" }, { name: "Namibie", emoji: "🇳🇦", code: "na" }, { name: "Népal", emoji: "🇳🇵", code: "np" }, { name: "Nicaragua", emoji: "🇳🇮", code: "ni" }, { name: "Niger", emoji: "🇳🇪", code: "ne" }, { name: "Nigéria", emoji: "🇳🇬", code: "ng" }, { name: "Norvège", emoji: "🇳🇴", code: "no" }, { name: "Nouvelle-Zélande", emoji: "🇳🇿", code: "nz" }, { name: "Oman", emoji: "🇴🇲", code: "om" }, { name: "Ouganda", emoji: "🇺🇬", code: "ug" }, { name: "Ouzbékistan", emoji: "🇺🇿", code: "uz" }, { name: "Pakistan", emoji: "🇵🇰", code: "pk" }, { name: "Panama", emoji: "🇵🇦", code: "pa" }, { name: "Pérou", emoji: "🇵🇪", code: "pe" }, { name: "Philippines", emoji: "🇵🇭", code: "ph" }, { name: "Pologne", emoji: "🇵🇱", code: "pl" }, { name: "Portugal", emoji: "🇵🇹", code: "pt" }, { name: "Qatar", emoji: "🇶🇦", code: "qa" }, { name: "République Dominicaine", emoji: "🇩🇴", code: "do" }, { name: "Roumanie", emoji: "🇷🇴", code: "ro" }, { name: "Royaume-Uni", emoji: "🇬🇧", code: "gb" }, { name: "Russie", emoji: "🇷🇺", code: "ru" }, { name: "Rwanda", emoji: "🇷🇼", code: "rw" }, { name: "Sénégal", emoji: "🇸🇳", code: "sn" }, { name: "Serbie", emoji: "🇷🇸", code: "rs" }, { name: "Seychelles", emoji: "🇸🇨", code: "sc" }, { name: "Singapour", emoji: "🇸🇬", code: "sg" }, { name: "Slovaquie", emoji: "🇸🇰", code: "sk" }, { name: "Slovénie", emoji: "🇸🇮", code: "si" }, { name: "Somalie", emoji: "🇸🇴", code: "so" }, { name: "Soudan", emoji: "🇸🇩", code: "sd" }, { name: "Sri Lanka", emoji: "🇱🇰", code: "lk" }, { name: "Suède", emoji: "🇸🇪", code: "se" }, { name: "Suisse", emoji: "🇨🇭", code: "ch" }, { name: "Suriname", emoji: "🇸🇷", code: "sr" }, { name: "Syrie", emoji: "🇸🇾", code: "sy" }, { name: "Tadjikistan", emoji: "🇹🇯", code: "tj" }, { name: "Tanzanie", emoji: "🇹🇿", code: "tz" }, { name: "Tchad", emoji: "🇹🇩", code: "td" }, { name: "Tchéquie", emoji: "🇨🇿", code: "cz" }, { name: "Thaïlande", emoji: "🇹🇭", code: "th" }, { name: "Togo", emoji: "🇹🇬", code: "tg" }, { name: "Tunisie", emoji: "🇹🇳", code: "tn" }, { name: "Turkménistan", emoji: "🇹🇲", code: "tm" }, { name: "Turquie", emoji: "🇹🇷", code: "tr" }, { name: "Ukraine", emoji: "🇺🇦", code: "ua" }, { name: "Uruguay", emoji: "🇺🇾", code: "uy" }, { name: "Vatican", emoji: "🇻🇦", code: "va" }, { name: "Venezuela", emoji: "🇻🇪", code: "ve" }, { name: "Vietnam", emoji: "🇻🇳", code: "vn" }, { name: "Yémen", emoji: "🇾🇪", code: "ye" }, { name: "Zambie", emoji: "🇿🇲", code: "zm" }, { name: "Zimbabwe", emoji: "🇿🇼", code: "zw" }
+    ];
+    
+    function generateEasyQuestions() {
+        const shuffled = [...EASY_COUNTRIES].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 5);
+        return selected.map(item => {
+            const wrongs = EASY_COUNTRIES.filter(c => c.name !== item.name).sort(() => 0.5 - Math.random()).slice(0, 3);
+            const options = [item.name, ...wrongs.map(w => w.name)];
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            return { 
+                name: item.name, 
+                emoji: item.emoji, 
+                flagUrl: `https://flagcdn.com/w120/${item.code}.png`, 
+                correctAnswer: item.name, 
+                options 
+            };
+        });
+    }
+    
+    function generateHardQuestions() {
+        const shuffled = [...ALL_COUNTRIES].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 10);
+        return selected.map(item => {
+            const wrongs = ALL_COUNTRIES.filter(c => c.name !== item.name).sort(() => 0.5 - Math.random()).slice(0, 3);
+            const options = [item.name, ...wrongs.map(w => w.name)];
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+            return { 
+                name: item.name, 
+                emoji: item.emoji, 
+                flagUrl: `https://flagcdn.com/w120/${item.code}.png`, 
+                correctAnswer: item.name, 
+                options 
+            };
+        });
+    }
+    
     function generateProductList() {
-        const categories = ["Or", "Diamant", "Crypto", "Immobilier", "Voiture", "Moto", "Montre", "Smartphone", "PC Gamer", "Console"];
-        const emojis = {"Or":"🪙","Diamant":"💎","Crypto":"₿","Immobilier":"🏠","Voiture":"🚗","Moto":"🏍️","Montre":"⌚","Smartphone":"📱","PC Gamer":"💻","Console":"🎮"};
+        const categories = ["Or", "Diamant", "Montre", "Smartphone", "PC", "Console", "Casque", "Crypto", "Immobilier", "Bourse", "Voiture", "Moto", "Avion", "Yacht", "Art", "NFT", "Sac", "Chaussures", "Parfum", "Montre Luxe"];
+        const emojis = { "Or":"🪙","Diamant":"💎","Montre":"⌚","Smartphone":"📱","PC":"💻","Console":"🎮","Casque":"🎧","Crypto":"₿","Immobilier":"🏠","Bourse":"📈","Voiture":"🚗","Moto":"🏍️","Avion":"✈️","Yacht":"⛵","Art":"🎨","NFT":"🖼️","Sac":"👜","Chaussures":"👟","Parfum":"🧴","Montre Luxe":"⌚"};
         let list = [];
+        const pricesList = [500, 800, 1000, 1200, 1500, 1800, 2000, 2500, 3000, 3500, 4000, 4500, 5000];
         for (let i = 0; i < 100; i++) {
             let cat = categories[i % categories.length];
             let productNum = Math.floor(i / categories.length) + 1;
-            let price = [500, 1000, 1500, 2000, 2500][i % 5];
-            list.push({
-                id: i + 1,
-                name: `${cat} ${productNum}`,
-                category: cat,
-                emoji: emojis[cat] || "📦",
-                currentPrice: price,
-                isAvailable: true,
-                ownerId: null
-            });
+            let price = pricesList[i % pricesList.length];
+            list.push({ id: i + 1, name: `${cat} ${productNum}`, category: cat, emoji: emojis[cat] || "📦", currentPrice: price, isAvailable: true, ownerId: null });
         }
         return list;
     }
-
+    
     async function buyProduct(productId) {
+        playSound('click');
         if (!currentUserData) return;
-        const product = products.find(p => p.id === productId);
+        const snap = await database.ref('products').once('value');
+        let allProducts = [];
+        const snapVal = snap.val();
+        if (snapVal) allProducts = Array.isArray(snapVal) ? snapVal : Object.values(snapVal);
+        const product = allProducts.find(p => p.id === productId);
         if (!product || !product.isAvailable) { showMessage("Produit indisponible", "error"); return; }
         if (currentUserData.balance < product.currentPrice) { showMessage("Solde insuffisant", "error"); return; }
         
         currentUserData.balance -= product.currentPrice;
         await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
         
-        const updatedProducts = products.map(p => p.id === productId ? { ...p, isAvailable: false, ownerId: currentUser.uid } : p);
+        const updatedProducts = allProducts.map(p => p.id === productId ? { ...p, isAvailable: false, ownerId: currentUser.uid } : p);
         await database.ref('products').set(updatedProducts);
         
         const newItem = {
@@ -263,135 +448,298 @@
             productEmoji: product.emoji,
             purchasePrice: product.currentPrice,
             purchaseDate: new Date().toISOString(),
-            played: false  // ← important: correspond à votre champ "played"
+            played: false
         };
         await database.ref(`inventory/${currentUser.uid}`).push(newItem);
-        showMessage(`✅ Achat réussi : ${product.name}`, "success");
+        showMessage(`✅ Achat réussi ! ${product.name} ajouté à votre inventaire.`, "success");
         await refreshUserInventory();
         renderApp();
     }
-
-    async function playGame(itemId) {
-        // Conversion explicite en nombre car votre ID Firebase est un nombre
-        const item = userInventory.find(i => i.id == Number(itemId));
-        if (!item) {
-            showMessage("❌ Produit non trouvé (ID: "+itemId+")", "error");
-            console.log("Inventory:", userInventory);
-            console.log("Recherché:", itemId);
-            return;
-        }
-        if (item.played === true) {
-            showMessage("⏰ Vous avez déjà joué avec ce produit !", "error");
-            return;
-        }
-        if (currentUserData.balance < 500) {
-            showMessage("❌ 500 CFA requis", "error");
-            return;
+    
+    async function playGameForItem(itemId) {
+        playSound('click');
+        const item = userInventory.find(i => i.id === itemId);
+        if (!item) { showMessage("Produit non trouvé", "error"); return; }
+        
+        if (item.played === true) { 
+            showMessage("⚠️ Vous avez déjà joué avec ce produit !", "error"); 
+            return; 
         }
         
-        currentUserData.balance -= 500;
+        if (currentUserData.balance < GAME_COST) { 
+            showMessage(`${GAME_COST} CFA requis pour jouer`, "error"); 
+            return; 
+        }
+        
+        // Déterminer la difficulté en fonction du prix
+        const isEasy = item.purchasePrice <= 2000;
+        currentDifficulty = isEasy ? 'easy' : 'hard';
+        const totalQuestions = isEasy ? 5 : 10;
+        const winPercent = isEasy ? 200 : 210;
+        const losePercent = isEasy ? 100 : 50;
+        
+        // Mettre à jour les règles dans la modale
+        const rulesText = document.getElementById('gameRulesText');
+        if (rulesText) {
+            rulesText.innerHTML = `💰 ${GAME_COST} CFA pour jouer → <span style="color:#2ecc71;">Gagnez: ${winPercent}%</span> | <span style="color:#e74c3c;">Perdez: ${losePercent}%</span><br><span class="${isEasy ? 'difficulty-easy' : 'difficulty-hard'}">${isEasy ? '🎯 Mode Facile (5 pays populaires)' : '🔥 Mode Difficile (10 pays du monde)'}</span>`;
+        }
+        
+        currentUserData.balance -= GAME_COST;
         await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
+        showMessage(`🎮 ${GAME_COST} CFA débités, bonne chance ! Mode ${isEasy ? 'FACILE' : 'DIFFICILE'}`, "info");
         
         activeGameItem = item;
+        gameQuestions = isEasy ? generateEasyQuestions() : generateHardQuestions();
+        gameAnswers = [];
+        gameIndex = 0;
+        gameActive = true;
+        
+        onGameComplete = async (isWin) => {
+            let reward = 0;
+            const correctCount = gameAnswers.filter((ans, i) => ans === gameQuestions[i].correctAnswer).length;
+            const requiredCorrect = isEasy ? 5 : 10;
+            
+            if (isWin) {
+                reward = Math.floor(item.purchasePrice * (winPercent / 100));
+                currentUserData.balance += reward;
+                playSound('win');
+                showMessage(`🏆 VICTOIRE PARFAITE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA (${winPercent}% du produit)`, "success");
+            } else {
+                reward = Math.floor(item.purchasePrice * (losePercent / 100));
+                currentUserData.balance += reward;
+                playSound('lose');
+                showMessage(`😞 DÉFAITE (${correctCount}/${requiredCorrect}) ! +${reward.toLocaleString()} CFA (${losePercent}% du produit)`, "info");
+            }
+            
+            await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
+            
+            // Marquer comme joué
+            await database.ref(`inventory/${currentUser.uid}/${item.id}`).update({ played: true });
+            
+            // Remettre sur le marché
+            try {
+                const snap = await database.ref('products').once('value');
+                let allProducts = [];
+                const snapVal = snap.val();
+                if (snapVal) allProducts = Array.isArray(snapVal) ? snapVal : Object.values(snapVal);
+                
+                const updatedProducts = allProducts.map(p => p.id === item.productId ? { ...p, isAvailable: true, ownerId: null } : p);
+                await database.ref('products').set(updatedProducts);
+                showMessage(`🔄 Le produit est retourné sur le marché`, "info");
+            } catch(error) {
+                console.error("Erreur:", error);
+            }
+            
+            await refreshUserInventory();
+            renderApp();
+        };
+        
+        renderGameModal();
         document.getElementById('gameModal').classList.add('active');
-        renderApp();
     }
-
-    async function winGame() {
-        if (!activeGameItem) return;
-        const gain = Math.floor(activeGameItem.purchasePrice * 1.4);
-        currentUserData.balance += gain;
+    
+    function nextGame() { 
+        const totalQuestions = currentDifficulty === 'easy' ? 5 : 10;
+        if (gameActive && gameAnswers[gameIndex]) { 
+            gameIndex++; 
+            renderGameModal(); 
+        } else if (!gameAnswers[gameIndex]) {
+            showMessage("Veuillez choisir une réponse avant de continuer", "info");
+        }
+    }
+    
+    function prevGame() { 
+        if (gameActive && gameIndex > 0) { 
+            gameIndex--; 
+            renderGameModal(); 
+        } 
+    }
+    
+    function selectGameAnswer(ans) { 
+        if (gameActive && gameAnswers[gameIndex] === undefined) { 
+            gameAnswers[gameIndex] = ans; 
+            renderGameModal(); 
+        } 
+    }
+    
+    function renderGameModal() {
+        const container = document.getElementById('GameQuizContainer');
+        const resultDiv = document.getElementById('gameResultArea');
+        resultDiv.style.display = 'none';
+        const totalQuestions = currentDifficulty === 'easy' ? 5 : 10;
         
-        await database.ref(`users/${currentUser.uid}`).update({ balance: currentUserData.balance });
-        await database.ref(`inventory/${currentUser.uid}/${activeGameItem.id}`).update({ played: true });
+        if (!gameActive || gameIndex >= totalQuestions) {
+            container.innerHTML = "";
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div class="loading">🎲 Calcul des résultats...</div>';
+            
+            const correctCount = gameAnswers.filter((ans, i) => ans === gameQuestions[i]?.correctAnswer).length;
+            const requiredCorrect = totalQuestions;
+            const isWin = (correctCount === requiredCorrect);
+            
+            if (onGameComplete) {
+                onGameComplete(isWin);
+                onGameComplete = null;
+            }
+            
+            const winPercent = currentDifficulty === 'easy' ? 200 : 210;
+            const losePercent = currentDifficulty === 'easy' ? 100 : 50;
+            
+            resultDiv.innerHTML = isWin ? 
+                `<div style="color:#2ecc71; font-weight:bold; font-size:1.2em;">🏆 VICTOIRE PARFAITE ! (${correctCount}/${totalQuestions})<br>+${winPercent}% crédités</div>` : 
+                `<div style="color:#e67e22; font-weight:bold;">🔻 DÉFAITE (${correctCount}/${totalQuestions})<br>+${losePercent}% retournés</div>`;
+            
+            gameActive = false;
+            
+            setTimeout(() => { 
+                document.getElementById('gameModal').classList.remove('active'); 
+                renderApp();
+            }, 4000);
+            return;
+        }
         
-        showMessage(`🏆 VICTOIRE ! +${gain.toLocaleString()} CFA (140%)`, "success");
-        closeGameModal();
-        await refreshUserInventory();
-        renderApp();
+        const q = gameQuestions[gameIndex];
+        const selected = gameAnswers[gameIndex] || null;
+        const isLastQuestion = (gameIndex === totalQuestions - 1);
+        
+        container.innerHTML = `
+            <div class="game-stats">🎯 Question ${gameIndex + 1} / ${totalQuestions}</div>
+            <div class="flag-container">
+                <img class="flag-img" src="${q.flagUrl}" onerror="this.style.display='none'">
+                <span style="font-size:2rem;">${q.emoji}</span>
+            </div>
+            <div style="margin:8px 0; font-weight:bold;">De quel pays est ce drapeau ?</div>
+            ${q.options.map(opt => `
+                <div class="quiz-option ${selected === opt ? 'selected' : ''}" 
+                     onclick="window.selectGameAnswer('${opt.replace(/'/g, "\\'")}')">
+                     ${opt}
+                </div>
+            `).join('')}
+            <div style="margin:15px 0;">
+                ${gameIndex > 0 ? `<button class="confirm-btn" onclick="window.prevGame()" style="background:#7f8c8d;">◀ Préc</button>` : ''}
+                <button class="confirm-btn" onclick="window.nextGame()" style="background:#f39c12;">
+                    ${isLastQuestion ? '🏆 TERMINER' : 'SUIVANT ▶'}
+                </button>
+            </div>
+        `;
     }
-
-    async function loseGame() {
-        if (!activeGameItem) return;
-        const loseAmount = Math.floor(activeGameItem.purchasePrice * 0.5);
-        // On ne retire que la valeur du produit virtuellement, pas le solde réel
-        showMessage(`😞 PERDU ! Le produit ${activeGameItem.productName} perd 50% de sa valeur (${loseAmount.toLocaleString()} CFA)`, "error");
-        await database.ref(`inventory/${currentUser.uid}/${activeGameItem.id}`).update({ played: true });
-        closeGameModal();
-        await refreshUserInventory();
-        renderApp();
+    
+    function closeGameModal() { 
+        document.getElementById('gameModal').classList.remove('active'); 
+        gameActive = false; 
+        onGameComplete = null; 
+        renderApp(); 
     }
-
-    function closeGameModal() {
-        document.getElementById('gameModal').classList.remove('active');
-        activeGameItem = null;
-    }
-
+    
     async function refreshUserInventory() {
-        const snap = await database.ref(`inventory/${currentUser.uid}`).once('value');
-        userInventory = snap.exists() ? Object.values(snap.val()) : [];
-        console.log("Inventaire chargé:", userInventory);
+        try {
+            const snap = await database.ref(`inventory/${currentUser.uid}`).once('value');
+            if (snap.exists()) {
+                const data = snap.val();
+                userInventory = Object.keys(data).map(key => {
+                    const item = data[key];
+                    return {
+                        id: key,
+                        ...item,
+                        played: item.played === true
+                    };
+                });
+            } else {
+                userInventory = [];
+            }
+            console.log("Inventaire chargé:", userInventory.length, "produits");
+        } catch(error) {
+            console.error("Erreur chargement inventaire:", error);
+            userInventory = [];
+        }
     }
-
+    
+    async function submitDeposit() {
+        if (!currentUser) return;
+        const amount = parseInt(document.getElementById('depositAmount').value);
+        const code = document.getElementById('depositCode').value.trim();
+        if (!amount || amount < 1000) { showMessage("Min 1000 CFA", "error"); return; }
+        if (!code) { showMessage("Code requis", "error"); return; }
+        await database.ref('deposits').push({ userId: currentUser.uid, username: currentUserData.username, phone: currentUserData.phone, amount, transferCode: code, status: 'pending', date: new Date().toISOString() });
+        showMessage(`✅ Demande de dépôt envoyée !`, "success");
+        closeDepositModal();
+    }
+    
+    async function submitWithdraw() {
+        if (!currentUser) return;
+        const amount = parseInt(document.getElementById('withdrawAmount').value);
+        if (!amount || amount < 3000) { showMessage("Min 3000 CFA", "error"); return; }
+        if (amount > 50000) { showMessage("Max 50000 CFA", "error"); return; }
+        if (amount > currentUserData.balance) { showMessage("Solde insuffisant", "error"); return; }
+        await database.ref('withdraws').push({ userId: currentUser.uid, username: currentUserData.username, phone: currentUserData.phone, amount, status: 'pending', date: new Date().toISOString() });
+        showMessage(`✅ Demande de retrait envoyée !`, "success");
+        closeWithdrawModal();
+    }
+    
+    function contactSupport() { window.location.href = `tel:${SUPPORT_PHONE}`; }
+    function openDepositModal() { document.getElementById('depositModal').classList.add('active'); }
+    function closeDepositModal() { document.getElementById('depositModal').classList.remove('active'); document.getElementById('depositAmount').value = ''; document.getElementById('depositCode').value = ''; }
+    function openWithdrawModal() { document.getElementById('withdrawModal').classList.add('active'); }
+    function closeWithdrawModal() { document.getElementById('withdrawModal').classList.remove('active'); document.getElementById('withdrawAmount').value = ''; }
+    
     function renderApp() {
         if (!currentUserData) return;
         
-        let available = products.filter(p => p.isAvailable === true);
-        if (searchTerm) available = available.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
-        const paginated = available.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
-        const totalPages = Math.ceil(available.length / itemsPerPage);
-        
-        let content = `<div class="container">
-            <div class="header">
-                <div class="logo"><h1>⭐ STAR GAME 140%</h1><p>📦 100 produits | Jeu 500 CFA</p></div>
-                <div class="user-info">
-                    <span class="username">👤 ${currentUserData.username}</span>
-                    <span class="balance">💰 ${currentUserData.balance.toLocaleString()} CFA</span>
-                    <button class="support-btn" onclick="window.contactSupport()">📞 97413067</button>
-                    <button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button>
-                    <button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button>
-                    <button class="logout-btn" onclick="window.logout()">🚪 Exit</button>
-                </div>
-            </div>
-            <div class="tabs">
-                <button class="tab-btn ${currentTab==='market'?'active':''}" onclick="window.switchTab('market')">🛍️ Marché (${available.length})</button>
-                <button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="window.switchTab('inventory')">📦 Mes produits (${userInventory.length})</button>
-            </div>`;
-        
-        if (currentTab === 'market') {
-            content += `<div class="search-bar"><input placeholder="🔍 Rechercher..." onkeyup="window.updateSearch(this.value)"></div>
-            <div class="products-grid">${paginated.map(p => `
-                <div class="product-card">
-                    <div class="product-emoji">${p.emoji}</div>
-                    <div class="product-name">${p.name}</div>
-                    <div class="product-price">${p.currentPrice.toLocaleString()} CFA</div>
-                    <button class="buy-btn" onclick="window.buyProduct(${p.id})">✔️ Acheter</button>
-                </div>`).join('')}</div>
-                ${totalPages > 1 ? `<div style="text-align:center; margin-top:15px;">${Array.from({length:Math.min(totalPages,5)},(_,i)=>`<button class="page-btn" onclick="window.goToPage(${i+1})" style="margin:2px;padding:4px 10px;">${i+1}</button>`).join('')}</div>` : ''}`;
-        } else {
-            if (userInventory.length === 0) {
-                content += `<div class="loading" style="text-align:center;padding:40px;">🌟 Aucun produit acheté</div>`;
+        try {
+            let available = products.filter(p => p.isAvailable === true && p.currentPrice <= MAX_PRODUCT_PRICE);
+            if (searchTerm) available = available.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+            if (selectedCategory && selectedCategory !== 'all') available = available.filter(p => p.category === selectedCategory);
+            const totalPages = Math.ceil(available.length / itemsPerPage);
+            const paginated = available.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
+            const allCats = [...new Set(products.map(p=>p.category))];
+            
+            let content = `<div class="container"><div class="header"><div class="logo"><h1>🎲 STAR GAME</h1><p>📦 100 produits | Jeu à ${GAME_COST} CFA</p></div><div class="user-info"><span class="username">👤 ${currentUserData.username}</span><span class="balance">💰 ${currentUserData.balance.toLocaleString()} CFA</span><button class="support-btn" onclick="window.contactSupport()">📞 ${SUPPORT_PHONE}</button><button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button><button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button><button class="logout-btn" onclick="window.logout()">🚪 Exit</button></div></div>
+            <div class="tabs"><button class="tab-btn ${currentTab==='market'?'active':''}" onclick="window.switchTab('market')">🛍️ Marché (${available.length})</button><button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="window.switchTab('inventory')">📦 Mes produits (${userInventory.length})</button></div>`;
+            
+            if (currentTab === 'market') {
+                content += `<div class="search-bar"><input id="searchInput" placeholder="🔍 Rechercher" value="${searchTerm}" onkeyup="window.updateSearch(this.value)"><select id="catSelect" onchange="window.updateCategory(this.value)"><option value="all">Toutes</option>${allCats.map(c=>`<option value="${c}" ${selectedCategory===c?'selected':''}>${c}</option>`).join('')}</select></div>
+                <div class="products-grid">${paginated.map(p => {
+                    const isEasy = p.currentPrice <= 2000;
+                    return `<div class="product-card"><div class="product-emoji">${p.emoji}</div><div class="product-name">${p.name}</div><div class="product-category">${p.category}</div><div class="product-price">${p.currentPrice.toLocaleString()} CFA</div><div class="${isEasy ? 'difficulty-easy' : 'difficulty-hard'}">${isEasy ? '🎯 Facile (200%)' : '🔥 Difficile (210%)'}</div><button class="buy-btn" onclick="window.buyProduct(${p.id})">✔️ Acheter</button></div>`;
+                }).join('')}</div>
+                ${totalPages>1?`<div class="pagination">${Array.from({length:Math.min(totalPages,6)},(_,i)=>i+1).map(p=>`<button class="page-btn ${p===currentPage?'active':''}" onclick="window.goToPage(${p})">${p}</button>`).join('')}</div>`:''}`;
             } else {
-                userInventory.forEach(item => {
-                    content += `<div class="inventory-item">
-                        <div>
-                            <strong>${item.productEmoji} ${item.productName}</strong><br>
-                            💰 Prix d'achat: ${item.purchasePrice.toLocaleString()} CFA<br>
-                            ${!item.played ? '<span class="pending-badge">🎮 En attente de jeu</span>' : '<span style="background:#2c3e50;padding:2px 10px;border-radius:20px;">✅ Déjà joué</span>'}
-                        </div>
-                        <div>
-                            ${!item.played ? `<button class="play-game-btn" onclick="window.playGame(${item.id})">🎮 Jouer (500 CFA)<br><span style="font-size:0.6rem;">Gagnez 140% | Perdez 50%</span></button>` : `<button style="background:#555;padding:8px 16px;border-radius:30px;border:none;color:white;" disabled>🔒 Terminé</button>`}
-                        </div>
-                    </div>`;
-                });
+                if (userInventory.length === 0) {
+                    content += `<div class="loading">🌟 Aucun produit acheté.</div>`;
+                } else {
+                    userInventory.forEach(item => {
+                        const isPlayed = item.played === true;
+                        const isEasy = item.purchasePrice <= 2000;
+                        const winPercent = isEasy ? 200 : 210;
+                        const losePercent = isEasy ? 100 : 50;
+                        content += `<div class="inventory-item ${isPlayed ? 'played' : ''}">
+                            <div>
+                                <strong>${item.productEmoji || "📦"} ${item.productName || "Produit"}</strong>
+                                <div class="product-detail">💰 Prix d'achat: ${(item.purchasePrice || 0).toLocaleString()} CFA</div>
+                                <div class="${isEasy ? 'difficulty-easy' : 'difficulty-hard'}">${isEasy ? '🎯 Mode Facile (5 drapeaux)' : '🔥 Mode Difficile (10 drapeaux)'}</div>
+                                ${isPlayed ? 
+                                    `<span class="badge-played">✅ Déjà joué (partie terminée)</span>` : 
+                                    `<span class="badge-waiting">🎮 En attente de jeu</span>`
+                                }
+                            </div>
+                            <div>
+                                ${!isPlayed ? 
+                                    `<button class="play-game-btn" onclick="window.playGameForItem('${item.id}')">🎮 Jouer (${GAME_COST} CFA)<br><small>Gagnez ${winPercent}% | Perdez ${losePercent}%</small></button>` : 
+                                    `<button class="play-game-btn disabled" disabled>🔒 Déjà utilisé</button>`
+                                }
+                            </div>
+                        </div>`;
+                    });
+                }
             }
+            content += `</div>`;
+            document.getElementById('app').innerHTML = content;
+        } catch(error) {
+            console.error("Erreur renderApp:", error);
+            document.getElementById('app').innerHTML = `<div class="container"><div class="loading">⚠️ Erreur d'affichage: ${error.message}</div></div>`;
         }
-        content += `</div>`;
-        document.getElementById('app').innerHTML = content;
     }
-
-    function goToPage(page) { currentPage = page; renderApp(); }
-
+    
     function startApp() {
         database.ref('products').once('value', (snap) => { if (!snap.exists()) database.ref('products').set(generateProductList()); });
         database.ref('products').on('value', (snapshot) => {
@@ -400,17 +748,21 @@
             renderApp();
         });
         database.ref(`inventory/${currentUser.uid}`).on('value', async (snapInv) => {
-            userInventory = snapInv.exists() ? Object.values(snapInv.val()) : [];
+            await refreshUserInventory();
             renderApp();
         });
         renderApp();
     }
-
+    
     async function login() {
         let phone = document.getElementById('loginPhone').value.trim();
         let password = document.getElementById('loginPassword').value;
-        if (!phone || phone.length !== 8) { showMessage("Numéro 8 chiffres", "error"); return; }
+        
+        if (!phone || phone.length !== 8) { showMessage("Numéro à 8 chiffres", "error"); return; }
+        if (!password) { showMessage("Mot de passe requis", "error"); return; }
+        
         const email = `${phone}@stargame.com`;
+        
         try {
             const result = await auth.signInWithEmailAndPassword(email, password);
             currentUser = result.user;
@@ -418,51 +770,131 @@
             document.getElementById('authModal').classList.remove('active');
             startApp();
             showMessage(`✅ Bonjour ${currentUserData.username} !`, "success");
-        } catch(error) { showMessage("Erreur connexion", "error"); }
+        } catch(error) {
+            if (error.code === 'auth/user-not-found') {
+                showMessage("Compte non trouvé. Inscrivez-vous d'abord.", "error");
+            } else if (error.code === 'auth/wrong-password') {
+                showMessage("Mot de passe incorrect", "error");
+            } else {
+                showMessage("Erreur: " + error.message, "error");
+            }
+        }
     }
-
+    
     async function signup() {
         let name = document.getElementById('signupName').value.trim();
         let phone = document.getElementById('signupPhone').value.trim();
+        let country = document.getElementById('signupCountry').value;
         let password = document.getElementById('signupPassword').value;
-        if (!name || name.length < 3) { showMessage("Nom min 3 caractères", "error"); return; }
-        if (!phone || phone.length !== 8) { showMessage("Numéro 8 chiffres", "error"); return; }
-        if (!password || password.length !== 8) { showMessage("Mot de passe 8 caractères", "error"); return; }
+        
+        if (!name || name.length < 3) { showMessage("Nom (min 3 caractères)", "error"); return; }
+        if (!phone || !/^\d{8}$/.test(phone)) { showMessage("Numéro à 8 chiffres", "error"); return; }
+        if (!country) { showMessage("Choisissez votre pays", "error"); return; }
+        if (!password || password.length !== 8 || !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8}$/.test(password)) {
+            showMessage("Mot de passe: 8 caractères avec lettres ET chiffres", "error");
+            return;
+        }
+        
         const email = `${phone}@stargame.com`;
+        
         try {
             const result = await auth.createUserWithEmailAndPassword(email, password);
             currentUser = result.user;
-            await database.ref(`users/${currentUser.uid}`).set({ username: name, phone: phone, balance: 1000, createdAt: new Date().toISOString() });
-            currentUserData = { username: name, phone: phone, balance: 1000 };
+            
+            await database.ref(`users/${currentUser.uid}`).set({
+                username: name,
+                phone: phone,
+                country: country,
+                balance: INITIAL_BALANCE,
+                createdAt: new Date().toISOString()
+            });
+            
+            currentUserData = { username: name, phone: phone, country: country, balance: INITIAL_BALANCE };
             document.getElementById('authModal').classList.remove('active');
             startApp();
-            showMessage("✅ Inscription réussie ! 1000 CFA offerts", "success");
-        } catch(error) { showMessage("Erreur inscription", "error"); }
+            showMessage(`✅ Inscription réussie ! ${INITIAL_BALANCE.toLocaleString()} CFA offerts`, "success");
+        } catch(error) {
+            if (error.code === 'auth/email-already-in-use') {
+                showMessage("Ce numéro est déjà utilisé", "error");
+            } else {
+                showMessage("Erreur: " + error.message, "error");
+            }
+        }
     }
-
+    
     async function loadUserData() {
         const snap = await database.ref(`users/${currentUser.uid}`).once('value');
-        if (snap.exists()) currentUserData = snap.val();
+        if (snap.exists()) {
+            currentUserData = snap.val();
+        } else {
+            showMessage("Erreur chargement données", "error");
+        }
     }
-
-    function showMessage(msg, type) { let div = document.createElement('div'); div.className = `message message-${type}`; div.innerText = msg; document.body.appendChild(div); setTimeout(() => div.remove(), 3000); }
-    function toggleAuthMode() { const l=document.getElementById('loginForm'), s=document.getElementById('signupForm'), t=document.getElementById('switchText'); if(l.style.display!=='none'){l.style.display='none';s.style.display='block';t.innerText='🔄 Déjà un compte ? Se connecter'}else{l.style.display='block';s.style.display='none';t.innerText='🔄 Pas de compte ? S\'inscrire'} }
-    async function logout() { await auth.signOut(); currentUser=null; currentUserData=null; document.getElementById('authModal').classList.add('active'); document.getElementById('app').innerHTML=''; }
-    function switchTab(t) { currentTab = t; currentPage = 1; renderApp(); }
-    function updateSearch(v) { searchTerm = v; currentPage = 1; renderApp(); }
-    function contactSupport() { window.location.href = "tel:97413067"; }
-    function openDepositModal() { showMessage("📞 Contactez +97413067 pour déposer", "success"); }
-    function openWithdrawModal() { showMessage("📞 Contactez +97413067 pour retirer", "success"); }
-
-    window.login = login; window.signup = signup; window.toggleAuthMode = toggleAuthMode;
-    window.buyProduct = buyProduct; window.playGame = playGame;
-    window.winGame = winGame; window.loseGame = loseGame; window.closeGameModal = closeGameModal;
-    window.switchTab = switchTab; window.updateSearch = updateSearch; window.goToPage = goToPage;
-    window.contactSupport = contactSupport; window.openDepositModal = openDepositModal; window.openWithdrawModal = openWithdrawModal; window.logout = logout;
-
+    
+    function toggleAuthMode() {
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const switchText = document.getElementById('switchText');
+        if (loginForm.style.display !== 'none') {
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'block';
+            switchText.innerText = '🔄 Déjà un compte ? Se connecter';
+        } else {
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+            switchText.innerText = '🔄 Pas de compte ? S\'inscrire';
+        }
+    }
+    
+    async function logout() {
+        await auth.signOut();
+        currentUser = null;
+        currentUserData = null;
+        document.getElementById('authModal').classList.add('active');
+        document.getElementById('app').innerHTML = '';
+        toggleAuthMode();
+    }
+    
+    function showMessage(msg, type) {
+        let div = document.createElement('div');
+        div.className = `message message-${type}`;
+        div.innerText = msg;
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 3000);
+    }
+    
+    window.login = login;
+    window.signup = signup;
+    window.toggleAuthMode = toggleAuthMode;
+    window.buyProduct = buyProduct;
+    window.playGameForItem = playGameForItem;
+    window.selectGameAnswer = selectGameAnswer;
+    window.nextGame = nextGame;
+    window.prevGame = prevGame;
+    window.closeGameModal = closeGameModal;
+    window.switchTab = (t) => { currentTab = t; currentPage = 1; renderApp(); };
+    window.updateSearch = (v) => { searchTerm = v; currentPage = 1; renderApp(); };
+    window.updateCategory = (c) => { selectedCategory = c; currentPage = 1; renderApp(); };
+    window.goToPage = (p) => { currentPage = p; renderApp(); };
+    window.openDepositModal = openDepositModal;
+    window.closeDepositModal = closeDepositModal;
+    window.openWithdrawModal = openWithdrawModal;
+    window.closeWithdrawModal = closeWithdrawModal;
+    window.submitDeposit = submitDeposit;
+    window.submitWithdraw = submitWithdraw;
+    window.contactSupport = contactSupport;
+    window.logout = logout;
+    
     auth.onAuthStateChanged(async (user) => {
-        if (user) { currentUser = user; await loadUserData(); if (currentUserData) { document.getElementById('authModal').classList.remove('active'); startApp(); } }
+        if (user) {
+            currentUser = user;
+            await loadUserData();
+            if (currentUserData) {
+                document.getElementById('authModal').classList.remove('active');
+                startApp();
+            }
+        }
     });
 </script>
 </body>
-    </html>
+</html>

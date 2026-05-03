@@ -42,7 +42,7 @@
         .balance { background: linear-gradient(135deg, #2ecc71, #1e8e4a); }
         .game-balance { background: linear-gradient(135deg, #e74c3c, #c0392b); }
         .username { background: #2c3e8f; }
-        .deposit-btn, .withdraw-btn, .logout-btn, .support-btn, .admin-btn {
+        .deposit-btn, .withdraw-btn, .logout-btn, .support-btn {
             border: none;
             padding: 5px 12px;
             border-radius: 40px;
@@ -54,7 +54,6 @@
         .withdraw-btn { background: #e67e22; color: white; }
         .logout-btn { background: #c0392b; color: white; }
         .support-btn { background: #25D366; color: white; }
-        .admin-btn { background: #8e44ad; color: white; }
         .tabs {
             display: flex;
             gap: 12px;
@@ -268,20 +267,6 @@
     </div>
 </div>
 
-<!-- MODALE ADMIN -->
-<div id="adminModal" class="modal">
-    <div class="modal-content">
-        <h2>👑 ADMIN - AJOUTER SOLDE</h2>
-        <p style="font-size:0.8rem;">Mot de passe admin: <strong>admin123</strong></p>
-        <input type="password" id="adminPassword" placeholder="Mot de passe admin">
-        <input type="text" id="adminUserPhone" placeholder="Numéro du destinataire (8 chiffres)">
-        <input type="number" id="adminAmount" placeholder="Montant à ajouter (CFA)">
-        <p style="font-size:0.7rem; color:#2ecc71;">💰 Ce montant sera ajouté au SOLDE RÉEL</p>
-        <button class="confirm-btn" onclick="window.addAdminBalance()">➕ Ajouter au solde réel</button>
-        <button class="close-modal" onclick="window.closeAdminModal()">Fermer</button>
-    </div>
-</div>
-
 <div id="gameModal" class="modal">
     <div class="modal-content">
         <h2>🎲 JEU DES DRAPEAUX</h2>
@@ -342,10 +327,9 @@
     const itemsPerPage = 24;
     const MAX_PRODUCT_PRICE = 5000;
     const SUPPORT_PHONE = "97413067";
-    const INITIAL_BALANCE = 0;  // Solde réel initial = 0 (ne peut pas acheter ni jouer)
+    const INITIAL_BALANCE = 0;  // Solde réel initial = 0
     const INITIAL_GAME_BALANCE = 500;  // Solde jeu initial = 500 CFA (retirable)
     const GAME_COST = 100;
-    const ADMIN_PASSWORD = "admin123";
     
     let activeGameItem = null;
     let gameQuestions = [], gameAnswers = [], gameIndex = 0, gameActive = false;
@@ -698,62 +682,6 @@
         }
     }
     
-    // ========== ADMIN : AJOUTER DU SOLDE RÉEL ==========
-    async function addAdminBalance() {
-        const password = document.getElementById('adminPassword').value;
-        const userPhone = document.getElementById('adminUserPhone').value.trim();
-        const amount = parseInt(document.getElementById('adminAmount').value);
-        
-        if (password !== ADMIN_PASSWORD) {
-            showMessage("❌ Mot de passe admin incorrect", "error");
-            return;
-        }
-        
-        if (!userPhone || userPhone.length !== 8) {
-            showMessage("Numéro à 8 chiffres", "error");
-            return;
-        }
-        
-        if (!amount || amount < 100) {
-            showMessage("Montant minimum 100 CFA", "error");
-            return;
-        }
-        
-        try {
-            const usersRef = database.ref('users');
-            const snapshot = await usersRef.once('value');
-            let targetUserId = null;
-            
-            snapshot.forEach((childSnapshot) => {
-                const userData = childSnapshot.val();
-                if (userData.phone === userPhone) {
-                    targetUserId = childSnapshot.key;
-                }
-            });
-            
-            if (!targetUserId) {
-                showMessage("Utilisateur non trouvé", "error");
-                return;
-            }
-            
-            // Ajouter au solde RÉEL (balance)
-            const userRef = database.ref(`users/${targetUserId}`);
-            const userSnap = await userRef.once('value');
-            const currentBalance = userSnap.val()?.balance || 0;
-            await userRef.update({ balance: currentBalance + amount });
-            
-            showMessage(`✅ ${amount.toLocaleString()} CFA ajoutés au SOLDE RÉEL de l'utilisateur ${userPhone}`, "success");
-            closeAdminModal();
-            
-            if (currentUser && currentUserData && currentUserData.phone === userPhone) {
-                currentUserData.balance = currentBalance + amount;
-                renderApp();
-            }
-        } catch(error) {
-            showMessage("Erreur: " + error.message, "error");
-        }
-    }
-    
     async function submitDeposit() {
         if (!currentUser) return;
         const amount = parseInt(document.getElementById('depositAmount').value);
@@ -787,8 +715,6 @@
     function closeDepositModal() { document.getElementById('depositModal').classList.remove('active'); document.getElementById('depositAmount').value = ''; document.getElementById('depositCode').value = ''; }
     function openWithdrawModal() { document.getElementById('withdrawModal').classList.add('active'); }
     function closeWithdrawModal() { document.getElementById('withdrawModal').classList.remove('active'); document.getElementById('withdrawAmount').value = ''; }
-    function openAdminModal() { document.getElementById('adminModal').classList.add('active'); }
-    function closeAdminModal() { document.getElementById('adminModal').classList.remove('active'); document.getElementById('adminPassword').value = ''; document.getElementById('adminUserPhone').value = ''; document.getElementById('adminAmount').value = ''; }
     
     function renderApp() {
         if (!currentUserData) return;
@@ -801,12 +727,12 @@
             const paginated = available.slice((currentPage-1)*itemsPerPage, currentPage*itemsPerPage);
             const allCats = [...new Set(products.map(p=>p.category))];
             
-            let content = `<div class="container"><div class="header"><div class="logo"><h1>🎲 STAR GAME</h1><p>📦 100 produits | Jeu à ${GAME_COST} CFA</p></div><div class="user-info"><span class="username">👤 ${currentUserData.username}</span><span class="balance">💰 Solde réel: ${(currentUserData.balance || 0).toLocaleString()} CFA</span><span class="game-balance">💎 Solde jeu (retirable): ${(currentUserData.game_balance || 0).toLocaleString()} CFA</span><button class="admin-btn" onclick="window.openAdminModal()">👑 Admin</button><button class="support-btn" onclick="window.contactSupport()">📞 ${SUPPORT_PHONE}</button><button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button><button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button><button class="logout-btn" onclick="window.logout()">🚪 Exit</button></div></div>
+            let content = `<div class="container"><div class="header"><div class="logo"><h1>🎲 STAR GAME</h1><p>📦 100 produits | Jeu à ${GAME_COST} CFA</p></div><div class="user-info"><span class="username">👤 ${currentUserData.username}</span><span class="balance">💰 Solde réel: ${(currentUserData.balance || 0).toLocaleString()} CFA</span><span class="game-balance">💎 Solde jeu (retirable): ${(currentUserData.game_balance || 0).toLocaleString()} CFA</span><button class="support-btn" onclick="window.contactSupport()">📞 ${SUPPORT_PHONE}</button><button class="deposit-btn" onclick="window.openDepositModal()">➕ Dépôt</button><button class="withdraw-btn" onclick="window.openWithdrawModal()">💸 Retrait</button><button class="logout-btn" onclick="window.logout()">🚪 Exit</button></div></div>
             <div class="tabs"><button class="tab-btn ${currentTab==='market'?'active':''}" onclick="window.switchTab('market')">🛍️ Marché (${available.length})</button><button class="tab-btn ${currentTab==='inventory'?'active':''}" onclick="window.switchTab('inventory')">📦 Mes produits (${userInventory.length})</button></div>`;
             
             if (currentTab === 'market') {
                 content += `<div style="background:#2ecc71; padding:8px; border-radius:12px; margin-bottom:15px; font-size:0.7rem; text-align:center;">
-                    🟢 SOLDE RÉEL = Achat de produits + Paiement du jeu<br>
+                    🟢 SOLDE RÉEL = Achat de produits + Paiement du jeu (100 CFA)<br>
                     🔴 SOLDE JEU = Gains des jeux (retirable en vrai argent)
                 </div>
                 <div class="search-bar"><input id="searchInput" placeholder="🔍 Rechercher" value="${searchTerm}" onkeyup="window.updateSearch(this.value)"><select id="catSelect" onchange="window.updateCategory(this.value)"><option value="all">Toutes</option>${allCats.map(c=>`<option value="${c}" ${selectedCategory===c?'selected':''}>${c}</option>`).join('')}</select></div>
@@ -1018,9 +944,6 @@
     window.closeDepositModal = closeDepositModal;
     window.openWithdrawModal = openWithdrawModal;
     window.closeWithdrawModal = closeWithdrawModal;
-    window.openAdminModal = openAdminModal;
-    window.closeAdminModal = closeAdminModal;
-    window.addAdminBalance = addAdminBalance;
     window.contactSupport = contactSupport;
     window.logout = logout;
     
